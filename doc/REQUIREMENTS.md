@@ -12,7 +12,7 @@ This document is separated into two different sections.  We'll list FUNCTIONAL r
 |---------|-------------------|----------|
 | [Townsperson Generator](#townsfolk-generator) | Randomly generate some details about NPCs that the party encounters | MVP |
 | Initiative tracking | It'd be nice to have an app where I can store the encounter characters and have their initiative order tracked for me | later, if ever |
-
+ 
 ## Functional Requirements
 _**What does this thing need to do?**_
 ### Townsfolk Generator
