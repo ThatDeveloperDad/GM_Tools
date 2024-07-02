@@ -3,18 +3,19 @@ These are just notes we made while talking through the Requirements fo rthe Town
 
 | **Concept** | **Noun/Verb** | **Shared?** | **Changes?** |
 |---------|-----------|---------|----------|
-| NPC | Noun | * |  |
+| NPC | Noun | Y |  |
 | NpcSeed* | Noun |  |  |
-| SpeciesList | Noun | * |  |
-| AppearancesList | Noun | * |  |
-| NameLists | Noun | * |  |
-| BackgroundList | Noun | * |  |
-| ProfessionList | Noun | * |  |
+| SpeciesList | Noun | Y |  |
+| AppearancesList | Noun | Y |  |
+| NameLists | Noun | Y |  |
+| BackgroundList | Noun | Y |  |
+| ProfessionList | Noun | Y |  |
 | ~~RollDice~~ | ~~Verb~~ |  |  |
-| SaveNPC | Verb |  | * |
-| 
+| DiceBag | Service | Y |  |
+| SaveNPC | Verb |  | Y |
 
 *Items marked with a * aren't VOLATILE, but they are VARIABLE.
+NPCSeed is a set of basic attributes that may or may not be used to pre-define certain aspects of a Townsperson.
 
 ** RollDice is both shared and volatile in its behavior from one execution to the next.
 That means we need to look at it more closely, and break that concept down further untit we have smaller pieces that are volatile along exactly one of those axes.
