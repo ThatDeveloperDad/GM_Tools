@@ -7,10 +7,10 @@ Second, we'll begin the detailed design of each component.
 Third, We'll cross reference our components with each other to identify their dependencies.  This exercise will help us determine which components need to be built at a higher priority than others.
 
 ## Static Design
-We'll come back to this once we have an idea of what our application needs to do for us. 
+![Static Architecture diagram showing the components of our Townsfolk Generator](/doc/images/TownsfolkGen_StaticArch.png)
 
 ## Detailed Designs
-We can't do details until we have an idea of what we'll be building.
+We'll likely do these detailed designs inside the application, then document them here as we go.
 
 ## Dependency Assessment
-Nothing here yet.  This depends on the earlier two steps.
+Once the basic building blocks have been added to our application, we'll document who depends on what here.
