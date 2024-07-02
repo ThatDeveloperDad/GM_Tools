@@ -1,4 +1,4 @@
-#Architecture
+# Architecture
 
 First, we'll define our static design.  This will include diagrams and descriptions of the different components that will form our GM_Tools solution.
 
