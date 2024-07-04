@@ -2,8 +2,18 @@
 
 public class DiceBag : IDiceBag
 {
-    public int Roll(int numberOfDice, MathRockKind diceKind, int? resultModifier = null)
+    public DiceTray Roll(int numberOfDice, MathRockKind mathRockKind, int? resultModifier = null)
     {
-        throw new NotImplementedException();
+        DiceTray result = new DiceTray();
+        
+        for(int roll = 0; roll < numberOfDice; roll++)
+        {
+            var rollResult = new Random();
+
+            int value = rollResult.Next(1, (int)mathRockKind +1);
+            result.AddRoll(mathRockKind, value);
+        }
+
+        return result;
     }
 }
