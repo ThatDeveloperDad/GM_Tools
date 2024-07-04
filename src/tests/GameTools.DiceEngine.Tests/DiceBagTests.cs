@@ -1,4 +1,35 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace GameTools.DiceEngine.Tests;
+
+public class DiceBagTestData : IEnumerable<object[]>
+{
+    public IEnumerator<object[]> GetEnumerator()
+    {
+        List<object[]> testCases = new List<object[]>();
+
+        // roll 1 through 10 of each kind of Mathrock, and make sure nothing fails.
+        int testsPerKind = 10;
+        int rollsPerTestRun = 10000;
+        var mathRockKinds = Enum.GetValues<MathRockKind>();
+
+        foreach (MathRockKind mathRock in mathRockKinds)
+        {
+            for(int numDice = 1; numDice <= testsPerKind; numDice++)
+            {
+                testCases.Add(new object[] {numDice, mathRock, rollsPerTestRun});
+            }
+        }
+
+        return testCases.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    
+}
 
 public class DiceBagTests
 {
@@ -16,67 +47,96 @@ public class DiceBagTests
     /// <summary>
     /// The result is greater than zero
     /// </summary>
-    [Fact]
-    public void DiceBag_Roll_1_MathRock_Expect_Positive()
+    [Theory]
+    [ClassData(typeof(DiceBagTestData))]
+    public void DiceBag_UnmodifiedRoll_Expect_Positive(int numberOfDice, MathRockKind mathRock, int rollsPerTestRun = 1)
     {
         // Arrange (Get all the stuff for our experiment.)
         IDiceBag testObject = new DiceBag();
-        int numberOfDice = 1;
-        MathRockKind mathRock = MathRockKind.D2;
+        List<DiceTray> testRun = new List<DiceTray>();
+
         // Act  (Do the experiemnt)
-        var diceTray = testObject.Roll(numberOfDice, mathRock);
+        for(int run = 0; run < rollsPerTestRun; run++)
+        {
+            var diceTray = testObject.Roll(numberOfDice, mathRock);
+            testRun.Add(diceTray);
+        }
+        
+        string theoryStatement = "All diceTrays in our test batch have a positive, non-zero value:";
+        bool evidence = testRun.All(r=> r.Result>0);
         
         // Assert (Check our results!)
-        Assert.True(diceTray.Result > 0);
+        Assert.True(evidence, theoryStatement);
+        
     }
 
     // The result of the unmodified Roll is at least the number of dice we rolled.
-    [Fact]
-    public void DiceBag_Roll_N_Dice_RollMustBe_AtLeastN()
+    [Theory]
+    [ClassData(typeof(DiceBagTestData))]
+    public void DiceBag_Roll_N_Dice_UnmodifiedRollMustBe_AtLeastN
+        (int numberOfDice, MathRockKind mathRock, int rollsPerTestRun = 1)
     {
         // Arrange (Get all the stuff for our experiment.)
         IDiceBag testObject = new DiceBag();
-        int numberOfDice = 6;
-        MathRockKind mathRock = MathRockKind.D2;
-        // Act  (Do the experiemnt)
-        var diceTray = testObject.Roll(numberOfDice, mathRock);
+        List<DiceTray> testRun = new List<DiceTray>();
 
+        // Act  (Do the experiemnt)
+        for(int run = 0; run < rollsPerTestRun; run++)
+        {
+            var diceTray = testObject.Roll(numberOfDice, mathRock);
+            testRun.Add(diceTray);
+        }
+        
+        string theoryStatement = "All diceTrays in our test batch have a result equal or greater than the number of dice:";
+        bool evidence = testRun.All(r=> r.Result >= numberOfDice);
+        
         // Assert (Check our results!)
-        Assert.True(diceTray.Result >= numberOfDice);
+        Assert.True(evidence, theoryStatement);
     }
 
     // The result of the unmodified Roll is no more than NumberOfDice x DiceKind.
-    [Fact]
-    public void DiceBag_Roll_N_Dice_RollMustBe_NoMoreThan_NumXSides()
+    [Theory]
+    [ClassData(typeof(DiceBagTestData))]
+    public void DiceBag_Roll_N_Dice_UnmodifiedRollMustBe_NoMoreThan_NumXSides
+        (int numberOfDice, MathRockKind mathRock, int rollsPerTestRun = 1)
     {
         // Arrange (Get all the stuff for our experiment.)
         IDiceBag testObject = new DiceBag();
-        int numberOfDice = 6;
-        MathRockKind mathRock = MathRockKind.D2;
-
         int expected = numberOfDice*(int)mathRock;
+        List<DiceTray> testRun = new List<DiceTray>();
 
         // Act  (Do the experiemnt)
-        var diceTray = testObject.Roll(numberOfDice, mathRock);
-
-        // Assert
-        Assert.True(diceTray.Result <= expected);
+        for(int run = 0; run < rollsPerTestRun; run++)
+        {
+            var diceTray = testObject.Roll(numberOfDice, mathRock);
+            testRun.Add(diceTray);
+        }
+        
+        string theoryStatement = $"All diceTrays in our test batch must have a result at or below {expected}:";
+        bool evidence = testRun.All(r=> r.Result<=expected);
+        
+        // Assert (Check our results!)
+        Assert.True(evidence, theoryStatement);
         
     }
 
     // We rolled the correct number of dice.
-    [Fact]
-    public void DiceBag_ExpectDiceRolled_Equals_NumDice()
+    [Theory]
+    [ClassData(typeof(DiceBagTestData))]
+    public void DiceBag_ExpectDiceRolled_Equals_NumDice
+        (int diceCount, MathRockKind mathRockKind, int numRunsInTest = 1)
     {
+        // We're not going to use the numRunsInTest.  Since we're counting
+        // the number of dice rolled = expected, we don't need to worry about
+        // random numbers affecting this assement of the operation.
+        // I'm assigning it to a dummy var to make the compiler warning go away.
+        var dummyVariable = numRunsInTest;
         // Arrange (Get all the stuff for our experiment.)
         IDiceBag testObject = new DiceBag();
-        int numberOfDice = 6;
-        MathRockKind mathRock = MathRockKind.D2;
-
-        int expected = numberOfDice;
+        int expected = diceCount;
 
         // Act  (Do the experiemnt)
-        var diceTray = testObject.Roll(numberOfDice, mathRock);
+        var diceTray = testObject.Roll(diceCount, mathRockKind);
 
         //Assert
         Assert.Equal(expected, diceTray.RollCount);
