@@ -31,6 +31,47 @@ public class DiceBagNoModifierTestData : IEnumerable<object[]>
     
 }
 
+public class DiceBagAdjustResultTestData : IEnumerable<object[]>
+{
+    public IEnumerator<object[]> GetEnumerator()
+    {
+        List<object[]> testCases = new List<object[]>();
+
+        // For each of those tests, we want to test with a result modifier of both positive and
+        // negative values from [-5 .. 5]
+        // Finally, for each combination of parameters, we want a number of executions.
+        // (Because we're dealing with random numbers, and we want to make sure we're not just getting
+        // "lucky" on the executions that run.)
+        //
+        // Our object[] will look like this: { numberOfRocks, rockKind, modifier, numberOfRuns }
+        var mathRockKinds = Enum.GetValues<MathRockKind>();
+        var rockCountCases = Enumerable.Range(1, 5).ToArray();        
+        var adjustmentCases = Enumerable.Range(-5, 11).ToArray();
+        int runsPerTest = 1000; 
+        // Keep runsPerTest reasonable, because we're currently at:
+        // 8 * 5 * 11 * [whatever we set here.]
+        // 440 * 1000 = 440,000 executions / Test Method * 2 Methods = 880,000 tests.
+        // Unit tests should be FAST!
+
+        // For each kind of Mathrock, we want a test where we roll [1, 2, 3, 4, 5]
+        foreach(MathRockKind mathRock in mathRockKinds)
+        {
+            foreach(int numberOfRocks in rockCountCases)
+            {
+                foreach(int rollAdjustment in adjustmentCases)
+                {
+                    testCases.Add(new object[]{numberOfRocks, mathRock, rollAdjustment, runsPerTest});
+                }
+            }
+        }
+    
+        return testCases.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    
+}
+
 public class DiceBagTests
 {
     /// <summary>
@@ -148,44 +189,61 @@ public class DiceBagTests
 #region RollModifier Tests
 
 // When a roll result is modified, it is applied to the result of the dice roll.
-[Fact]
-public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult()
+[Theory]
+[ClassData(typeof(DiceBagAdjustResultTestData))]
+public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
+    (int numberOfRocks, MathRockKind mathRockKind, int resultAdjustment, int numberOfRuns)
 {
     // Arrange  (Set up the experiment)
-    IDiceBag testObject = new DiceBag();
-    int numRocks = 3;
-    MathRockKind rockKind = MathRockKind.D6;
-    int resultModifier = -2;
-    
-    // Act  (Do the experiment)
-    DiceTray diceRoll = testObject.Roll(numRocks, rockKind, resultModifier);
-
     string theoryStatement = $"The Result of the roll is adjusted by the modifer amount.";
-    bool evidence = (diceRoll.ResultModifier != 0 && diceRoll.Result != diceRoll.UnadjustedResult)
+    var evidenceFunction = new Func<DiceTray, bool>((diceRoll)=>
+        { 
+            bool passed = (diceRoll.ResultModifier != 0 && diceRoll.Result != diceRoll.UnadjustedResult)
                   ||(diceRoll.ResultModifier == 0 && diceRoll.Result == diceRoll.UnadjustedResult);
+
+            return passed;
+        });
+
+    IDiceBag testObject = new DiceBag();
+    List<DiceTray> testRuns = new List<DiceTray>();
+
+    // Act  (Do the experiment)
+    for(int testIndex=0;testIndex<numberOfRuns;testIndex++)
+    {
+        DiceTray diceRoll = testObject.Roll(numberOfRocks, mathRockKind, resultAdjustment);
+        testRuns.Add(diceRoll);
+    }
+    
+    bool evidence = testRuns.All(evidenceFunction);
 
     // Assert (Analyze the results)
     Assert.True(evidence, theoryStatement);
 }
 
-// When a roll result is modified, it will never go below 0.
-    [Fact]
-    public void DiceBag_WhenResultModifierIsNotZero_TheResultWillNeverBeBelowZero()
+    // When a roll result is modified, it will never go below 0.
+    [Theory]
+    [ClassData(typeof(DiceBagAdjustResultTestData))]
+    public void DiceBagTests_TestAdjustedRolls_NeverNegativeResults
+        (int numberOfRocks, MathRockKind mathRockKind, int resultAdjustment, int numberOfRuns)
     {
         // Arrange  (Set up the experiment)
-    IDiceBag testObject = new DiceBag();
-    int numRocks = 3;
-    MathRockKind rockKind = MathRockKind.D6;
-    int resultModifier = -20;
+        string theoryStatement = $"The Result of any adjusted roll must always be at least 0";
+        var evidenceFunction = new Func<DiceTray, bool>((diceRoll)=> diceRoll.Result>=0);
+
+        IDiceBag testObject = new DiceBag();
+        List<DiceTray> testRuns = new List<DiceTray>();
     
-    // Act  (Do the experiment)
-    DiceTray diceRoll = testObject.Roll(numRocks, rockKind, resultModifier);
+        // Act  (Do the experiment)
+        for(int testRun = 0;testRun<numberOfRuns;testRun++)
+        {
+            DiceTray diceRoll = testObject.Roll(numberOfRocks, mathRockKind, resultAdjustment);
+            testRuns.Add(diceRoll);
+        }
+        
+        bool evidence = testRuns.All(evidenceFunction);
 
-    string theoryStatement = $"The Result of any adjusted roll must always be at least 0";
-    bool evidence = (diceRoll.Result >= 0);
-
-    // Assert (Analyze the results)
-    Assert.True(evidence, theoryStatement);
+        // Assert (Analyze the results)
+        Assert.True(evidence, theoryStatement);
     }
 
 #endregion // RollModifier Tests
