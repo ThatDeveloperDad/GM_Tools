@@ -2,9 +2,9 @@
 
 public class DiceBag : IDiceBag
 {
-    public DiceTray Roll(int numberOfDice, MathRockKind mathRockKind, int? resultModifier = null)
+    public DiceTray Roll(int numberOfDice, MathRockKind mathRockKind, int resultModifier = 0)
     {
-        DiceTray result = new DiceTray();
+        DiceTray result = new DiceTray(resultModifier);
         
         for(int roll = 0; roll < numberOfDice; roll++)
         {

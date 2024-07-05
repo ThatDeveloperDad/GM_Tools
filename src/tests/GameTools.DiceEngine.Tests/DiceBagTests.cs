@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace GameTools.DiceEngine.Tests;
 
-public class DiceBagTestData : IEnumerable<object[]>
+public class DiceBagNoModifierTestData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
@@ -43,12 +43,12 @@ public class DiceBagTests
 
         Assert.NotNull(testObject);
     }
-
+#region Basic Roll Tests
     /// <summary>
     /// The result is greater than zero
     /// </summary>
     [Theory]
-    [ClassData(typeof(DiceBagTestData))]
+    [ClassData(typeof(DiceBagNoModifierTestData))]
     public void DiceBag_UnmodifiedRoll_Expect_Positive(int numberOfDice, MathRockKind mathRock, int rollsPerTestRun = 1)
     {
         // Arrange (Get all the stuff for our experiment.)
@@ -72,7 +72,7 @@ public class DiceBagTests
 
     // The result of the unmodified Roll is at least the number of dice we rolled.
     [Theory]
-    [ClassData(typeof(DiceBagTestData))]
+    [ClassData(typeof(DiceBagNoModifierTestData))]
     public void DiceBag_Roll_N_Dice_UnmodifiedRollMustBe_AtLeastN
         (int numberOfDice, MathRockKind mathRock, int rollsPerTestRun = 1)
     {
@@ -96,7 +96,7 @@ public class DiceBagTests
 
     // The result of the unmodified Roll is no more than NumberOfDice x DiceKind.
     [Theory]
-    [ClassData(typeof(DiceBagTestData))]
+    [ClassData(typeof(DiceBagNoModifierTestData))]
     public void DiceBag_Roll_N_Dice_UnmodifiedRollMustBe_NoMoreThan_NumXSides
         (int numberOfDice, MathRockKind mathRock, int rollsPerTestRun = 1)
     {
@@ -122,7 +122,7 @@ public class DiceBagTests
 
     // We rolled the correct number of dice.
     [Theory]
-    [ClassData(typeof(DiceBagTestData))]
+    [ClassData(typeof(DiceBagNoModifierTestData))]
     public void DiceBag_ExpectDiceRolled_Equals_NumDice
         (int diceCount, MathRockKind mathRockKind, int numRunsInTest = 1)
     {
@@ -141,4 +141,56 @@ public class DiceBagTests
         //Assert
         Assert.Equal(expected, diceTray.RollCount);
     }
+#endregion // Basic roll tests
+
+// ============================================================
+
+#region RollModifier Tests
+
+// When a roll result is modified, it is applied to the result of the dice roll.
+[Fact]
+public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult()
+{
+    // Arrange  (Set up the experiment)
+    IDiceBag testObject = new DiceBag();
+    int numRocks = 3;
+    MathRockKind rockKind = MathRockKind.D6;
+    int resultModifier = -2;
+    
+    // Act  (Do the experiment)
+    DiceTray diceRoll = testObject.Roll(numRocks, rockKind, resultModifier);
+
+    string theoryStatement = $"The Result of the roll is adjusted by the modifer amount.";
+    bool evidence = (diceRoll.ResultModifier != 0 && diceRoll.Result != diceRoll.UnadjustedResult)
+                  ||(diceRoll.ResultModifier == 0 && diceRoll.Result == diceRoll.UnadjustedResult);
+
+    // Assert (Analyze the results)
+    Assert.True(evidence, theoryStatement);
+}
+
+// When a roll result is modified, it will never go below 0.
+    [Fact]
+    public void DiceBag_WhenResultModifierIsNotZero_TheResultWillNeverBeBelowZero()
+    {
+        // Arrange  (Set up the experiment)
+    IDiceBag testObject = new DiceBag();
+    int numRocks = 3;
+    MathRockKind rockKind = MathRockKind.D6;
+    int resultModifier = -20;
+    
+    // Act  (Do the experiment)
+    DiceTray diceRoll = testObject.Roll(numRocks, rockKind, resultModifier);
+
+    string theoryStatement = $"The Result of any adjusted roll must always be at least 0";
+    bool evidence = (diceRoll.Result >= 0);
+
+    // Assert (Analyze the results)
+    Assert.True(evidence, theoryStatement);
+    }
+
+#endregion // RollModifier Tests
+
+// ============================================================
+
+
 }
