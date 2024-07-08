@@ -171,7 +171,7 @@ public class Program
             {
                 parsedArgs.Add("RollModifier", RollModifier.Disadvantage);
             }
-            else if(arg.Contains("="));
+            else if(arg.Contains("="))
             {
                 // it's a switch/value pair.
                 var parts = arg.Trim().Split("=");
