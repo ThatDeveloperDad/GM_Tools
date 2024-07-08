@@ -1,6 +1,6 @@
 ﻿namespace GameTools.DiceEngine;
 
-public enum RollModifier
+public enum RollModifierKind
 {
     None,
     Advantage,

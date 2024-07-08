@@ -16,5 +16,5 @@ public interface IDiceBag
     /// <param name="rollAdjustment">(Optional) Do we need to change the result before returning it?</param>
     /// /// <param name="rollModifier">(Optional) Alters the number of dice to be rolled and the way the Result is calculated.</param>
     /// <returns></returns>
-    DiceTray Roll(int numberOfDice, MathRockKind diceKind, int rollAdjustment = 0, RollModifier rollModifier = RollModifier.None);
+    DiceTray Roll(int numberOfDice, MathRockKind diceKind, int rollAdjustment = 0, RollModifierKind rollModifier = RollModifierKind.None);
 }

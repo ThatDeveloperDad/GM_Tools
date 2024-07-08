@@ -9,9 +9,9 @@ public class DiceTray
 {
     private List<RolledMathRock> _rocks;
 
-    public DiceTray():this(rollAdjustment:0, RollModifier.None){}
+    public DiceTray():this(rollAdjustment:0, RollModifierKind.None){}
 
-    public DiceTray(int rollAdjustment, RollModifier rollModifer)
+    public DiceTray(int rollAdjustment, RollModifierKind rollModifer)
     {
         _rocks = new List<RolledMathRock>();
         RollAdjustment = rollAdjustment;
@@ -20,7 +20,7 @@ public class DiceTray
 
     public int RollAdjustment {get; private set;}
 
-    public RollModifier RollModifier {get; private set;}
+    public RollModifierKind RollModifier {get; private set;}
 
     public RolledMathRock[] AllRolls
     {
@@ -84,18 +84,18 @@ public class DiceTray
 
         _rocks.ForEach(r=> r.ResetDiscardState());
 
-        if(RollModifier != RollModifier.None)
+        if(RollModifier != RollModifierKind.None)
         {
             _rocks = _rocks.OrderBy(r=> r.Value).ToList();
         }
 
-        if(RollModifier == RollModifier.Advantage)
+        if(RollModifier == RollModifierKind.Advantage)
         {
             // Set the lowest value to Discarded.
             _rocks.First().Discard();
             _rollIsModified = true;
         }
-        else if(RollModifier == RollModifier.Disadvantage)
+        else if(RollModifier == RollModifierKind.Disadvantage)
         {
             // Set the Highest value to Discarded.
             _rocks.Last().Discard();

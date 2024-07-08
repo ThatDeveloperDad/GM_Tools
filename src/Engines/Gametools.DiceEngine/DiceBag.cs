@@ -5,11 +5,11 @@ public class DiceBag : IDiceBag
     public DiceTray Roll(int numberOfDice, 
                          MathRockKind mathRockKind, 
                          int rollAdjustment = 0,
-                         RollModifier rollModifier = RollModifier.None)
+                         RollModifierKind rollModifier = RollModifierKind.None)
     {
         DiceTray tray = new DiceTray(rollAdjustment, rollModifier);
         
-        if(rollModifier!=RollModifier.None)
+        if(rollModifier!=RollModifierKind.None)
         {
             numberOfDice++;
         }
