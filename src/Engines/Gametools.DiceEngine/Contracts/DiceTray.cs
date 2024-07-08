@@ -1,4 +1,6 @@
-﻿namespace GameTools.DiceEngine;
+﻿using System.Dynamic;
+
+namespace GameTools.DiceEngine;
 
 /// <summary>
 /// DiceTray carries the result of the Roll operation back to whichever component uses it.
@@ -7,27 +9,55 @@ public class DiceTray
 {
     private List<RolledMathRock> _rocks;
 
-    public DiceTray():this(resultModifier:0){}
+    public DiceTray():this(rollAdjustment:0, RollModifier.None){}
 
-    public DiceTray(int resultModifier)
+    public DiceTray(int rollAdjustment, RollModifier rollModifer)
     {
         _rocks = new List<RolledMathRock>();
-        ResultModifier = resultModifier;
+        RollAdjustment = rollAdjustment;
+        RollModifier = rollModifer;
     }
 
-    public int ResultModifier {get; private set;}
+    public int RollAdjustment {get; private set;}
 
-    public int[] Rolls => _rocks.Select(r=> r.Value).ToArray();
+    public RollModifier RollModifier {get; private set;}
+
+    public RolledMathRock[] AllRolls
+    {
+        get
+        {
+            HandleRollModifier();
+            return _rocks.ToArray();
+        }
+    }
+
+    public RolledMathRock[] IncludedRolls
+    {
+        get
+        {
+            HandleRollModifier();
+            return _rocks.Where(r=> r.IsDiscarded == false).ToArray();
+        }
+    }
 
     public int RollCount => _rocks.Count;
 
-    public int UnadjustedResult => _rocks.Sum(r=> r.Value);
+    public int UnadjustedResult 
+    {
+        get
+        {
+            HandleRollModifier();
+            return _rocks
+                .Where(r=> r.IsDiscarded == false)
+                .Sum(r=> r.Value);
+        }
+    }
 
     public int Result 
     {
         get
         {
-            int adjustedResult = UnadjustedResult + ResultModifier;
+            int adjustedResult = UnadjustedResult + RollAdjustment;
             // We never want a negative result from our dice rolls.
             // If < 0, set it to 0.
             if(adjustedResult<0)
@@ -43,6 +73,33 @@ public class DiceTray
     {
         var roll = new RolledMathRock(kind, result);
         _rocks.Add(roll);
+        _rollIsModified = false;
     }
 
+    private bool _rollIsModified;
+    private void HandleRollModifier()
+    {
+        if(_rollIsModified)
+            return;
+
+        _rocks.ForEach(r=> r.ResetDiscardState());
+
+        if(RollModifier != RollModifier.None)
+        {
+            _rocks = _rocks.OrderBy(r=> r.Value).ToList();
+        }
+
+        if(RollModifier == RollModifier.Advantage)
+        {
+            // Set the lowest value to Discarded.
+            _rocks.First().Discard();
+            _rollIsModified = true;
+        }
+        else if(RollModifier == RollModifier.Disadvantage)
+        {
+            // Set the Highest value to Discarded.
+            _rocks.Last().Discard();
+            _rollIsModified = true;
+        }
+    }
 }

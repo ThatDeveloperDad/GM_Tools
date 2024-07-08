@@ -13,7 +13,7 @@ public class DiceBagNoModifierTestData : IEnumerable<object[]>
 
         // roll 1 through 10 of each kind of Mathrock, and make sure nothing fails.
         int testsPerKind = 10;
-        int rollsPerTestRun = 10000;
+        int rollsPerTestRun = 1000;
         var mathRockKinds = Enum.GetValues<MathRockKind>();
 
         foreach (MathRockKind mathRock in mathRockKinds)
@@ -47,10 +47,10 @@ public class DiceBagAdjustResultTestData : IEnumerable<object[]>
         var mathRockKinds = Enum.GetValues<MathRockKind>();
         var rockCountCases = Enumerable.Range(1, 5).ToArray();        
         var adjustmentCases = Enumerable.Range(-5, 11).ToArray();
-        int runsPerTest = 1000; 
+        int runsPerTest = 100; 
         // Keep runsPerTest reasonable, because we're currently at:
         // 8 * 5 * 11 * [whatever we set here.]
-        // 440 * 1000 = 440,000 executions / Test Method * 2 Methods = 880,000 tests.
+        // 440 * 100 = 44,000 executions / Test Method * 2 Methods = 880,000 tests.
         // Unit tests should be FAST!
 
         // For each kind of Mathrock, we want a test where we roll [1, 2, 3, 4, 5]
@@ -186,7 +186,7 @@ public class DiceBagTests
 
 // ============================================================
 
-#region RollModifier Tests
+#region RollAdjustment Tests
 
 // When a roll result is modified, it is applied to the result of the dice roll.
 [Theory]
@@ -198,8 +198,8 @@ public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
     string theoryStatement = $"The Result of the roll is adjusted by the modifer amount.";
     var evidenceFunction = new Func<DiceTray, bool>((diceRoll)=>
         { 
-            bool passed = (diceRoll.ResultModifier != 0 && diceRoll.Result != diceRoll.UnadjustedResult)
-                  ||(diceRoll.ResultModifier == 0 && diceRoll.Result == diceRoll.UnadjustedResult);
+            bool passed = (diceRoll.RollAdjustment != 0 && diceRoll.Result != diceRoll.UnadjustedResult)
+                  ||(diceRoll.RollAdjustment == 0 && diceRoll.Result == diceRoll.UnadjustedResult);
 
             return passed;
         });
@@ -250,5 +250,175 @@ public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
 
 // ============================================================
 
+#region RollModifier Tests
+
+    // When we request that the Roll be modified, 
+    //the number of dice to be rolled should be one higher than requested.
+    [Theory]
+    [ClassData(typeof(DiceBagNoModifierTestData))]
+    public void DiceBagTests_ModifiedRolls_HaveOneExtraMathRock
+        (int numberOfDice, MathRockKind rockKind, int numberOfRuns)
+    {
+        // We're ignoring the numberOfRuns here, because we don't
+        // care about the RESULTS of the dice being rolled,
+        // We care only that the correct count of dice were rolled.
+
+        string theoryStatement = "Modifying our roll adds an extra MathRock to the tray.";
+        // Arrange
+        IDiceBag testObject = new DiceBag();
+        int rollAdjustment = 0;
+        RollModifier modifier = RollModifier.Advantage;
+
+        int expectedDiceInTray = numberOfDice + 1;
+
+        // Act
+        DiceTray tray = testObject.Roll(numberOfDice, rockKind, rollAdjustment, modifier);
+
+        int diceInTray = tray.RollCount;
+
+        bool evidence = expectedDiceInTray == diceInTray;
+
+        // Assert
+        Assert.True(evidence, theoryStatement);
+    }
+
+    // When we make a modified roll,  The result must be between 1 and the number of
+    // sides on our chosen mathrock, multiplied by the number of mathRocks we requested.
+    [Theory]
+    [ClassData(typeof(DiceBagNoModifierTestData))]
+    public void DiceBagTest_ModifiedRoll_ResultIsInCorrectRange
+        (int numberOfDice, MathRockKind rockKind, int numberOfRuns)
+    {
+        // Ignoring numberOfRuns here too.
+
+        string theoryStatement = "When modifying the roll, our result will exclude the extra mathrock.";
+        // Arrange
+        IDiceBag testObject = new DiceBag();
+        int rollAdjustment = 0;
+        RollModifier modifier = RollModifier.Advantage;
+
+        int startOfRange = (numberOfDice + rollAdjustment)<0        // Condition
+                            ? 0                                     // If True
+                                : numberOfDice + rollAdjustment;    // If False
+        int endOfRange = (numberOfDice * (int)rockKind) + rollAdjustment;
+
+        // Act
+        DiceTray tray = testObject.Roll(numberOfDice, rockKind, rollAdjustment, modifier);
+
+        bool evidence = (tray.Result >= startOfRange)
+                        && (tray.Result <= endOfRange);
+
+        // Assert
+        Assert.True(evidence, theoryStatement);
+    }
+
+    // When we roll with Advantage, the math rock with the lowest
+    // value is not included in the result.
+    [Theory]
+    [ClassData(typeof(DiceBagNoModifierTestData))]
+    public void DiceBagTest_RollWithAdvantage_LowestResultIsIgnored
+        (int numberOfDice, MathRockKind rockKind, int numberOfRuns)
+    {
+        // numberOfRuns isn't really needed for this test.
+        // We're going to override it to 1.
+        numberOfRuns = 1;
+
+        string theoryStatement = "When rolling with Advantage, the lowest Math Rock in the tray is ignored.";
+        Func<DiceTray, bool> evidenceTest = (tray)=>
+        {
+            bool lowestIsDiscarded = false;
+            
+            // We have a problem here.  I need the RolledMathRock, not just the value...
+            int lowestRollValue = tray.AllRolls.OrderBy(r => r.Value).First().Value;
+            RolledMathRock? discardedMathRock = tray.AllRolls.FirstOrDefault(r=> r.IsDiscarded == true);
+
+            if(discardedMathRock == null)
+            {
+                return false;
+            }
+
+            lowestIsDiscarded = (discardedMathRock.Value == lowestRollValue);
+
+            return lowestIsDiscarded;
+        };
+
+        // Arrange
+        IDiceBag testObject = new DiceBag();
+        int rollAdjustment = 0;
+        RollModifier modifier = RollModifier.Advantage;
+        List<DiceTray> experimentRuns = new List<DiceTray>();
+
+        // Act
+        for(int run = 0;run<numberOfRuns;run++)
+        {
+            DiceTray tray = testObject.Roll(numberOfDice, rockKind, rollAdjustment, modifier);
+            experimentRuns.Add(tray);
+        }
+
+        bool evidence = experimentRuns.All(er=> evidenceTest(er) == true);
+
+        // Assert
+        Assert.True(evidence, theoryStatement);
+    }
+
+    /// <summary>
+    /// When we roll with Disadvantage, the math rock with the highest value is excluded from the result.
+    /// 
+    /// Note:  We aren't using a test data provider that varies the RollModifier or Adjustment factors.
+    /// We're interested only in making sure Disadvantage is working correctly.
+    /// </summary>
+    /// <param name="numberOfDice">How many dice to roll?</param>
+    /// <param name="rockKind">What Kind of DIce?</param>
+    /// <param name="numberOfRuns">How many experiments to run for this test?</param>
+    [Theory]
+    [ClassData(typeof(DiceBagNoModifierTestData))]
+    public void DiceBagTest_RollWithDisadvantage_HighestResultIsIgnored
+        (int numberOfDice, MathRockKind rockKind, int numberOfRuns)
+    {
+        // numberOfRuns isn't really needed for this test.
+        // We're going to override it to 1.
+        numberOfRuns = 1;
+
+        string theoryStatement = "When rolling with Disadvantage, the Highest Math Rock in the tray is ignored.";
+
+        Func<DiceTray, bool> evidenceFunction = (tray) => {
+            bool highestWasDiscarded = false;
+        
+            // We have a problem here.  I need the RolledMathRock, not just the value...
+            int highestRollValue = tray.AllRolls.OrderByDescending(r=> r.Value).First().Value;
+            RolledMathRock? discardedRock = tray.AllRolls.FirstOrDefault(r=> r.IsDiscarded == true);
+            
+            if(discardedRock == null)
+            {
+                return false;
+            }
+
+            // If the value of the discarded Rock == highest roll value, we're good.
+            highestWasDiscarded = (discardedRock.Value == highestRollValue);
+
+            return highestWasDiscarded;
+        };
+
+
+        // Arrange
+        IDiceBag testObject = new DiceBag();
+        int rollAdjustment = 0;
+        RollModifier modifier = RollModifier.Disadvantage;
+
+        List<DiceTray> experimentRuns = new List<DiceTray>();
+
+        // Act
+        for(int run = 0; run < numberOfRuns; run++)
+        {
+            DiceTray tray = testObject.Roll(numberOfDice, rockKind, rollAdjustment, modifier);
+            experimentRuns.Add(tray);
+        }
+
+        bool evidence = experimentRuns.All(er=> evidenceFunction(er) == true);
+
+        // Assert
+        Assert.True(evidence, theoryStatement);
+    }
+#endregion // RollModifier Tests
 
 }

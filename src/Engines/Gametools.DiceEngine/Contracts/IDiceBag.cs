@@ -13,9 +13,8 @@ public interface IDiceBag
     /// </summary>
     /// <param name="numberOfDice">How many dice to roll</param>
     /// <param name="diceKind">How many sides do these dice have?</param>
-    /// <param name="resultModifier">Do we need to change the result before returning it?</param>
+    /// <param name="rollAdjustment">(Optional) Do we need to change the result before returning it?</param>
+    /// /// <param name="rollModifier">(Optional) Alters the number of dice to be rolled and the way the Result is calculated.</param>
     /// <returns></returns>
-    DiceTray Roll(int numberOfDice, MathRockKind diceKind, int resultModifier = 0);
-
-    //int Roll(int numberOfDice, MathRockKind diceKind, int? resultModifier = null, object? rollModifer = null);
+    DiceTray Roll(int numberOfDice, MathRockKind diceKind, int rollAdjustment = 0, RollModifier rollModifier = RollModifier.None);
 }

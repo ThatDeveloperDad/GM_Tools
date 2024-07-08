@@ -2,18 +2,26 @@
 
 public class DiceBag : IDiceBag
 {
-    public DiceTray Roll(int numberOfDice, MathRockKind mathRockKind, int resultModifier = 0)
+    public DiceTray Roll(int numberOfDice, 
+                         MathRockKind mathRockKind, 
+                         int rollAdjustment = 0,
+                         RollModifier rollModifier = RollModifier.None)
     {
-        DiceTray result = new DiceTray(resultModifier);
+        DiceTray tray = new DiceTray(rollAdjustment, rollModifier);
         
+        if(rollModifier!=RollModifier.None)
+        {
+            numberOfDice++;
+        }
+
         for(int roll = 0; roll < numberOfDice; roll++)
         {
             var rollResult = new Random();
 
             int value = rollResult.Next(1, (int)mathRockKind +1);
-            result.AddRoll(mathRockKind, value);
+            tray.AddRoll(mathRockKind, value);
         }
 
-        return result;
+        return tray;
     }
 }

@@ -25,7 +25,7 @@ public class DiceTrayTests
 
         int expectedRockCount = 1;
 
-        Assert.Equal(expectedRockCount, testObject.Rolls.Length);
+        Assert.Equal(expectedRockCount, testObject.AllRolls.Length);
     }
 
     [Fact]
