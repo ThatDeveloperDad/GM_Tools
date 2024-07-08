@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GameTools.DiceEngine;
@@ -10,29 +13,97 @@ namespace DiceTestConsole;
 
 public class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Big giant test set.  Probably won't use it. :P
-        List<RollRequest> paramCombos = new List<RollRequest>();
-        paramCombos.Add(new RollRequest(3, MathRockKind.D6, 0, RollModifier.Advantage));
+        foreach(var arg in args)
+        {
+            Console.Write(arg + "      ");
+        }
+        Console.WriteLine();
 
-        TestDice(paramCombos, 6);
+        List<RollRequest> paramCombos = new List<RollRequest>();
+        int numDice = 3;
+        MathRockKind diceKind = MathRockKind.D6;
+        int adjustment = 0;
+        RollModifier modifier = RollModifier.None;
+
+        int batchSize = 6;
+
+        var commandArgs = Environment.GetCommandLineArgs().ToList();
+
+        if(commandArgs.Contains("--help", StringComparer.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("Valid args to pass are:");
+            Console.WriteLine();
+            Console.WriteLine("-n=[int]     : How many dice to roll?");
+            Console.WriteLine("-d=[D#]      : What kind of MathRock? (All the standards are here)");
+            Console.WriteLine("-a=[int]     : Add or subtract this from the result.");
+            Console.WriteLine("-b=[int]     : Batch size (default 6).");
+            Console.WriteLine("-withAdvantage   : Rolls with advantage.");
+            Console.WriteLine("-withDisadvantage : Rolls with disadvantage.");
+            Console.WriteLine();
+            Console.WriteLine("Example:  dotnet DiceTestConsole.dll -n 3 -d D6 -withAdvantage");
+            Console.WriteLine("Will roll 3d6 plus an extra, but ignore the lowest roll on the result.");
+            return;
+        }
+
+        var parsedArgs = ParseCommandArgs(commandArgs);
+        if(parsedArgs.TryGetValue("NumberOfDice", out object? numberOfDice)
+          && int.TryParse(numberOfDice.ToString(), out int parsedNumDice))
+        {
+            numDice = parsedNumDice;
+        }
+
+        if(parsedArgs.TryGetValue("KindOfDice", out object? kindOfDice)
+          && Enum.TryParse(kindOfDice.ToString(), out MathRockKind parsedKindOfDice))
+        {
+            diceKind = parsedKindOfDice;
+        }
+
+        if(parsedArgs.TryGetValue("Adjustment", out object? adjustmentValue)
+            && int.TryParse(adjustmentValue.ToString(), out int parsedAdjustment))
+        {
+            adjustment = parsedAdjustment;
+        }
+
+        if(parsedArgs.TryGetValue("RollModifier", out object? modifierValue) &&
+            Enum.TryParse(modifierValue.ToString(), out RollModifier parsedModifier))
+        {
+            modifier = parsedModifier;
+        }
+
+        if(parsedArgs.TryGetValue("BatchSize", out object? batchSizeValue) &&
+            int.TryParse(batchSizeValue.ToString(), out int parsedBatchSize))
+        {
+            batchSize = parsedBatchSize;
+        }
+        
+        paramCombos.Add(new RollRequest(numDice, diceKind, adjustment, modifier));
+
+        TestDice(paramCombos, batchSize);
     }
 
     static void TestDice(List<RollRequest> paramCombos, int iterationsPerCombo)
     {
         IDiceBag diceBag = new DiceBag();
         List<DiceTray> sampleSet = new List<DiceTray>();
-
+        
         foreach(RollRequest rr in paramCombos)
         {
+            Stopwatch stopwatch= new Stopwatch();
+            stopwatch.Start();
             for(int iteration = 0; iteration < iterationsPerCombo; iteration++)
             {
                 DiceTray sample = diceBag.Roll(rr.NumberOfDice, rr.KindOfDice, rr.Adjustment, rr.Modifier);
                 sampleSet.Add(sample);
-                PrintSample(sample);
+                if(iterationsPerCombo<=10){
+                    PrintSample(sample);
+                }
+                
             }
-
+            stopwatch.Stop();
+            long elapsedMs = stopwatch.ElapsedMilliseconds;
+            PrintSummary(sampleSet, iterationsPerCombo, elapsedMs);
         }
     }
 
@@ -54,12 +125,83 @@ public class Program
 
     }
 
-    static void PrintSummary(List<DiceTray> sampleSet)
+    static void PrintSummary(List<DiceTray> sampleSet, int sampleSize, long runTimeMs)
     {
+        Func<int, int, decimal> calcPercent 
+            = (count, sampleSize) => 
+            {
+                decimal pct = ((decimal)count / (decimal)sampleSize) * (decimal)100;
+                return pct;
+            };
 
+
+        var distinctResults = sampleSet.Select(s=> s.Result).Distinct().ToArray();
+        var aggregates = distinctResults
+                        .Select(r=> new 
+                            { 
+                                Result = r,
+                                Count = sampleSet.Count(ss=> ss.Result == r),
+                                Percent = calcPercent(sampleSet.Count(ss=> ss.Result == r), sampleSize)
+                            })
+                        .OrderBy(a=> a.Result);
+        Console.WriteLine($"Ran {sampleSize} tests in {runTimeMs} milliseconds.");
+        Console.WriteLine($"Result      Count       PercentOfSample");
+        foreach(var stat in aggregates)
+        {
+            Console.WriteLine($"{stat.Result}       {stat.Count}        {stat.Percent}");
+        }
     }
 
-    
+    static Dictionary<string, object> ParseCommandArgs(List<string> commandArgs)
+    {
+        Dictionary<string, object> parsedArgs = new Dictionary<string, object>();
+        foreach(string arg in commandArgs)
+        {
+            if(arg == "--help")
+            {
+                // go to the next one.
+                continue;
+            }
 
+            if(arg == "-withAdvantage")
+            {
+                parsedArgs.Add("RollModifier", RollModifier.Advantage);
+            }
+            else if(arg == "-withDisadvantage")
+            {
+                parsedArgs.Add("RollModifier", RollModifier.Disadvantage);
+            }
+            else if(arg.Contains("="))
+            {
+                // it's a switch/value pair.
+                var parts = arg.Trim().Split("=");
+                if(parts.Length == 1)
+                {
+                    // it's invalid.
+                    continue;
+                }
+                switch(parts[0])
+                {
+                    case "-n":
+                        parsedArgs.Add("NumberOfDice", int.Parse(parts[1]));
+                        break;
+                    case "-d":
+                        parsedArgs.Add("KindOfDice", Enum.Parse<MathRockKind>(parts[1].ToUpper()));
+                        break;
+                    case "-a":
+                        parsedArgs.Add("Adjustment", int.Parse(parts[1]));
+                        break;
+                    case "-b":
+                        parsedArgs.Add("BatchSize", int.Parse(parts[1]));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+         return parsedArgs;   
+    }
 }
+
 
