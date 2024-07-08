@@ -3,5 +3,22 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": []
+    "configurations": [
+        {
+            "name": "DiceTestConsole --help",
+            "program": "${workspaceFolder}/src/DiceTestConsole/bin/Debug/net8.0/DiceTestConsole.dll",
+            "type": "coreclr",
+            "request": "launch",
+            /* "preLaunchTask": "build", */
+            "args": ["--help"]
+        },
+        {
+            "name": "DiceTestConsole --3D6 with Advantage",
+            "program": "${workspaceFolder}/src/DiceTestConsole/bin/Debug/net8.0/DiceTestConsole.dll",
+            "type": "coreclr",
+            "request": "launch",
+            /* "preLaunchTask": "build", */
+            "args": ["-n=3", "-d=D6", "-withAdvantage", "-b=6"]
+        }
+    ]
 }
