@@ -1,4 +1,4 @@
-# GameTools.DiceEngine  
+# GameTools.DiceEngine  (Component Library)
 
 ## Root Namespace (GameTools.DiceEngine)
 Holds the default implementation of the DiceBag component.
