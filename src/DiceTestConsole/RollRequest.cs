@@ -9,7 +9,7 @@ public class RollRequest
     public RollRequest(int numberOfDice,
                        MathRockKind kindOfDice,
                        int adjustment = 0,
-                       RollModifier modifier = RollModifier.None)
+                       RollModifierKind modifier = RollModifierKind.None)
     {
         NumberOfDice = numberOfDice;
         KindOfDice = kindOfDice;
@@ -23,5 +23,5 @@ public class RollRequest
 
     public int Adjustment {get; set; }
 
-    public RollModifier Modifier {get;set;}
+    public RollModifierKind Modifier {get;set;}
 }

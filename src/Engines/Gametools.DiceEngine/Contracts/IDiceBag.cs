@@ -7,7 +7,7 @@ public interface IDiceBag
 {
 
     /// <summary>
-    /// We will generate a random number by simulating the roll of a number of dice, 
+    /// Generates a random number by simulating the roll of a number of dice, 
     /// each of which has a number of sides determined by the diceKind, and possibly
     /// modify the sum of those dice by the resultModifier.
     /// </summary>
@@ -16,5 +16,5 @@ public interface IDiceBag
     /// <param name="rollAdjustment">(Optional) Do we need to change the result before returning it?</param>
     /// /// <param name="rollModifier">(Optional) Alters the number of dice to be rolled and the way the Result is calculated.</param>
     /// <returns></returns>
-    DiceTray Roll(int numberOfDice, MathRockKind diceKind, int rollAdjustment = 0, RollModifier rollModifier = RollModifier.None);
+    DiceTray Roll(int numberOfDice, MathRockKind diceKind, int rollAdjustment = 0, RollModifierKind rollModifier = RollModifierKind.None);
 }

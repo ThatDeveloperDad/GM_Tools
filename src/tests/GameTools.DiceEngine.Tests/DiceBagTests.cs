@@ -267,7 +267,7 @@ public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
         // Arrange
         IDiceBag testObject = new DiceBag();
         int rollAdjustment = 0;
-        RollModifier modifier = RollModifier.Advantage;
+        RollModifierKind modifier = RollModifierKind.Advantage;
 
         int expectedDiceInTray = numberOfDice + 1;
 
@@ -295,7 +295,7 @@ public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
         // Arrange
         IDiceBag testObject = new DiceBag();
         int rollAdjustment = 0;
-        RollModifier modifier = RollModifier.Advantage;
+        RollModifierKind modifier = RollModifierKind.Advantage;
 
         int startOfRange = (numberOfDice + rollAdjustment)<0        // Condition
                             ? 0                                     // If True
@@ -345,7 +345,7 @@ public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
         // Arrange
         IDiceBag testObject = new DiceBag();
         int rollAdjustment = 0;
-        RollModifier modifier = RollModifier.Advantage;
+        RollModifierKind modifier = RollModifierKind.Advantage;
         List<DiceTray> experimentRuns = new List<DiceTray>();
 
         // Act
@@ -403,7 +403,7 @@ public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
         // Arrange
         IDiceBag testObject = new DiceBag();
         int rollAdjustment = 0;
-        RollModifier modifier = RollModifier.Disadvantage;
+        RollModifierKind modifier = RollModifierKind.Disadvantage;
 
         List<DiceTray> experimentRuns = new List<DiceTray>();
 

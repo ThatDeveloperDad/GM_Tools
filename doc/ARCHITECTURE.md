@@ -37,7 +37,8 @@ _**App Data**_:  For this first version, we're just going to store the character
 ## Detailed Designs
 - /ConsoleClient:  Simple console app we'll use to exercise the components, and build a VERY simple, quick & dirty UI for this.  (It's a temporary thing.)
 - /Managers/GameTools.TownsfolkManager:  Defines and exposes the Use Cases that our application will facilitate.
-- /Engines/GameTools.DiceEngine:  Rolls dice, allows for result modifications, and different ways to make rolls.
+- [/Engines/GameTools.DiceEngine](/src/Engines/GameTools.DiceEngine/README.md):  
+Rolls dice, allows for result modifications, and different ways to make rolls.
 - /ResourceAccess/GameTools.NPCAccess:  This allows us to save and load NPCs that we've generated.
 - /ResourceAccess/GameTools.RulesetAccess: Defines common concepts for different rules in Tabletop RolePlaying Games.
 

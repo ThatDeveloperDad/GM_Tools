@@ -25,7 +25,7 @@ public class Program
         int numDice = 3;
         MathRockKind diceKind = MathRockKind.D6;
         int adjustment = 0;
-        RollModifier modifier = RollModifier.None;
+        RollModifierKind modifier = RollModifierKind.None;
 
         int batchSize = 6;
 
@@ -67,7 +67,7 @@ public class Program
         }
 
         if(parsedArgs.TryGetValue("RollModifier", out object? modifierValue) &&
-            Enum.TryParse(modifierValue.ToString(), out RollModifier parsedModifier))
+            Enum.TryParse(modifierValue.ToString(), out RollModifierKind parsedModifier))
         {
             modifier = parsedModifier;
         }
@@ -111,7 +111,7 @@ public class Program
     {
         string mathRockName = sample.AllRolls[0].Kind.ToString();
         string modifierText = "";
-        if(sample.RollModifier != RollModifier.None)
+        if(sample.RollModifier != RollModifierKind.None)
         {
             modifierText = $" with {sample.RollModifier.ToString()}";
         }
@@ -165,11 +165,11 @@ public class Program
 
             if(arg == "-withAdvantage")
             {
-                parsedArgs.Add("RollModifier", RollModifier.Advantage);
+                parsedArgs.Add("RollModifier", RollModifierKind.Advantage);
             }
             else if(arg == "-withDisadvantage")
             {
-                parsedArgs.Add("RollModifier", RollModifier.Disadvantage);
+                parsedArgs.Add("RollModifier", RollModifierKind.Disadvantage);
             }
             else if(arg.Contains("="))
             {
