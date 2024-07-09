@@ -82,7 +82,7 @@ public class DiceTray
         if(_rollIsModified)
             return;
 
-        _rocks.ForEach(r=> r.ResetDiscardState());
+        _rocks.ForEach(r=> r.UnsetDiscarded());
 
         if(RollModifier != RollModifierKind.None)
         {
@@ -92,13 +92,13 @@ public class DiceTray
         if(RollModifier == RollModifierKind.Advantage)
         {
             // Set the lowest value to Discarded.
-            _rocks.First().Discard();
+            _rocks.First().SetDiscarded();
             _rollIsModified = true;
         }
         else if(RollModifier == RollModifierKind.Disadvantage)
         {
             // Set the Highest value to Discarded.
-            _rocks.Last().Discard();
+            _rocks.Last().SetDiscarded();
             _rollIsModified = true;
         }
     }

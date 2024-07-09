@@ -1,7 +1,15 @@
 ﻿namespace GameTools.DiceEngine;
 
+/// <summary>
+/// Provides a simple implementation of <see cref="IDiceBag"/> using the <see cref="Random"/> number generator.
+/// Be aware that this implementation is not TRULY random and so is not appropriate for 
+/// use cases that require cryptographically secure random characters.
+/// 
+/// It's just dice, dude.
+/// </summary>
 public class DiceBag : IDiceBag
 {
+    /// <inheritdoc />
     public DiceTray Roll(int numberOfDice, 
                          MathRockKind mathRockKind, 
                          int rollAdjustment = 0,

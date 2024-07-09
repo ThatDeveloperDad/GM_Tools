@@ -7,7 +7,7 @@ public interface IDiceBag
 {
 
     /// <summary>
-    /// We will generate a random number by simulating the roll of a number of dice, 
+    /// Generates a random number by simulating the roll of a number of dice, 
     /// each of which has a number of sides determined by the diceKind, and possibly
     /// modify the sum of those dice by the resultModifier.
     /// </summary>

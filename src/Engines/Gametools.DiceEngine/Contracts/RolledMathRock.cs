@@ -11,18 +11,16 @@ public class RolledMathRock
 
     public MathRockKind Kind { get; private set; }
 
-    public int NumSides => ((int)Kind);
-
     public int Value {get; private set;}
 
     public bool IsDiscarded {get; private set;}
 
-    public void Discard()
+    internal void SetDiscarded()
     {
         IsDiscarded = true;
     }
 
-    public void ResetDiscardState()
+    internal void UnsetDiscarded()
     {
         IsDiscarded = false;
     }
