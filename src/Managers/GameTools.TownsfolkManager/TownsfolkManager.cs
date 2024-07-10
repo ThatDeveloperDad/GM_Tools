@@ -7,9 +7,12 @@ namespace GameTools.TownsfolkManager
     {
         public Townsperson GenerateTownsperson()
         {
-            Townsperson generatedNPC = new Townsperson();
+            Townsperson npc = new Townsperson();
 
-            // QUESTION:  What do we need to know about a TownsPerson?
+            // Assign the Species.
+            npc.Species = "Elf";
+
+            // Name, Subspecies, and Appearance all derive from the Species.
 
             // Species
             //      SubSpecies
@@ -40,25 +43,7 @@ namespace GameTools.TownsfolkManager
             // Personality      (We're going to roll for KEYWORD attributes.)
 
 
-
-            
-            // *****  Everything below here is NOT Minimum Viable Product. *****
-
-            // **GameStats**  (Should this be defined within a specific implementation for the Ruleset concept?)
-
-            // "Adventuring Class"
-            // Not all NPCs will have this.  Some will, most won't.
-            // If Present, will affect:  Game Stats, Skills, Proficiencies
-
-            // Personality Details
-            //      Informed by Background.  
-            //      (We are FORMED BY where we came from, but not CONSTRAINED BY that.)
-            //      Affected by life events.
-            //      Each character has:
-            //          Nature  (What they're like in private)
-            //          Demeanor (What they're like in public)
-
-            return generatedNPC;
+            return npc;
         }
 
         public Townsperson[] ListTownspersons()

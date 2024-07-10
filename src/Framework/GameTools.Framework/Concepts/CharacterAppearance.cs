@@ -18,9 +18,8 @@ namespace GameTools.Framework
 
 
         public int HeightCm { get; set; }
-        public int WeightKg { get; set; }
 
-        public int AgeYears { get; set; }
+        public int WeightKg { get; set; }
 
         public string Gender {get;set;}
 

@@ -31,6 +31,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Framework", "Framework\GameTools.Framework\GameTools.Framework.csproj", "{B302F796-26BE-4DEC-958D-EB845652A500}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rulesets", "Rulesets", "{7E84DE4B-59BA-4579-B93B-699201E74B42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.RuleSet.DnD5eSRD", "Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.RuleSet.DnD5eSRD.csproj", "{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Ruleset.Definitions", "Rulesets\GameTools.Ruleset.Definitions\GameTools.Ruleset.Definitions.csproj", "{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +79,14 @@ Global
 		{B302F796-26BE-4DEC-958D-EB845652A500}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B302F796-26BE-4DEC-958D-EB845652A500}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B302F796-26BE-4DEC-958D-EB845652A500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,5 +99,7 @@ Global
 		{D1FA08F0-3ABF-40F2-998B-F79F324B7DE1} = {AAB96EF5-4EDB-4869-8A8A-67E2B15F7968}
 		{F265C0D0-203D-48D6-ACFC-77ACCD59B237} = {AAB96EF5-4EDB-4869-8A8A-67E2B15F7968}
 		{B302F796-26BE-4DEC-958D-EB845652A500} = {6E87B4AC-352D-4FCD-A632-6E27E2EEA1A7}
+		{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF} = {7E84DE4B-59BA-4579-B93B-699201E74B42}
+		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978} = {7E84DE4B-59BA-4579-B93B-699201E74B42}
 	EndGlobalSection
 EndGlobal

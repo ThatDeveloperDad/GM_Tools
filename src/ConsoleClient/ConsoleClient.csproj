@@ -2,12 +2,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
+    <ProjectReference Include="..\Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.RuleSet.DnD5eSRD.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
