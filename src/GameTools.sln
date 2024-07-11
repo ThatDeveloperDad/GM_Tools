@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Framework", "Fram
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rulesets", "Rulesets", "{7E84DE4B-59BA-4579-B93B-699201E74B42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.RuleSet.DnD5eSRD", "Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.RuleSet.DnD5eSRD.csproj", "{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Ruleset.DnD5eSRD", "Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj", "{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Ruleset.Definitions", "Rulesets\GameTools.Ruleset.Definitions\GameTools.Ruleset.Definitions.csproj", "{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}"
 EndProject

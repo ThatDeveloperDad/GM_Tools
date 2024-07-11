@@ -2,7 +2,7 @@
 
 namespace GameTools.Ruleset.Definitions
 {
-    public abstract class SpeciesData
+    public abstract class SpeciesData : IGameOptionSet<SpeciesTemplate>
     {
         protected readonly List<SpeciesTemplate> _speciesTemplates;
 
@@ -11,17 +11,6 @@ namespace GameTools.Ruleset.Definitions
             _speciesTemplates = new List<SpeciesTemplate>();
         }
 
-        public string[] ListSpecies
-        {
-            get
-            {
-                var speciesList = _speciesTemplates
-                    .Select(x => x.Name) 
-                    .ToArray();
-
-                return speciesList;
-            }
-        }
 
         protected void RegisterSpecies(SpeciesTemplate speciesTemplate)
         {
@@ -29,5 +18,21 @@ namespace GameTools.Ruleset.Definitions
         }
 
         protected abstract void InitializeTemplates();
+
+        public string[] List()
+        {
+            var speciesList = _speciesTemplates
+                    .Select(x => x.Name) 
+                    .ToArray();
+
+                return speciesList;
+        }
+
+        public SpeciesTemplate? Load(string optionName)
+        {
+            var ret = _speciesTemplates
+                .FirstOrDefault(x => x.Name == optionName);
+            return ret;
+        }
     }
 }

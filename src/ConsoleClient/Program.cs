@@ -1,8 +1,12 @@
-﻿using GameTools.RuleSet.DnD5eSRD;
-using GameTools.TownsfolkManager;
+﻿using GameTools.TownsfolkManager;
 using GameTools.TownsfolkManager.Contracts;
+using GameTools.Ruleset.DnD5eSRD;
 using System;
-using System.Text.Json;
+using GameTools.Ruleset.Definitions;
+using GameTools.RulesetAccess.Contracts;
+using GameTools.RulesetAccess;
+using System.Reflection;
+using System.Linq;
 
 // See https://aka.ms/new-console-template for more information
 namespace ConsoleClient
@@ -11,38 +15,49 @@ namespace ConsoleClient
     {
         static void Main()
         {
-            ITownsfolkManager generator = new TownsfolkManager();
+            string ruleSetAssemblyName = "GameTools.Ruleset.DnD5eSRD";
+            Assembly rules = GetAssembly(ruleSetAssemblyName);
+            IRulesetAccess ruleSet = new RulesetAccess(rules);
 
-            var ruleSet5e = new Species5eProvider();
-            TestSpeciesList(ruleSet5e);
+            ITownsfolkManager generator = new TownsfolkManager(ruleSet);
+            SpeciesData speciesData = new Species5eProvider();
 
+            var app = new GeneratorConsole(generator, speciesData);
+            
+            app.TestNPCGen();
+
+            Console.WriteLine("==========");
+
+            app.TestSpeciesList();
 
         }
 
-        static void TestSpeciesList(Species5eProvider ruleSet5e)
+        static Assembly GetAssembly(string name)
         {
-            var speciesList = ruleSet5e.ListSpecies;
-            foreach (var species in speciesList)
+            // Scan the Current AppDomain for an assembly with the given name.
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            Assembly? requested = assemblies.FirstOrDefault(a=> a.GetName().Name == name);
+            
+            if(requested != null)
             {
-                Console.WriteLine(species);
+                return requested;
             }
-        }
 
-        static void TestNPCGen(ITownsfolkManager generator)
-        {
-            // Generate a single townsperson
-            Townsperson npc = generator.GenerateTownsperson();
-            PrintNPC(npc);
-        }
-
-        static void PrintNPC(Townsperson npc)
-        {
-            var options = new JsonSerializerOptions
+            // If the assembly isn't in memory, try to load it from disk.
+            var execPath = Assembly.GetExecutingAssembly().Location;
+            var dir = System.IO.Path.GetDirectoryName(execPath);
+            var path = System.IO.Path.Combine(dir, name + ".dll");
+            if (System.IO.File.Exists(path))
             {
-                WriteIndented = true
-            };
-            string npcJson = JsonSerializer.Serialize(npc, options);
-            Console.WriteLine(npcJson);
+                requested = Assembly.LoadFile(path);
+            }
+            
+            if(requested != null)
+            {
+                return requested;
+            }
+
+            throw new InvalidOperationException($"Could not find assembly {name}");
         }
     }
 }

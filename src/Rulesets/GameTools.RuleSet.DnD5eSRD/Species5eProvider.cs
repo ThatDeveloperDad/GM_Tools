@@ -2,7 +2,7 @@
 using GameTools.Ruleset.Definitions;
 using GameTools.Ruleset.Definitions.Characters;
 
-namespace GameTools.RuleSet.DnD5eSRD
+namespace GameTools.Ruleset.DnD5eSRD
 {
     public sealed class Species5eProvider : SpeciesData
     {
