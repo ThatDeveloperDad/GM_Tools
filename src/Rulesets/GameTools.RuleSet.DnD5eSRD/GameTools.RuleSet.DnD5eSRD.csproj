@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GameTools.Ruleset.Definitions\GameTools.Ruleset.Definitions.csproj" />
+    <ProjectReference Include="..\..\ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

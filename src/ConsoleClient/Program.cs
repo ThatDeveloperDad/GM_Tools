@@ -15,12 +15,14 @@ namespace ConsoleClient
     {
         static void Main()
         {
-            string ruleSetAssemblyName = "GameTools.Ruleset.DnD5eSRD";
-            Assembly rules = GetAssembly(ruleSetAssemblyName);
-            IRulesetAccess ruleSet = new RulesetAccess(rules);
-
+            IRulesetAccess ruleSet = 
+                new RulesetAccess()
+                    .Use5eSRD();
+           
             ITownsfolkManager generator = new TownsfolkManager(ruleSet);
-            SpeciesData speciesData = new Species5eProvider();
+            SpeciesData speciesData = ruleSet
+                                        .LoadCharacterCreationRules()
+                                        .SpeciesRules;
 
             var app = new GeneratorConsole(generator, speciesData);
             
@@ -32,32 +34,5 @@ namespace ConsoleClient
 
         }
 
-        static Assembly GetAssembly(string name)
-        {
-            // Scan the Current AppDomain for an assembly with the given name.
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            Assembly? requested = assemblies.FirstOrDefault(a=> a.GetName().Name == name);
-            
-            if(requested != null)
-            {
-                return requested;
-            }
-
-            // If the assembly isn't in memory, try to load it from disk.
-            var execPath = Assembly.GetExecutingAssembly().Location;
-            var dir = System.IO.Path.GetDirectoryName(execPath);
-            var path = System.IO.Path.Combine(dir, name + ".dll");
-            if (System.IO.File.Exists(path))
-            {
-                requested = Assembly.LoadFile(path);
-            }
-            
-            if(requested != null)
-            {
-                return requested;
-            }
-
-            throw new InvalidOperationException($"Could not find assembly {name}");
-        }
     }
 }

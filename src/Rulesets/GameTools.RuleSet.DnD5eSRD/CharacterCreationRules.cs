@@ -12,7 +12,7 @@ public class CharacterCreationRules : ICharacterCreationRules
         _speciesData = new Species5eProvider();
     }
 
-    public IGameOptionSet<SpeciesTemplate> SpeciesRules 
+    public SpeciesData SpeciesRules 
     { 
         get
         {

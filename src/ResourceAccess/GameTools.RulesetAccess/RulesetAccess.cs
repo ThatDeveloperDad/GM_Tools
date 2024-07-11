@@ -8,32 +8,44 @@ namespace GameTools.RulesetAccess;
 
 public class RulesetAccess : IRulesetAccess
 {
-    private readonly Assembly _ruleDefinitions;
+    private Assembly? _ruleDefinitions;
 
-
-
-    public RulesetAccess(Assembly ruleDefinitions)
+    public RulesetAccess(Assembly? ruleDefinitions = null)
     {
         _ruleDefinitions = ruleDefinitions;
-
     }
 
+    public void InitializeRuleset(Assembly ruleSet)
+    {
+        _ruleDefinitions = ruleSet;
+    }
+
+    private ICharacterCreationRules? _charGenRules;
     public ICharacterCreationRules LoadCharacterCreationRules()
     {
-        ICharacterCreationRules rules = LoadImplementation<ICharacterCreationRules>();
-        return rules;
+        if(_charGenRules == null)
+        {
+            _charGenRules = ResolveContract<ICharacterCreationRules>();    
+        }
+        
+        return _charGenRules;
     }
 
-    private T LoadImplementation<T>()
+    private T ResolveContract<T>()
     {
-        Type abstractType = typeof(T);
+        if(_ruleDefinitions == null)
+        {
+            throw new InvalidOperationException("The rule set has not been initialized.");
+        }
+        
+        Type contractType = typeof(T);
         Type? concreteType = _ruleDefinitions.GetTypes()
                                             .FirstOrDefault(ct => ct.GetInterfaces()
-                                                                    .Contains(abstractType));
+                                                                    .Contains(contractType));
 
         if (concreteType == null)
         {
-            throw new ArgumentException($"The requested service {abstractType.Name} could not be found in {_ruleDefinitions.GetName().Name}.");
+            throw new ArgumentException($"The requested service {contractType.Name} could not be found in {_ruleDefinitions.GetName().Name}.");
         }
 
         var instance = Activator.CreateInstance(concreteType);
@@ -43,6 +55,8 @@ public class RulesetAccess : IRulesetAccess
         }
 
         T requestedService = (T)instance;
+
+    
 
         return requestedService;                                                          
     }

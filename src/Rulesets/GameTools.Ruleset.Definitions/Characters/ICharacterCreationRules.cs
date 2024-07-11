@@ -13,7 +13,7 @@ public interface ICharacterCreationRules
         /// Provides access to the available species and the rules that govern 
         /// using those species when building a character.
         /// </summary>
-        IGameOptionSet<SpeciesTemplate> SpeciesRules {get;}
+        SpeciesData SpeciesRules {get;}
         
 #region ToBeImplemented
         // Choose Background Template
