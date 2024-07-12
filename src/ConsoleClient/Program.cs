@@ -1,13 +1,11 @@
-﻿using GameTools.TownsfolkManager;
-using GameTools.TownsfolkManager.Contracts;
-using GameTools.Ruleset.DnD5eSRD;
-using System;
-using GameTools.Ruleset.Definitions;
+﻿using Microsoft.Extensions.DependencyInjection;
+using GameTools.DiceEngine;
 using GameTools.RulesetAccess.Contracts;
 using GameTools.RulesetAccess;
-using System.Reflection;
-using System.Linq;
-using GameTools.DiceEngine;
+using GameTools.Ruleset.DnD5eSRD;
+using GameTools.TownsfolkManager;
+using GameTools.TownsfolkManager.Contracts;
+using Microsoft.VisualBasic;
 
 // See https://aka.ms/new-console-template for more information
 namespace ConsoleClient
@@ -16,25 +14,35 @@ namespace ConsoleClient
     {
         static void Main()
         {
-            IRulesetAccess ruleSet = 
-                new RulesetAccess()
-                    .Use5eSRD();
-           
-            ICardDeck cardService = new DeckSimulator();
-            IDiceBag diceService = new DiceBag();
-            ITownsfolkManager generator = new TownsfolkManager(ruleSet, cardService, diceService);
-            SpeciesData speciesData = ruleSet
-                                        .LoadCharacterCreationRules()
-                                        .SpeciesRules;
 
-            var app = new GeneratorConsole(generator, speciesData);
+            var services = CreateServices();
+
+            var app = new GeneratorConsole(services.GetRequiredService<ITownsfolkManager>());
             
             app.TestNPCGen();
+        }
 
-            Console.WriteLine("==========");
+        static ServiceProvider CreateServices()
+        {
+            var services = new ServiceCollection();
 
-            //app.TestSpeciesList();
+            services.AddScoped<ITownsfolkManager, TownsfolkManager>();
 
+            services.AddScoped<IRulesetAccess>((sp) => 
+                {
+                    IRulesetAccess service = 
+                        new RulesetAccess()
+                            .Use5eSRD();
+
+                    return service;
+                });
+
+            services.AddScoped<ICardDeck, DeckSimulator>();
+
+            services.AddScoped<IDiceBag, DiceBag>();
+
+
+            return services.BuildServiceProvider();
         }
 
     }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Text.Json;
-using GameTools.Ruleset.Definitions;
-using GameTools.Ruleset.DnD5eSRD;
-using GameTools.TownsfolkManager;
 using GameTools.TownsfolkManager.Contracts;
 
 namespace ConsoleClient;
@@ -10,22 +7,10 @@ namespace ConsoleClient;
 public class GeneratorConsole
 {
     private readonly ITownsfolkManager _generator;
-    private readonly SpeciesData _speciesData;
 
-    public GeneratorConsole(ITownsfolkManager townsfolkManager,
-                            SpeciesData speciesData)
+    public GeneratorConsole(ITownsfolkManager townsfolkManager)
     {
         _generator = townsfolkManager;
-        _speciesData = speciesData;
-    }
-
-    public void TestSpeciesList()
-    {
-        var speciesList = _speciesData.List();
-        foreach (var species in speciesList)
-        {
-            Console.WriteLine(species);
-        }
     }
 
     public void TestNPCGen()
