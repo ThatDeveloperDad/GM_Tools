@@ -8,7 +8,7 @@ namespace GameTools.Ruleset.DnD5eSRD
     {
         public Species5eProvider():base()
         {
-            InitializeTemplates();
+            
         }
 
         protected override void InitializeTemplates()

@@ -58,6 +58,14 @@ namespace GameTools.TownsfolkManager
             //      Length of Career
 
             // Background       (Selected from a list of choices)
+            // Get the list of Backgrounds.
+            var backgroundChoices = _npcRules.BackgroundRules.List();
+            // Pick one at random.
+            var npcBackground = _shuffler.PickOne(backgroundChoices);
+
+            // Assign its name to the Background Name property on our NPC instance.
+            npc.Background.Name = npcBackground;
+
             //      Background Name
             //      Personality (Seeds)
             //      Skills / Proficiencies

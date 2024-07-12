@@ -9,6 +9,7 @@ namespace GameTools.Ruleset.Definitions
         public SpeciesData()
         {
             _speciesTemplates = new List<SpeciesTemplate>();
+            InitializeTemplates();
         }
 
 
