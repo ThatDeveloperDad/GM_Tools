@@ -17,9 +17,9 @@ public interface ICharacterCreationRules
         /// </summary>
         BackgroundData BackgroundRules {get;}
 
-#region ToBeImplemented
-        // Choose Vocation Template
-        //string[] ListVocations();
-        // VocationTemplate LoadVocationTemplate(string vocationName);
-#endregion
+        /// <summary>
+        /// Provides access to the vocations that are available in the 
+        /// implemented ruleSet.
+        /// </summary>
+        VocationData VocationRules {get;}
     }
