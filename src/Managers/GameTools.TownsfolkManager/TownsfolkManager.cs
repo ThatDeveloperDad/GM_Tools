@@ -25,13 +25,9 @@ namespace GameTools.TownsfolkManager
         {
             Townsperson npc = new Townsperson();
 
-            // Assign the Species.
-            // Get the list of Species we can choose from.
+            // Select the Species and add the available details.
             var speciesChoices = _npcRules.SpeciesRules.List();
-            // Pick one of those.
             var selectedSpecies = _shuffler.PickOne(speciesChoices);
-
-            // Assign it to the NPC's Species property.
             npc.Species = selectedSpecies;
 
             // Name, Subspecies, and Appearance all derive from the Species.
@@ -50,23 +46,22 @@ namespace GameTools.TownsfolkManager
             //          Eye Count
             //          Body Style
 
-            // Profession
+            // Select the Profession and add its details.
+            var professionChoices = _npcRules.VocationRules.List();
+            var npcProfession = _shuffler.PickOne(professionChoices);
+            npc.Vocation.Name = npcProfession;
+            
             // Does not follow from Species. May follow from Background. Probably not.
             //      Profession Name
             //      Titles
             //      Skills
             //      Length of Career
 
-            // Background       (Selected from a list of choices)
-            // Get the list of Backgrounds.
+            // Select the Background and add the available details.
             var backgroundChoices = _npcRules.BackgroundRules.List();
-            // Pick one at random.
             var npcBackground = _shuffler.PickOne(backgroundChoices);
-
-            // Assign its name to the Background Name property on our NPC instance.
             npc.Background.Name = npcBackground;
 
-            //      Background Name
             //      Personality (Seeds)
             //      Skills / Proficiencies
 
