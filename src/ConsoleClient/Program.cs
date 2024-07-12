@@ -7,6 +7,7 @@ using GameTools.RulesetAccess.Contracts;
 using GameTools.RulesetAccess;
 using System.Reflection;
 using System.Linq;
+using GameTools.DiceEngine;
 
 // See https://aka.ms/new-console-template for more information
 namespace ConsoleClient
@@ -19,7 +20,9 @@ namespace ConsoleClient
                 new RulesetAccess()
                     .Use5eSRD();
            
-            ITownsfolkManager generator = new TownsfolkManager(ruleSet);
+            ICardDeck cardService = new DeckSimulator();
+            IDiceBag diceService = new DiceBag();
+            ITownsfolkManager generator = new TownsfolkManager(ruleSet, cardService, diceService);
             SpeciesData speciesData = ruleSet
                                         .LoadCharacterCreationRules()
                                         .SpeciesRules;
@@ -30,7 +33,7 @@ namespace ConsoleClient
 
             Console.WriteLine("==========");
 
-            app.TestSpeciesList();
+            //app.TestSpeciesList();
 
         }
 
