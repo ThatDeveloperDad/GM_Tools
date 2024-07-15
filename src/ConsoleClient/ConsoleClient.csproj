@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
     <ProjectReference Include="..\Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj" />
+    <ProjectReference Include="..\Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
