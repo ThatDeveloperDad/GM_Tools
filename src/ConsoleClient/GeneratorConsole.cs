@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using GameTools.TownsfolkManager.Contracts;
+using ThatDeveloperDad.Framework.Serialization;
 
 namespace ConsoleClient;
 
@@ -22,11 +23,12 @@ public class GeneratorConsole
 
     void PrintNPC(Townsperson npc)
     {
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = true
-        };
-        string npcJson = JsonSerializer.Serialize(npc, options);
+        // Convert the Townsperson to JSON
+        // use the GetCleanJson method in JsonUtilities
+        // to include only those properties that have
+        // been populated.
+        string npcJson = JsonUtilities.GetCleanJson(npc);
+
         Console.WriteLine(npcJson);
     }
 }

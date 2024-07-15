@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Ruleset.DnD5eSRD"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Ruleset.Definitions", "Rulesets\GameTools.Ruleset.Definitions\GameTools.Ruleset.Definitions.csproj", "{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThatDeveloperDad.Framework", "Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj", "{86540D6F-8871-4D4C-8375-5CBD40F06546}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86540D6F-8871-4D4C-8375-5CBD40F06546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86540D6F-8871-4D4C-8375-5CBD40F06546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86540D6F-8871-4D4C-8375-5CBD40F06546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86540D6F-8871-4D4C-8375-5CBD40F06546}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,5 +107,6 @@ Global
 		{B302F796-26BE-4DEC-958D-EB845652A500} = {6E87B4AC-352D-4FCD-A632-6E27E2EEA1A7}
 		{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF} = {7E84DE4B-59BA-4579-B93B-699201E74B42}
 		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978} = {7E84DE4B-59BA-4579-B93B-699201E74B42}
+		{86540D6F-8871-4D4C-8375-5CBD40F06546} = {6E87B4AC-352D-4FCD-A632-6E27E2EEA1A7}
 	EndGlobalSection
 EndGlobal
