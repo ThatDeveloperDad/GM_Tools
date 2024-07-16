@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj" />
-    <ProjectReference Include="..\ResourceAccess\ThatDeveloperDad.LlmAccess\ThatDeveloperDad.LlmAccess.csproj" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.15.1" />
+    <PackageReference Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
 
 </Project>

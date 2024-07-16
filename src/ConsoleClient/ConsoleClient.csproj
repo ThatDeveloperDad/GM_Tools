@@ -3,8 +3,10 @@
   <ItemGroup>
     <ProjectReference Include="..\API\GameTools.API.WorkloadProvider\GameTools.API.WorkloadProvider.csproj" />
     <ProjectReference Include="..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
+    <ProjectReference Include="..\ResourceAccess\ThatDeveloperDad.LlmAccess\ThatDeveloperDad.LlmAccess.csproj" />
     <ProjectReference Include="..\Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj" />
     <ProjectReference Include="..\Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj" />
+    <ProjectReference Include="..\ThatDeveloperDad.AIWorkloadManager\ThatDeveloperDad.AIWorkloadManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>

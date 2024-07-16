@@ -1,4 +1,5 @@
 ﻿using GameTools.TownsfolkManager.Contracts;
+using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.Framework.Serialization;
 
 namespace GameTools.API.WorkloadProvider
@@ -6,10 +7,13 @@ namespace GameTools.API.WorkloadProvider
     public class CharacterWorkloads : ICharacterWorkloads
     {
         private readonly ITownsfolkManager _npcManager;
+        private readonly IAiWorkloadManager _llmProvider;
 
-        public CharacterWorkloads(ITownsfolkManager npcManager)
+        public CharacterWorkloads(ITownsfolkManager npcManager,
+                                  IAiWorkloadManager llmProvider)
         {
             _npcManager = npcManager;
+            _llmProvider = llmProvider;
         }
 
         public string GenerateNPC(bool includeAI = false)
@@ -18,6 +22,11 @@ namespace GameTools.API.WorkloadProvider
             var npc = _npcManager.GenerateTownsperson();
 
             npcJson = Serialize(npc);
+
+            if(includeAI)
+            {
+                string description = _llmProvider.DescribeNPC(npcJson);
+            }
 
             return npcJson;
         }
