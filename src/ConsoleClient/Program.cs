@@ -5,7 +5,8 @@ using GameTools.RulesetAccess;
 using GameTools.Ruleset.DnD5eSRD;
 using GameTools.TownsfolkManager;
 using GameTools.TownsfolkManager.Contracts;
-using Microsoft.VisualBasic;
+using GameTools.API.WorkloadProvider;
+using System;
 
 // See https://aka.ms/new-console-template for more information
 namespace ConsoleClient
@@ -17,9 +18,12 @@ namespace ConsoleClient
 
             var services = CreateServices();
 
-            var app = new GeneratorConsole(services.GetRequiredService<ITownsfolkManager>());
-            
-            app.TestNPCGen();
+            //var app = new GeneratorConsole(services.GetRequiredService<ITownsfolkManager>());
+
+            ICharacterWorkloads app = new CharacterWorkloads(services.GetRequiredService<ITownsfolkManager>()); 
+
+            string npcJson =  app.GenerateNPC();
+            Console.WriteLine(npcJson);
         }
 
         static ServiceProvider CreateServices()
