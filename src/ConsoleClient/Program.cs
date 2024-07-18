@@ -11,6 +11,9 @@ using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.AIWorkloadManager;
 using ThatDeveloperDad.LlmAccess.Contracts;
 using ThatDeveloperDad.LlmAccess;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 // See https://aka.ms/new-console-template for more information
 namespace ConsoleClient
@@ -24,12 +27,79 @@ namespace ConsoleClient
 
             ICharacterWorkloads app = BuildApp(services);
 
-            //Generate without AI.
-            string npcJson = app.GenerateNPC(true);
-            Console.WriteLine(npcJson);
+            // Instead of assuming that we want to include the
+            // AI Generated Description, let's show a preview of
+            // the NPC Attributes, and ASK the user if they want to
+            // get the AI Description.
+            // Let's also do this in a loop so that we can just run this
+            // application until the user says, "I'm done."
 
+            string stopPhrase = "stop";
+            string userInput = string.Empty;
+
+            string generateDescriptionPrompt = "Do you want an AI Description of this character?";
+            string generateDescriptionTrigger = "y";
+            string[] generateDescriptionOptions ={ generateDescriptionTrigger, "n" };
             
 
+            string continuePrompt = $"Type {stopPhrase} to exit, or anything else to make another.";
+            string[] continuePromptOptions = Array.Empty<string>();
+
+            while (userInput.ToUpper() != stopPhrase.ToUpper() )
+            {
+                string npcJson = app.GenerateNPC();
+                Console.WriteLine("Here's your new NPC.");
+                Console.WriteLine(npcJson);
+
+                userInput = PromptUser(generateDescriptionPrompt, generateDescriptionOptions);
+                if(userInput.ToUpper() == generateDescriptionTrigger.ToUpper())
+                {
+                    Console.WriteLine("This may take a few seconds.  Please be patient.");
+                    Console.WriteLine();
+                    string description = app.DescribeNPC(npcJson).Result;
+                    Console.WriteLine("NPC Description");
+                    Console.WriteLine();
+                    Console.WriteLine(description);
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("*************************************");
+                    Console.WriteLine();
+                }
+
+                userInput = PromptUser(continuePrompt, continuePromptOptions);
+                Console.WriteLine("*************************************");
+                Console.WriteLine();
+            }
+
+        }
+
+        static string PromptUser(string promptText, string[] validAnswers)
+        {
+            List<string> promptOptions = validAnswers
+                .Select(s=> s.Trim().ToUpper())
+                .ToList();
+
+            string answersText = $"Choose from {string.Join(",", validAnswers)}  :  ";
+            
+
+            string answer = string.Empty;
+
+            if(promptOptions.Any() == true)
+            {
+                Console.WriteLine(promptText);
+                while (promptOptions.Contains(answer.Trim().ToUpper()) == false)
+                {
+                    Console.Write(answersText);
+                    answer = Console.ReadLine() ?? string.Empty;
+                }
+            }
+            else
+            {
+                Console.Write(promptText);
+                answer = Console.ReadLine() ?? string.Empty;
+            }
+            
+            return answer;
         }
 
         static ICharacterWorkloads BuildApp(ServiceProvider services)
