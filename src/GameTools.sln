@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{99B429E2-F866-48F0-A1BB-62D8067FC0F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{99B429E2-F866-48F0-A1BB-62D8067FC0F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Managers", "Managers", "{062DED4C-E3FF-4F85-BC56-E17E16EFD3A0}"
 EndProject
@@ -11,33 +11,41 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engines", "Engines", "{59A0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResourceAccess", "ResourceAccess", "{3609EDE8-0CEE-45B4-9F6A-6AB6B9D0F233}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.NPCAccess", "ResourceAccess\GameTools.NPCAccess\GameTools.NPCAccess.csproj", "{2DD8F531-8FBD-4226-AFE1-80CE4F569A04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.NPCAccess", "ResourceAccess\GameTools.NPCAccess\GameTools.NPCAccess.csproj", "{2DD8F531-8FBD-4226-AFE1-80CE4F569A04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.DiceEngine", "Engines\GameTools.DiceEngine\GameTools.DiceEngine.csproj", "{E829A227-7E84-4C44-A3DF-890DAE427778}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.DiceEngine", "Engines\GameTools.DiceEngine\GameTools.DiceEngine.csproj", "{E829A227-7E84-4C44-A3DF-890DAE427778}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.TownsfolkManager", "Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj", "{72120537-61B6-4590-930B-0542E03DC576}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.TownsfolkManager", "Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj", "{72120537-61B6-4590-930B-0542E03DC576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.RulesetAccess", "ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj", "{829FA022-8045-46BD-9A8B-2A19EB2FE016}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.RulesetAccess", "ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj", "{829FA022-8045-46BD-9A8B-2A19EB2FE016}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AAB96EF5-4EDB-4869-8A8A-67E2B15F7968}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.DiceEngine.Tests", "tests\GameTools.DiceEngine.Tests\GameTools.DiceEngine.Tests.csproj", "{D1FA08F0-3ABF-40F2-998B-F79F324B7DE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.DiceEngine.Tests", "tests\GameTools.DiceEngine.Tests\GameTools.DiceEngine.Tests.csproj", "{D1FA08F0-3ABF-40F2-998B-F79F324B7DE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiceTestConsole", "DiceTestConsole\DiceTestConsole.csproj", "{F912C61F-C539-4B6C-8FD1-85EC232E5F46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiceTestConsole", "DiceTestConsole\DiceTestConsole.csproj", "{F912C61F-C539-4B6C-8FD1-85EC232E5F46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.TownsfolkManager.Tests", "Tests\GameTools.TownsfolkManager.Tests\GameTools.TownsfolkManager.Tests.csproj", "{F265C0D0-203D-48D6-ACFC-77ACCD59B237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.TownsfolkManager.Tests", "Tests\GameTools.TownsfolkManager.Tests\GameTools.TownsfolkManager.Tests.csproj", "{F265C0D0-203D-48D6-ACFC-77ACCD59B237}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{6E87B4AC-352D-4FCD-A632-6E27E2EEA1A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Framework", "Framework\GameTools.Framework\GameTools.Framework.csproj", "{B302F796-26BE-4DEC-958D-EB845652A500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.Framework", "Framework\GameTools.Framework\GameTools.Framework.csproj", "{B302F796-26BE-4DEC-958D-EB845652A500}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rulesets", "Rulesets", "{7E84DE4B-59BA-4579-B93B-699201E74B42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Ruleset.DnD5eSRD", "Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj", "{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.Ruleset.DnD5eSRD", "Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj", "{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.Ruleset.Definitions", "Rulesets\GameTools.Ruleset.Definitions\GameTools.Ruleset.Definitions.csproj", "{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.Ruleset.Definitions", "Rulesets\GameTools.Ruleset.Definitions\GameTools.Ruleset.Definitions.csproj", "{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThatDeveloperDad.Framework", "Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj", "{86540D6F-8871-4D4C-8375-5CBD40F06546}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThatDeveloperDad.Framework", "Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj", "{86540D6F-8871-4D4C-8375-5CBD40F06546}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{A3314BEA-2E2F-42D0-8D7C-02247B9E0DD2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.API.WorkloadProvider", "API\GameTools.API.WorkloadProvider\GameTools.API.WorkloadProvider.csproj", "{66ECCEE3-5026-46B2-ABC5-C3EC65104384}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThatDeveloperDad.AIWorkloadManager", "ThatDeveloperDad.AIWorkloadManager\ThatDeveloperDad.AIWorkloadManager.csproj", "{850C7988-1C75-43FE-B415-04C9F0CEDE74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThatDeveloperDad.LlmAccess", "ResourceAccess\ThatDeveloperDad.LlmAccess\ThatDeveloperDad.LlmAccess.csproj", "{16623851-601C-4AB0-875A-1FD2AC91B84F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +101,18 @@ Global
 		{86540D6F-8871-4D4C-8375-5CBD40F06546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86540D6F-8871-4D4C-8375-5CBD40F06546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86540D6F-8871-4D4C-8375-5CBD40F06546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66ECCEE3-5026-46B2-ABC5-C3EC65104384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66ECCEE3-5026-46B2-ABC5-C3EC65104384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66ECCEE3-5026-46B2-ABC5-C3EC65104384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66ECCEE3-5026-46B2-ABC5-C3EC65104384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{850C7988-1C75-43FE-B415-04C9F0CEDE74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{850C7988-1C75-43FE-B415-04C9F0CEDE74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{850C7988-1C75-43FE-B415-04C9F0CEDE74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{850C7988-1C75-43FE-B415-04C9F0CEDE74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16623851-601C-4AB0-875A-1FD2AC91B84F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16623851-601C-4AB0-875A-1FD2AC91B84F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16623851-601C-4AB0-875A-1FD2AC91B84F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16623851-601C-4AB0-875A-1FD2AC91B84F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,5 +128,11 @@ Global
 		{EEF07A26-6DBE-4D1B-ADA2-0F7FBF2472EF} = {7E84DE4B-59BA-4579-B93B-699201E74B42}
 		{6BBF2E1F-CB3F-451E-BB47-A70EBCF20978} = {7E84DE4B-59BA-4579-B93B-699201E74B42}
 		{86540D6F-8871-4D4C-8375-5CBD40F06546} = {6E87B4AC-352D-4FCD-A632-6E27E2EEA1A7}
+		{66ECCEE3-5026-46B2-ABC5-C3EC65104384} = {A3314BEA-2E2F-42D0-8D7C-02247B9E0DD2}
+		{850C7988-1C75-43FE-B415-04C9F0CEDE74} = {062DED4C-E3FF-4F85-BC56-E17E16EFD3A0}
+		{16623851-601C-4AB0-875A-1FD2AC91B84F} = {3609EDE8-0CEE-45B4-9F6A-6AB6B9D0F233}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6609DEA-D173-4C64-90E7-2D85617E377C}
 	EndGlobalSection
 EndGlobal
