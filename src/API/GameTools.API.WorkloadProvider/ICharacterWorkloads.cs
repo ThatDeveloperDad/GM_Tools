@@ -12,6 +12,14 @@ namespace GameTools.API.WorkloadProvider
     public interface ICharacterWorkloads
     {
         /// <summary>
+        /// Retrieves a Dictionary of the different options that can 
+        /// be used when generating an NPC.
+        /// The Dictionary Key identifies the NPC Attribute.
+        /// The Value of a Dictionary Entry is the List of Choices.
+        /// </summary>
+        Dictionary<string, string[]> GetNpcOptions();
+
+        /// <summary>
         /// Generates an NPC randomly from the configured Ruleset.
         /// Optionally, passes the NPC Object to an LLM to get a more detailed
         /// description.

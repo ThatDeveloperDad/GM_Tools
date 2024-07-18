@@ -21,6 +21,24 @@ namespace GameTools.API.WorkloadProvider
             CharGenFunctions.RegisterCharacterGenerationFunctions(_aiWorker);
         }
 
+        /// <summary>
+        /// Retrieves a Dictionary of the different options that can 
+        /// be used when generating an NPC.
+        /// The Dictionary Key identifies the NPC Attribute.
+        /// The Value of a Dictionary Entry is the List of Choices.
+        /// </summary>
+        public Dictionary<string, string[]> GetNpcOptions()
+        {
+            var options = _npcManager.GetNpcOptions();
+
+            return options;
+        }
+
+        /// <summary>
+        /// Passes the NPC Data to an LLM to generate a detailed description.
+        /// </summary>
+        /// <param name="npcJson"></param>
+        /// <returns></returns>
         public async Task<string> DescribeNPC(string npcJson)
         {
             // We need to build the Request Object expected by the AI Workload Manager.
@@ -53,6 +71,12 @@ namespace GameTools.API.WorkloadProvider
             return description;
         }
 
+        /// <summary>
+        /// Randomly generates an NPC from the available options provided by
+        /// the configured RuleSet.
+        /// </summary>
+        /// <param name="includeAI"></param>
+        /// <returns></returns>
         public string GenerateNPC(bool includeAI = false)
         {
             string result = string.Empty;

@@ -2,6 +2,7 @@
 using GameTools.Ruleset.Definitions.Characters;
 using GameTools.RulesetAccess.Contracts;
 using GameTools.TownsfolkManager.Contracts;
+using System.Collections.Generic;
 
 namespace GameTools.TownsfolkManager
 {
@@ -69,6 +70,13 @@ namespace GameTools.TownsfolkManager
 
 
             return npc;
+        }
+
+        public Dictionary<string, string[]> GetNpcOptions()
+        {
+            Dictionary<string, string[]> npcOptions = new Dictionary<string, string[]>();
+
+            return npcOptions;
         }
 
         public Townsperson[] ListTownspersons()

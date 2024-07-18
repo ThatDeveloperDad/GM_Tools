@@ -38,21 +38,53 @@ namespace ConsoleClient
             string userInput = string.Empty;
 
             string generateDescriptionPrompt = "Do you want an AI Description of this character?";
-            string generateDescriptionTrigger = "y";
-            string[] generateDescriptionOptions ={ generateDescriptionTrigger, "n" };
+            string yesTrigger = "y";
+            string[] yesNoOptions ={ yesTrigger, "n" };
             
 
             string continuePrompt = $"Type {stopPhrase} to exit, or anything else to make another.";
             string[] continuePromptOptions = Array.Empty<string>();
 
+            var npcOptions = app.GetNpcOptions();
+
+            bool promptToSelectNPCOptions = npcOptions.Count > 0;
+            string selectNpcOptionsPrompt = "Do you want to pick any of the NPC Attributes?";
+
             while (userInput.ToUpper() != stopPhrase.ToUpper() )
             {
-                string npcJson = app.GenerateNPC();
+                string npcJson = string.Empty;
+
+                if(promptToSelectNPCOptions == true)
+                {
+                    string userSelects = PromptUser(selectNpcOptionsPrompt, yesNoOptions);
+                    if(userSelects.Trim().ToUpper() == yesTrigger.ToUpper())
+                    {
+                        var selectedOptions = new Dictionary<string, string?>();
+                        // set up a static function to:
+                        // Prompt the User for each list of NpcOptions in the
+                        // npcOptions dictionary.
+                        // When building the Answers List for each, add a choice for 
+                        // "Idk, You Pick"
+                        // Accumulate the selections in the selectedOptions var
+                        // and pass that to an overload of GenerateNPC that 
+                        // lets us use the user's choices when building the NPC
+                        // attributes.
+                    }
+                    else
+                    {
+                        npcJson = app.GenerateNPC();
+                    }
+                }
+                else
+                {
+                    npcJson = app.GenerateNPC();
+                }
+               
                 Console.WriteLine("Here's your new NPC.");
                 Console.WriteLine(npcJson);
 
-                userInput = PromptUser(generateDescriptionPrompt, generateDescriptionOptions);
-                if(userInput.ToUpper() == generateDescriptionTrigger.ToUpper())
+                userInput = PromptUser(generateDescriptionPrompt, yesNoOptions);
+                if(userInput.ToUpper() == yesTrigger.ToUpper())
                 {
                     Console.WriteLine("This may take a few seconds.  Please be patient.");
                     Console.WriteLine();

@@ -1,4 +1,6 @@
-﻿namespace GameTools.TownsfolkManager.Contracts
+﻿using System.Collections.Generic;
+
+namespace GameTools.TownsfolkManager.Contracts
 {
     /// <summary>
     /// Describes the behavior of a component that allows us to generate, store, and retrieve Townsfolk for our
@@ -11,6 +13,13 @@
         /// </summary>
         /// <returns></returns>
         Townsperson GenerateTownsperson();
+
+        /// <summary>
+        /// Retrieves the dictionary of options that are used when creating an
+        /// NPC.
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<string, string[]> GetNpcOptions();
 
         /// <summary>
         /// Stores the provided Townsperson instance in a data storage location.
