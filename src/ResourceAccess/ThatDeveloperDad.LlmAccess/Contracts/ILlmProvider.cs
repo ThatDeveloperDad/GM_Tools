@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ThatDeveloperDad.LlmAccess.Contracts
 {
-    public interface IPromptExecution
+    public interface ILlmProvider
     {
 
         /// <summary>
@@ -16,5 +16,7 @@ namespace ThatDeveloperDad.LlmAccess.Contracts
         /// <param name="prompt">THe User prompt to send</param>
         /// <returns>The Reply from the LLM</returns>
         Task<string> ExecutePromptAsync(string prompt);
+
+        Task<FunctionResponse> ExecuteFunctionAsync(FunctionRequest request);
     }
 }

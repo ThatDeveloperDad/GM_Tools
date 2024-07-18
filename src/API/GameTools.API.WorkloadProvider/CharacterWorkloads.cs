@@ -1,4 +1,6 @@
-﻿using GameTools.TownsfolkManager.Contracts;
+﻿using GameTools.API.WorkloadProvider.AiWorkloads;
+using GameTools.TownsfolkManager.Contracts;
+using System.Text;
 using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.Framework.Serialization;
 
@@ -7,28 +9,77 @@ namespace GameTools.API.WorkloadProvider
     public class CharacterWorkloads : ICharacterWorkloads
     {
         private readonly ITownsfolkManager _npcManager;
-        private readonly IAiWorkloadManager _llmProvider;
+        private readonly IAiWorkloadManager _aiWorker;
 
         public CharacterWorkloads(ITownsfolkManager npcManager,
-                                  IAiWorkloadManager llmProvider)
+                                  IAiWorkloadManager aiWorker)
         {
             _npcManager = npcManager;
-            _llmProvider = llmProvider;
+            _aiWorker = aiWorker;
+
+            // Register the DescribeNPC function with the LLM Provider.
+            CharGenFunctions.RegisterCharacterGenerationFunctions(_aiWorker);
+        }
+
+        public async Task<string> DescribeNPC(string npcJson)
+        {
+            // We need to build the Request Object expected by the AI Workload Manager.
+            // We invoke the functions by the names they were registered with.
+            string functionName = CharGenFunctions.AiFunction_DescribeNPC;
+
+            // We need to provide a dictionary whose KEYS correspond to the "replacement token" strings
+            // in the prompt template.  The values are what we want injected into the prompt template
+            // in place of those Replacement Tokens.
+            Dictionary<string, object?> functionArgs = new Dictionary<string, object?>();
+            functionArgs.Add("npcJson", npcJson);
+
+            // Finally, we invoke that function on the AI Workload provider and await the result.
+            var functionResult = await _aiWorker.ExecuteFunctionAsync(functionName, functionArgs);
+            string description = string.Empty;
+
+            // If it's successful, we should have an answer from the AI.
+            // If it's not, the output of THIS method is going to the UI.
+            // Let's just return an empty string when the AI Workload fails.
+            if (functionResult.IsSuccessful)
+            {
+                description = functionResult.AiResponse??string.Empty;
+            }
+            else
+            {
+                //TODO:  Add some logging here.
+                description = string.Empty;
+            }
+
+            return description;
         }
 
         public string GenerateNPC(bool includeAI = false)
         {
+            string result = string.Empty;
+
             string npcJson = string.Empty;
             var npc = _npcManager.GenerateTownsperson();
 
             npcJson = Serialize(npc);
 
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("NPC Attributes:");
+            sb.AppendLine(npcJson);
+
             if(includeAI)
             {
-                string description = _llmProvider.DescribeNPC(npcJson);
+                // We are not using "await" here, because we need to keep this
+                // method Synchronous.  (For now...)
+                string description = this.DescribeNPC(npcJson).Result;
+
+                sb.AppendLine();
+                sb.AppendLine("NPC Description");
+                sb.AppendLine(description);
             }
 
-            return npcJson;
+            result = sb.ToString();
+
+            return result;
         }
 
         /// <summary>

@@ -11,4 +11,8 @@
     <ProjectReference Include="..\ResourceAccess\ThatDeveloperDad.LlmAccess\ThatDeveloperDad.LlmAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TypeConverters\" />
+  </ItemGroup>
+
 </Project>

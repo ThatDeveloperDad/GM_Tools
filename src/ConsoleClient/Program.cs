@@ -24,8 +24,11 @@ namespace ConsoleClient
 
             ICharacterWorkloads app = BuildApp(services);
 
-            string npcJson = app.GenerateNPC();
+            //Generate without AI.
+            string npcJson = app.GenerateNPC(true);
             Console.WriteLine(npcJson);
+
+            
 
         }
 
@@ -62,7 +65,7 @@ namespace ConsoleClient
 
             #region AI Subsystem
 
-            services.AddScoped<IPromptExecution, PromptExecution>();
+            services.AddScoped<ILlmProvider, LlmProvider>();
             services.AddScoped<IAiWorkloadManager, AiWorkloadManager>();
 
 
