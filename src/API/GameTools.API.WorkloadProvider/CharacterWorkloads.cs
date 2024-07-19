@@ -21,6 +21,24 @@ namespace GameTools.API.WorkloadProvider
             CharGenFunctions.RegisterCharacterGenerationFunctions(_aiWorker);
         }
 
+        /// <summary>
+        /// Retrieves a Dictionary of the different options that can 
+        /// be used when generating an NPC.
+        /// The Dictionary Key identifies the NPC Attribute.
+        /// The Value of a Dictionary Entry is the List of Choices.
+        /// </summary>
+        public Dictionary<string, string[]> GetNpcOptions()
+        {
+            var options = _npcManager.GetNpcOptions();
+
+            return options;
+        }
+
+        /// <summary>
+        /// Passes the NPC Data to an LLM to generate a detailed description.
+        /// </summary>
+        /// <param name="npcJson"></param>
+        /// <returns></returns>
         public async Task<string> DescribeNPC(string npcJson)
         {
             // We need to build the Request Object expected by the AI Workload Manager.
@@ -53,33 +71,29 @@ namespace GameTools.API.WorkloadProvider
             return description;
         }
 
-        public string GenerateNPC(bool includeAI = false)
+        /// <summary>
+        /// Randomly generates an NPC from the available options provided by
+        /// the configured RuleSet.
+        /// </summary>
+        /// <param name="includeAI"></param>
+        /// <returns></returns>
+        public string GenerateNPC()
         {
-            string result = string.Empty;
-
             string npcJson = string.Empty;
             var npc = _npcManager.GenerateTownsperson();
 
             npcJson = Serialize(npc);
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("NPC Attributes:");
-            sb.AppendLine(npcJson);
+            return npcJson;
+        }
 
-            if(includeAI)
-            {
-                // We are not using "await" here, because we need to keep this
-                // method Synchronous.  (For now...)
-                string description = this.DescribeNPC(npcJson).Result;
+        public string GenerateNPC(Dictionary<string, string?> selectedAttributes)
+        {
+            string npcJson = string.Empty;
+            var npc = _npcManager.GenerateTownspersonFromOptions(selectedAttributes);
 
-                sb.AppendLine();
-                sb.AppendLine("NPC Description");
-                sb.AppendLine(description);
-            }
-
-            result = sb.ToString();
-
-            return result;
+            npcJson = Serialize(npc);
+            return npcJson;
         }
 
         /// <summary>
@@ -96,5 +110,7 @@ namespace GameTools.API.WorkloadProvider
 
             return json;
         }
+
+        
     }
 }

@@ -1,7 +1,12 @@
 ﻿using GameTools.DiceEngine;
+using GameTools.Ruleset.Definitions;
 using GameTools.Ruleset.Definitions.Characters;
 using GameTools.RulesetAccess.Contracts;
 using GameTools.TownsfolkManager.Contracts;
+using GameTools.TownsfolkManager.InternalOperations;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace GameTools.TownsfolkManager
 {
@@ -69,6 +74,88 @@ namespace GameTools.TownsfolkManager
 
 
             return npc;
+        }
+
+        public Townsperson GenerateTownspersonFromOptions(Dictionary<string, string?> selectedAttributes)
+        {
+            Townsperson npc = new Townsperson();
+
+            // Select the Species and add the available details.
+            string selectedSpecies;
+            if (selectedAttributes[nameof(Townsperson.Species)] != null)
+            {
+                selectedSpecies = selectedAttributes[nameof(Townsperson.Species)]!;
+            }
+            else
+            {
+                var speciesChoices = _npcRules.SpeciesRules.List();
+                selectedSpecies = _shuffler.PickOne(speciesChoices);
+            }
+            SpeciesTemplate? speciesTemplate = _npcRules.SpeciesRules.Load(selectedSpecies);
+            if (speciesTemplate != null)
+            {
+                npc.ApplySpecies(speciesTemplate);
+            }
+            else
+            {
+                throw new Exception("Something very dumb happened.");
+            }
+
+            //Vocations
+            string selectedVocation;
+            if (selectedAttributes[nameof(Townsperson.Vocation)] != null)
+            {
+                selectedVocation = selectedAttributes[nameof(Townsperson.Vocation)]!;
+            }
+            else
+            {
+                // Select the Profession and add its details.
+                var professionChoices = _npcRules.VocationRules.List();
+                selectedVocation = _shuffler.PickOne(professionChoices);
+            }
+            VocationTemplate? vocation = _npcRules.VocationRules.Load(selectedVocation);
+            if (vocation != null)
+            {
+                npc.ApplyVocation(vocation);
+            }
+            else
+            {
+                throw new Exception("Something else stupid happened.");
+            }
+
+            string selectedBackground;
+            if (selectedAttributes[nameof(Townsperson.Background)] != null)
+            {
+                selectedBackground = selectedAttributes[nameof(Townsperson.Background)]!;
+            }
+            else
+            {
+                // Select the Background and add the available details.
+                var backgroundChoices = _npcRules.BackgroundRules.List();
+                selectedBackground = _shuffler.PickOne(backgroundChoices);
+            }
+            BackgroundTemplate? background = _npcRules.BackgroundRules.Load(selectedBackground);
+            if(background != null)
+            {
+                npc.ApplyBackground(background);
+            }
+            else
+            {
+                throw new Exception("A different bad thing happened.");
+            }
+
+            return npc;
+        }
+
+        public Dictionary<string, string[]> GetNpcOptions()
+        {
+            Dictionary<string, string[]> npcOptions = new Dictionary<string, string[]>();
+
+            npcOptions.Add(nameof(Townsperson.Species), _npcRules.SpeciesRules.List());
+            npcOptions.Add(nameof(Townsperson.Background), _npcRules.BackgroundRules.List());
+            npcOptions.Add(nameof(Townsperson.Vocation), _npcRules.VocationRules.List());
+
+            return npcOptions;
         }
 
         public Townsperson[] ListTownspersons()

@@ -84,7 +84,7 @@ namespace ThatDeveloperDad.LlmAccess
                 ExtensionData = new Dictionary<string, object>()
                 {
                     { "Temperature", 0.7 },
-                    { "MaxTokens", 1000 }
+                    { "MaxTokens", 500 }
                 }
             };
 
