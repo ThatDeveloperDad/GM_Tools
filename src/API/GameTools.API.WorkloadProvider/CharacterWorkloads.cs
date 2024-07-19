@@ -77,33 +77,23 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="includeAI"></param>
         /// <returns></returns>
-        public string GenerateNPC(bool includeAI = false)
+        public string GenerateNPC()
         {
-            string result = string.Empty;
-
             string npcJson = string.Empty;
             var npc = _npcManager.GenerateTownsperson();
 
             npcJson = Serialize(npc);
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("NPC Attributes:");
-            sb.AppendLine(npcJson);
+            return npcJson;
+        }
 
-            if(includeAI)
-            {
-                // We are not using "await" here, because we need to keep this
-                // method Synchronous.  (For now...)
-                string description = this.DescribeNPC(npcJson).Result;
+        public string GenerateNPC(Dictionary<string, string?> selectedAttributes)
+        {
+            string npcJson = string.Empty;
+            var npc = _npcManager.GenerateTownspersonFromOptions(selectedAttributes);
 
-                sb.AppendLine();
-                sb.AppendLine("NPC Description");
-                sb.AppendLine(description);
-            }
-
-            result = sb.ToString();
-
-            return result;
+            npcJson = Serialize(npc);
+            return npcJson;
         }
 
         /// <summary>
@@ -120,5 +110,7 @@ namespace GameTools.API.WorkloadProvider
 
             return json;
         }
+
+        
     }
 }

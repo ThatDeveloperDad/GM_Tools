@@ -14,6 +14,8 @@ namespace GameTools.TownsfolkManager.Contracts
         /// <returns></returns>
         Townsperson GenerateTownsperson();
 
+        Townsperson GenerateTownspersonFromOptions(Dictionary<string, string?> selectedAttributes);
+
         /// <summary>
         /// Retrieves the dictionary of options that are used when creating an
         /// NPC.

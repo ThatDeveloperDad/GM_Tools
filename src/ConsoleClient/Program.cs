@@ -14,6 +14,7 @@ using ThatDeveloperDad.LlmAccess;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 // See https://aka.ms/new-console-template for more information
 namespace ConsoleClient
@@ -60,27 +61,50 @@ namespace ConsoleClient
                     if(userSelects.Trim().ToUpper() == yesTrigger.ToUpper())
                     {
                         var selectedOptions = new Dictionary<string, string?>();
-                        // set up a static function to:
-                        // Prompt the User for each list of NpcOptions in the
-                        // npcOptions dictionary.
-                        // When building the Answers List for each, add a choice for 
-                        // "Idk, You Pick"
-                        // Accumulate the selections in the selectedOptions var
-                        // and pass that to an overload of GenerateNPC that 
-                        // lets us use the user's choices when building the NPC
-                        // attributes.
-                    }
-                    else
-                    {
-                        npcJson = app.GenerateNPC();
+                        foreach(var entry in npcOptions)
+                        {
+                            selectedOptions.Add(entry.Key, null);
+                        }
+
+                        // For each attribute that we have a list of options for, do this thing.
+                        foreach(var entry in npcOptions)
+                        {
+                            string attributeName = entry.Key;
+                            string[] attributeOptions = entry.Value;
+
+                            Console.WriteLine("==============");
+                            Console.WriteLine($"Select {attributeName}");
+                            string selectOptionPrompt = $"Choose the {attributeName} from the following list.";
+                            Console.WriteLine(selectOptionPrompt);
+                            
+                            // Generates a numbered list that shows each AttributeOption
+                            for (int itemIndex = 0; itemIndex < attributeOptions.Length; itemIndex++)
+                            {
+                                string optionText = $"{itemIndex + 1}:  {attributeOptions[itemIndex]} | ";
+                                Console.Write(optionText);
+                            }
+                            Console.WriteLine(" or press [ENTER] to leave it random.");
+                            string? choice = Console.ReadLine();
+                            int? choiceIndex = null;
+                            if(int.TryParse(choice ?? "", out int parsedIndex) && parsedIndex>0)
+                            {
+                                // Remember, when we display the choices, we're adding 1 to the array index.
+                                choiceIndex = parsedIndex - 1;
+                                selectedOptions[attributeName] = entry.Value[choiceIndex ?? 0];
+                            }
+
+                        }
+
+                        npcJson = app.GenerateNPC(selectedOptions);
                     }
                 }
-                else
+               
+                if(string.IsNullOrWhiteSpace(npcJson))
                 {
                     npcJson = app.GenerateNPC();
                 }
-               
-                Console.WriteLine("Here's your new NPC.");
+
+                Console.WriteLine("Here'a preview of the NPC.");
                 Console.WriteLine(npcJson);
 
                 userInput = PromptUser(generateDescriptionPrompt, yesNoOptions);
@@ -88,7 +112,11 @@ namespace ConsoleClient
                 {
                     Console.WriteLine("This may take a few seconds.  Please be patient.");
                     Console.WriteLine();
+                    
                     string description = app.DescribeNPC(npcJson).Result;
+                    Console.WriteLine("Attributes:");
+                    Console.WriteLine(npcJson);
+                    Console.WriteLine();
                     Console.WriteLine("NPC Description");
                     Console.WriteLine();
                     Console.WriteLine(description);

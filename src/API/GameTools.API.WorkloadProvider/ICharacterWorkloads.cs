@@ -26,7 +26,9 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="includeAI">If true, additionally sends the generated NPC to the LLM</param>
         /// <returns>The Generated NPC with or without the AI description.</returns>
-        string GenerateNPC(bool includeAI = false);
+        string GenerateNPC();
+
+        string GenerateNPC(Dictionary<string, string?> selectedAttributes);
 
         /// <summary>
         /// Accepts a JsonString with NPC Attributes and passes that to the LLM Service
