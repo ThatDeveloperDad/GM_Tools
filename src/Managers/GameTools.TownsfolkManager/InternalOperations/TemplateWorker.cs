@@ -1,4 +1,5 @@
 ﻿using GameTools.DiceEngine;
+using GameTools.Framework.Concepts;
 using GameTools.Ruleset.Definitions;
 using GameTools.Ruleset.Definitions.Characters;
 using GameTools.TownsfolkManager.Contracts;
@@ -24,6 +25,30 @@ namespace GameTools.TownsfolkManager.InternalOperations
             string genderOption = shuffler.PickOne(template.GenderOptions);
             npc.Appearance.Gender = genderOption;
             npc.Pronouns = template.GetPronouns(genderOption);
+
+            npc.Appearance.HeightCm = dice.ApplyVarianceRange(template.AverageHeightCm, template.HeightVarianceCm);
+            npc.Appearance.WeightKg = dice.ApplyVarianceRange(template.AverageWeightKg, template.WeightVarianceKg);
+
+            // For NPC Age, let's see if they're retired or not.
+            bool isRetired = dice.CoinToss();
+            int minAge;
+            int maxAge;
+            if (isRetired)
+            {
+                npc.Vocation.IsRetired = true;
+                minAge = template.AgeMilestones[AgeCategoryKind.Retirement].GetValueOrDefault();
+                maxAge = template.AgeMilestones[AgeCategoryKind.Lifespan].GetValueOrDefault();
+            }
+            else
+            {
+                minAge = template.AgeMilestones[AgeCategoryKind.Adulthood].GetValueOrDefault();
+                maxAge = template.AgeMilestones[AgeCategoryKind.Retirement].GetValueOrDefault();
+            }
+
+            minAge = dice.ApplyFuzzFactor(minAge, 10);
+            maxAge = dice.ApplyFuzzFactor(maxAge, 10);
+
+            npc.AgeYears = dice.GetRandomBetween(minAge, maxAge);
 
             return npc;
         }

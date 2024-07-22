@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\GameTools.Framework\GameTools.Framework.csproj" />
+    <ProjectReference Include="..\..\Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj" />
+  </ItemGroup>
+
 </Project>

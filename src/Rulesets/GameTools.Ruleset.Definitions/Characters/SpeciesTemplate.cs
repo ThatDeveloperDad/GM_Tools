@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GameTools.Framework.Concepts;
+using System.ComponentModel.DataAnnotations;
 
 namespace GameTools.Ruleset.Definitions.Characters
 {
@@ -9,6 +10,9 @@ namespace GameTools.Ruleset.Definitions.Characters
         public readonly Dictionary<string, string> DefaultPronounMapping;
         public readonly List<string> _customGenderOptions;
         public readonly Dictionary<string, string> _customPronounMappings;
+
+        public readonly Dictionary<AgeCategoryKind, int?> AgeMilestones;
+
 
         public SpeciesTemplate():this(string.Empty) { }
 
@@ -22,9 +26,18 @@ namespace GameTools.Ruleset.Definitions.Characters
             DefaultPronounMapping["Ambiguous"] = "They/Them/Theirs";
             DefaultPronounMapping["Female"] = "She/Her/Hers";
             DefaultPronounMapping["Male"] = "He/Him/His";
+
+            AgeMilestones = new Dictionary<AgeCategoryKind, int?>
+            {
+                { AgeCategoryKind.Adulthood, null },
+                { AgeCategoryKind.Retirement, null },
+                { AgeCategoryKind.Lifespan, null }
+            };
         }
         
         public string Name { get; init; }
+
+        #region Gender Options
 
         public void AddGenderOptions(Tuple<string, string>[] genderOptions)
         {
@@ -70,5 +83,21 @@ namespace GameTools.Ruleset.Definitions.Characters
 
             return pronouns;
         }
+
+        #endregion // Gender Options
+
+        public int AverageHeightCm { get; set; }
+
+        public int HeightVarianceCm { get; set; }
+
+        public int AverageWeightKg { get; set; }
+
+        public int WeightVarianceKg { get; set; }
+
+        public void SetAgeMilestone(AgeCategoryKind ageCategory, int averageAge)
+        {
+            AgeMilestones[ageCategory] = averageAge;
+        }
+
     }
 }

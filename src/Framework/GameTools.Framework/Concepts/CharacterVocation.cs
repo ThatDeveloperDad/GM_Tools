@@ -16,7 +16,18 @@ public sealed class CharacterVocation
         LengthOfCareer = (decimal)0.0;
     }
 
-    public string Name { get; set; }
+    private string _name;
+    public string Name 
+    {
+        get
+        {
+            return $"{_name}{RetiredValue}";
+        }
+        set
+        {
+            _name = value;
+        } 
+    }
 
     public string Description { get; set; }
 
@@ -25,6 +36,10 @@ public sealed class CharacterVocation
     public string Title { get; set; }
 
     public decimal LengthOfCareer { get; set; }
+
+    public bool IsRetired { get; set; }
+
+    private string RetiredValue => IsRetired ? " (Retired)" : string.Empty;
 
     public void AddSkill(string skill)
     {
