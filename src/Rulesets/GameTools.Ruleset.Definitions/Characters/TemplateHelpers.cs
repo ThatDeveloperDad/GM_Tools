@@ -1,4 +1,5 @@
-﻿using GameTools.Framework.Concepts;
+﻿using GameTools.Framework;
+using GameTools.Framework.Concepts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,21 @@ namespace GameTools.Ruleset.Definitions.Characters
             tplt.SetAgeMilestone(AgeCategoryKind.Adulthood, adult);
             tplt.SetAgeMilestone(AgeCategoryKind.Retirement, retire);
             tplt.SetAgeMilestone(AgeCategoryKind.Lifespan, maxAge);
+
+            return tplt;
+        }
+
+        public static SpeciesTemplate SetSpeciesAppearanceOptions(
+                        this SpeciesTemplate tplt,
+                        IntegumentKind integumentKind,
+                        string[] integumentColors,
+                        string[] integumentStyles,
+                        string[] complexionColors)
+        {
+            tplt.IntegumentKind = integumentKind;
+            tplt.AddIntegumentColors(integumentColors);
+            tplt.AddIntegumentStyles(integumentStyles);
+            tplt.AddComplexionColors(complexionColors);
 
             return tplt;
         }

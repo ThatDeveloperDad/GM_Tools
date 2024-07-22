@@ -1,5 +1,8 @@
-﻿using GameTools.Framework.Concepts;
+﻿using GameTools.Framework;
+using GameTools.Framework.Concepts;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GameTools.Ruleset.Definitions.Characters
 {
@@ -8,11 +11,13 @@ namespace GameTools.Ruleset.Definitions.Characters
     {
         public readonly string[] DefaultGenderChoices = [ "Ambiguous", "Female", "Male" ];
         public readonly Dictionary<string, string> DefaultPronounMapping;
-        public readonly List<string> _customGenderOptions;
-        public readonly Dictionary<string, string> _customPronounMappings;
-
+        private readonly List<string> _customGenderOptions;
+        private readonly Dictionary<string, string> _customPronounMappings;
         public readonly Dictionary<AgeCategoryKind, int?> AgeMilestones;
 
+        private readonly List<string> _integumentColors;
+        private readonly List<string> _integumentStyles;
+        private readonly List<string> _skinColors;
 
         public SpeciesTemplate():this(string.Empty) { }
 
@@ -33,6 +38,10 @@ namespace GameTools.Ruleset.Definitions.Characters
                 { AgeCategoryKind.Retirement, null },
                 { AgeCategoryKind.Lifespan, null }
             };
+
+            _integumentColors = new List<string>();
+            _integumentStyles = new List<string>();
+            _skinColors = new List<string>();
         }
         
         public string Name { get; init; }
@@ -86,6 +95,7 @@ namespace GameTools.Ruleset.Definitions.Characters
 
         #endregion // Gender Options
 
+        #region Height, Weight, and Age
         public int AverageHeightCm { get; set; }
 
         public int HeightVarianceCm { get; set; }
@@ -99,5 +109,48 @@ namespace GameTools.Ruleset.Definitions.Characters
             AgeMilestones[ageCategory] = averageAge;
         }
 
+        #endregion
+
+        #region Integument options
+
+        public IntegumentKind IntegumentKind { get; set; }
+
+        public string[] IntegumentColorOptions => _integumentColors.ToArray();
+
+        public string[] IntegumentStyleOptions => _integumentStyles.ToArray();
+
+        public string[] ComplexionColors => _skinColors.ToArray();
+
+        public void AddIntegumentColor(string color)
+        {
+            _integumentColors.Add(color);
+        }
+
+        public void AddIntegumentColors(string[] colors)
+        {
+            _integumentColors.AddRange(colors);
+        }
+
+        public void AddIntegumentStyle(string style)
+        {
+            _integumentStyles.Add(style);
+        }
+
+        public void AddIntegumentStyles(string[] styles)
+        {
+            _integumentStyles.AddRange(styles);
+        }
+
+        public void AddComplexionColor(string color)
+        {
+            _skinColors.Add(color);
+        }
+
+        public void AddComplexionColors(string[] colors)
+        {
+            _skinColors.AddRange(colors);
+        }
+
+        #endregion
     }
 }
