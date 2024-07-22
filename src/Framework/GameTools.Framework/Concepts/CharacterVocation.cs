@@ -30,4 +30,9 @@ public sealed class CharacterVocation
     {
         _skills.Add(skill);
     }
+
+    public void AddSkills(string[] skills)
+    {
+        _skills.AddRange(skills);
+    }
 }

@@ -116,5 +116,17 @@ public class Vocations5eData : VocationData
         VocationTemplate explorerTemplate = new VocationTemplate("Explorer");
         RegisterVocation(explorerTemplate);
 
+        VocationTemplate shopKeeper = new VocationTemplate("Shop Keeper");
+        RegisterVocation(shopKeeper);
+
+        VocationTemplate tavernKeeper = new VocationTemplate("Tavern Keeper");
+        RegisterVocation(tavernKeeper);
+
+        VocationTemplate Barkeep = new VocationTemplate("BarKeep");
+        RegisterVocation(Barkeep);
+
+        VocationTemplate Servant = new VocationTemplate("Servant");
+        RegisterVocation(Servant);
+
     }
 }
