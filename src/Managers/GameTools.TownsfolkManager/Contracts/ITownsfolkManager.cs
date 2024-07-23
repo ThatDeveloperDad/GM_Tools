@@ -20,7 +20,7 @@ namespace GameTools.TownsfolkManager.Contracts
         /// Retrieves the dictionary of options that are used when creating an
         /// NPC.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A keyed dictionary of character generation options where the key contains the Category of the Templates, and the value is a list of the template Names.</returns>
         Dictionary<string, string[]> GetNpcOptions();
 
         /// <summary>
