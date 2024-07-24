@@ -121,17 +121,18 @@ this.ScenarioInitialize(scenarioInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="RulesetAccess is not configured")]
+        [Xunit.SkippableFactAttribute(DisplayName="RulesetAccess is not configured", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "GetNPCOptions")]
         [Xunit.TraitAttribute("Description", "RulesetAccess is not configured")]
         [Xunit.TraitAttribute("Category", "UnhappyPath")]
         public async System.Threading.Tasks.Task RulesetAccessIsNotConfigured()
         {
             string[] tagsOfScenario = new string[] {
+                    "ignore",
                     "UnhappyPath"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("RulesetAccess is not configured", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 13
+#line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -141,30 +142,31 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 14
+#line 16
  await testRunner.GivenAsync("Ruleset Access is not properly configured", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 17
  await testRunner.WhenAsync("I call GetNpcOptions", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 16
+#line 18
  await testRunner.ThenAsync("I should receive an empty dictionary", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Empty Lists of CharacterOptions in the Dictionary.")]
+        [Xunit.SkippableFactAttribute(DisplayName="Empty Lists of CharacterOptions in the Dictionary.", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "GetNPCOptions")]
         [Xunit.TraitAttribute("Description", "Empty Lists of CharacterOptions in the Dictionary.")]
         [Xunit.TraitAttribute("Category", "UnhappyPath")]
         public async System.Threading.Tasks.Task EmptyListsOfCharacterOptionsInTheDictionary_()
         {
             string[] tagsOfScenario = new string[] {
+                    "ignore",
                     "UnhappyPath"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Empty Lists of CharacterOptions in the Dictionary.", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 20
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -174,14 +176,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 21
+#line 25
  await testRunner.GivenAsync("Ruleset Access is configured but the Ruleset is missing required template collect" +
                         "ions.", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 22
+#line 26
  await testRunner.WhenAsync("I call GetNpcOptions", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 23
+#line 27
  await testRunner.ThenAsync("I should receive a Dictionary with empty arrays for the missing option sets.", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

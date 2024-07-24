@@ -17,7 +17,12 @@
 
   <ItemGroup>
     <Folder Include="Drivers\" />
-    <Folder Include="Support\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
+    <ProjectReference Include="..\..\ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj" />
+    <ProjectReference Include="..\..\Rulesets\GameTools.Ruleset.Definitions\GameTools.Ruleset.Definitions.csproj" />
   </ItemGroup>
 
 </Project>
