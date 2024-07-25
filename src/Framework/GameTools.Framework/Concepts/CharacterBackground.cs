@@ -28,4 +28,9 @@ public sealed class CharacterBackground
     {
         _skills.Add(skill);
     }
+
+    public void AddSkills(string[] skills)
+    {
+        _skills.AddRange(skills);
+    }
 }
