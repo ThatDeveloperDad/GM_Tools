@@ -107,13 +107,55 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
         [Given("Ruleset Access is configured but the Ruleset is missing required template collections.")]
         public void GivenRulesetAccessIsConfiguredButTheRulesetIsMissingRequiredTemplateCollections_()
         {
-            throw new PendingStepException();
+            var mockSpeciesRules = RulesetFakes.CreatePopulatedSpeciesRules(0);
+
+            var mockBackgroundRules = RulesetFakes.CreatePopulatedBackgrounds(0);
+
+            var mockVocationRules = RulesetFakes.CreatePopulatedVocations(0);
+
+            var mockRuleset = new Mock<ICharacterCreationRules>();
+            mockRuleset.Setup(x => x.SpeciesRules)
+                       .Returns(mockSpeciesRules);
+            mockRuleset.Setup(x => x.BackgroundRules)
+                       .Returns(mockBackgroundRules);
+            mockRuleset.Setup(x => x.VocationRules)
+                       .Returns(mockVocationRules);
+
+            var mockRulesetAccess = new Mock<IRulesetAccess>();
+            mockRulesetAccess.Setup(x => x.LoadCharacterCreationRules())
+                       .Returns(mockRuleset.Object);
+
+            var mockShuffler = new Mock<ICardDeck>();
+            var mockDiceBag = new Mock<DiceBag>();
+
+            _testClass = new TownsfolkManager(mockRulesetAccess.Object,
+                                              mockShuffler.Object,
+                                              mockDiceBag.Object);
         }
 
         [Then("I should receive a Dictionary with empty arrays for the missing option sets.")]
         public void ThenIShouldReceiveADictionaryWithEmptyArraysForTheMissingOptionSets_()
         {
-            throw new PendingStepException();
+            string[]? speciesList = null;
+            _npcOptions?.TryGetValue("Species", out speciesList);
+            int? speciesCount = speciesList?.Length;
+
+            string[]? vocationList = null;
+            _npcOptions?.TryGetValue("Vocation", out vocationList);
+            int? vocationCount = vocationList?.Length;
+
+            string[]? backgroundList = null;
+            _npcOptions.TryGetValue("Background", out backgroundList);
+            int? backgroundCount = backgroundList?.Length;
+
+            Assert.NotNull(speciesCount);
+            Assert.True(speciesCount == 0);
+
+            Assert.NotNull(backgroundCount);
+            Assert.True(backgroundCount == 0);
+
+            Assert.NotNull(vocationCount);
+            Assert.True(vocationCount == 0);
         }
     }
 }

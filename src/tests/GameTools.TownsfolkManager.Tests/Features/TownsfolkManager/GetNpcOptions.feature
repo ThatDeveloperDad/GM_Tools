@@ -20,7 +20,7 @@ Scenario:  RulesetAccess is not configured
 
 		# Ignore this scenario for now while we get ONE BDD test running and passing
 	# so that we can start working on some automation goodness.
-@ignore @UnhappyPath
+@UnhappyPath
 Scenario: Empty Lists of CharacterOptions in the Dictionary.
 	Given Ruleset Access is configured but the Ruleset is missing required template collections.
 	When I call GetNpcOptions

@@ -155,14 +155,13 @@ this.ScenarioInitialize(scenarioInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Empty Lists of CharacterOptions in the Dictionary.", Skip="Ignored")]
+        [Xunit.SkippableFactAttribute(DisplayName="Empty Lists of CharacterOptions in the Dictionary.")]
         [Xunit.TraitAttribute("FeatureTitle", "GetNPCOptions")]
         [Xunit.TraitAttribute("Description", "Empty Lists of CharacterOptions in the Dictionary.")]
         [Xunit.TraitAttribute("Category", "UnhappyPath")]
         public async System.Threading.Tasks.Task EmptyListsOfCharacterOptionsInTheDictionary_()
         {
             string[] tagsOfScenario = new string[] {
-                    "ignore",
                     "UnhappyPath"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Empty Lists of CharacterOptions in the Dictionary.", null, tagsOfScenario, argumentsOfScenario, featureTags);
