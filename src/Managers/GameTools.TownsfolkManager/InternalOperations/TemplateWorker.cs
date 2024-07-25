@@ -57,10 +57,17 @@ namespace GameTools.TownsfolkManager.InternalOperations
 
         private static Townsperson SetBodyAttributes(this Townsperson npc, SpeciesTemplate template, ICardDeck shuffler, IDiceBag dice)
         {
-            string genderOption = shuffler.PickOne(template.GenderOptions);
+            string genderOption = shuffler.PickOne(template.GenderOptions)??string.Empty;
             npc.Appearance.Gender = genderOption;
-            npc.Pronouns = template.GetPronouns(genderOption);
-
+            if (string.IsNullOrWhiteSpace(genderOption))
+            {
+                npc.Pronouns = template.DefaultPronounMapping["Ambiguous"];
+            }
+            else
+            {
+                npc.Pronouns = template.GetPronouns(genderOption);
+            }
+            
             npc.Appearance.HeightCm = dice.ApplyVarianceRange(template.AverageHeightCm, template.HeightVarianceCm);
             npc.Appearance.WeightKg = dice.ApplyVarianceRange(template.AverageWeightKg, template.WeightVarianceKg);
 
@@ -72,7 +79,7 @@ namespace GameTools.TownsfolkManager.InternalOperations
             npc.Appearance.IntegumentKind = tplt.IntegumentKind;
             npc.Appearance.IntegumentColor = shuffler.PickOne(tplt.IntegumentColorOptions);
             npc.Appearance.IntegumentStyle = shuffler.PickOne(tplt.IntegumentStyleOptions);
-            npc.Appearance.Complexion = shuffler.PickOne(tplt.ComplexionColors);
+            npc.Appearance.Complexion = shuffler.PickOne(tplt.ComplexionColors)??string.Empty;
 
             return npc;
         }

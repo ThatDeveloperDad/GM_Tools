@@ -10,6 +10,6 @@ public interface ICardDeck
     /// </summary>
     /// <typeparam name="T">The Type of the "Card"</typeparam>
     /// <param name="deck">An array of T, representing a finite set of options to choose from</param>
-    /// <returns>One of the "cards" in the "deck"</returns>
-    T PickOne<T>(T[] deck);
+    /// <returns>One of the "cards" in the "deck".  If the deck has no cards, this value MAY be null.</returns>
+    T? PickOne<T>(T[] deck);
 }

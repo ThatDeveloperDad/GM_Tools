@@ -2,8 +2,11 @@
 
 public class DeckSimulator : ICardDeck
 {
-    public T PickOne<T>(T[] deck)
+    public T? PickOne<T>(T[] deck)
     {
+        if (deck.Length == 0)
+            return default;
+
         // Shuffle the deck.
         var workingCopy = deck.ToArray();
         Random.Shared.Shuffle(workingCopy);
