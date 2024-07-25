@@ -10,7 +10,7 @@ namespace GameTools.Framework
             Gender = string.Empty;
             Complexion = string.Empty;
             BodyMarkings = string.Empty;
-            Integument = IntegumentKind.None;
+            IntegumentKind = IntegumentKind.None;
             BodyStyle = string.Empty;
             EyeColor = string.Empty;
             Description = string.Empty;
@@ -34,8 +34,10 @@ namespace GameTools.Framework
         /// What kind of "covering" has the character got on their body?
         /// eg: Hair, Scales, Feathers, Bark, None
         /// </summary>
-        public IntegumentKind Integument {get; set;}
-        
+        public IntegumentKind IntegumentKind {get; set;}
+
+        public string Integument => IntegumentKind.ToString();
+
         /// <summary>
         /// What color are the integuments?
         /// </summary>

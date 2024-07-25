@@ -15,6 +15,7 @@ namespace GameTools.TownsfolkManager.Contracts
         {
             GivenName = string.Empty;
             FamilyName = string.Empty;
+            Pronouns = string.Empty;
             Species = string.Empty;
             Appearance = new CharacterAppearance();
             Vocation = new CharacterVocation();
@@ -26,6 +27,8 @@ namespace GameTools.TownsfolkManager.Contracts
         public string GivenName { get; set; }
 
         public string FamilyName { get; set; }
+
+        public string Pronouns { get; set; }
 
         public string FullName => $"{GivenName} {FamilyName}";
         

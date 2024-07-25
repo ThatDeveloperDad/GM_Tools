@@ -30,10 +30,16 @@ namespace GameTools.TownsfolkManager
         {
             Townsperson npc = new Townsperson();
 
+            var selectedOptions = new Dictionary<string, string?>();
+            foreach (var entry in GetNpcOptions())
+            {
+                selectedOptions.Add(entry.Key, null);
+            }
+
             // Select the Species and add the available details.
             var speciesChoices = _npcRules.SpeciesRules.List();
             var selectedSpecies = _shuffler.PickOne(speciesChoices);
-            npc.Species = selectedSpecies;
+            selectedOptions[nameof(Townsperson.Species)] = selectedSpecies;
 
             // Name, Subspecies, and Appearance all derive from the Species.
 
@@ -54,7 +60,7 @@ namespace GameTools.TownsfolkManager
             // Select the Profession and add its details.
             var professionChoices = _npcRules.VocationRules.List();
             var npcProfession = _shuffler.PickOne(professionChoices);
-            npc.Vocation.Name = npcProfession;
+            selectedOptions[nameof(Townsperson.Vocation)] = npcProfession;
             
             // Does not follow from Species. May follow from Background. Probably not.
             //      Profession Name
@@ -65,13 +71,14 @@ namespace GameTools.TownsfolkManager
             // Select the Background and add the available details.
             var backgroundChoices = _npcRules.BackgroundRules.List();
             var npcBackground = _shuffler.PickOne(backgroundChoices);
-            npc.Background.Name = npcBackground;
+            selectedOptions[nameof(Townsperson.Background)] = npcBackground;
 
             //      Personality (Seeds)
             //      Skills / Proficiencies
 
             // Personality      (We're going to roll for KEYWORD attributes.)
 
+            npc = GenerateTownspersonFromOptions(selectedOptions);
 
             return npc;
         }
@@ -94,7 +101,7 @@ namespace GameTools.TownsfolkManager
             SpeciesTemplate? speciesTemplate = _npcRules.SpeciesRules.Load(selectedSpecies);
             if (speciesTemplate != null)
             {
-                npc.ApplySpecies(speciesTemplate);
+                npc.ApplySpecies(speciesTemplate, _shuffler, _diceBag);
             }
             else
             {
@@ -116,7 +123,7 @@ namespace GameTools.TownsfolkManager
             VocationTemplate? vocation = _npcRules.VocationRules.Load(selectedVocation);
             if (vocation != null)
             {
-                npc.ApplyVocation(vocation);
+                npc.ApplyVocation(vocation, _shuffler, _diceBag);
             }
             else
             {
@@ -137,7 +144,7 @@ namespace GameTools.TownsfolkManager
             BackgroundTemplate? background = _npcRules.BackgroundRules.Load(selectedBackground);
             if(background != null)
             {
-                npc.ApplyBackground(background);
+                npc.ApplyBackground(background, _shuffler, _diceBag);
             }
             else
             {
