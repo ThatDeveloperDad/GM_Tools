@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Engines\Gametools.DiceEngine\Gametools.DiceEngine.csproj" />
+    <ProjectReference Include="..\..\Engines\GameTools.DiceEngine\GameTools.DiceEngine.csproj" />
   </ItemGroup>
 
 </Project>
