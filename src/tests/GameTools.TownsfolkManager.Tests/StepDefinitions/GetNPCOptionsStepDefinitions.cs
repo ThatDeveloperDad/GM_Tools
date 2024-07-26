@@ -18,6 +18,9 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
 
         private ITownsfolkManager _testClass;
         private Dictionary<string, string[]?>? _npcOptions;
+        private ICardDeck _mockShuffler = new Mock<ICardDeck>().Object;
+        private IDiceBag _mockDiceBag = new Mock<DiceBag>().Object;
+
 
         [BeforeScenario]
         public void TestSetup()
@@ -34,33 +37,15 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
 
             // Can't Mock Abstract Classes.  Gonna have to use Fakes Instead
             // for these.
-            var mockSpeciesRules = RulesetFakes.CreatePopulatedSpeciesRules(3);
-
-            var mockBackgroundRules = RulesetFakes.CreatePopulatedBackgrounds(4);
-
-            var mockVocationRules = RulesetFakes.CreatePopulatedVocations(3);
-
-            var mockRuleset = new Mock<ICharacterCreationRules>();
-            mockRuleset.Setup(x => x.SpeciesRules)
-                       .Returns(mockSpeciesRules);
-            mockRuleset.Setup(x => x.BackgroundRules)
-                       .Returns(mockBackgroundRules);
-            mockRuleset.Setup(x => x.VocationRules)
-                       .Returns(mockVocationRules);
-            
-            var mockRulesetAccess = new Mock<IRulesetAccess>();
-            mockRulesetAccess.Setup(x => x.LoadCharacterCreationRules())
-                       .Returns(mockRuleset.Object);
-
-            var mockShuffler = new Mock<ICardDeck>();
-            var mockDiceBag = new Mock<DiceBag>();
+            Mock<IRulesetAccess> mockRulesetAccess = CreateMockRulesetAccess(3);
 
             _testClass = new TownsfolkManager(mockRulesetAccess.Object,
-                                              mockShuffler.Object,
-                                              mockDiceBag.Object);
+                                              _mockShuffler,
+                                              _mockDiceBag);
 
         }
 
+        
         [When("I call GetNpcOptions")]
         public void WhenICallGetNpcOptions()
         {
@@ -95,42 +80,30 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
         [Given("Ruleset Access is not properly configured")]
         public void GivenRulesetAccessIsNotProperlyConfigured()
         {
-            throw new PendingStepException();
+            var mockRulesetAccess = CreateMockRulesetAccess(null);
+
+
+            _testClass = new TownsfolkManager(mockRulesetAccess.Object,
+                                              _mockShuffler,
+                                              _mockDiceBag);
         }
 
-        [Then("I should receive an empty dictionary")]
-        public void ThenIShouldReceiveAnEmptyDictionary()
+        [Then("GetNpcOptions throws An InvalidOperationException.")]
+        public void ThenGetNpcOptionsThowsAnInvalidOperationException_()
         {
-            throw new PendingStepException();
+            Assert.Throws<InvalidOperationException>(() => _testClass.GetNpcOptions());
         }
 
         [Given("Ruleset Access is configured but the Ruleset is missing required template collections.")]
         public void GivenRulesetAccessIsConfiguredButTheRulesetIsMissingRequiredTemplateCollections_()
         {
-            var mockSpeciesRules = RulesetFakes.CreatePopulatedSpeciesRules(0);
-
-            var mockBackgroundRules = RulesetFakes.CreatePopulatedBackgrounds(0);
-
-            var mockVocationRules = RulesetFakes.CreatePopulatedVocations(0);
-
-            var mockRuleset = new Mock<ICharacterCreationRules>();
-            mockRuleset.Setup(x => x.SpeciesRules)
-                       .Returns(mockSpeciesRules);
-            mockRuleset.Setup(x => x.BackgroundRules)
-                       .Returns(mockBackgroundRules);
-            mockRuleset.Setup(x => x.VocationRules)
-                       .Returns(mockVocationRules);
-
-            var mockRulesetAccess = new Mock<IRulesetAccess>();
-            mockRulesetAccess.Setup(x => x.LoadCharacterCreationRules())
-                       .Returns(mockRuleset.Object);
-
-            var mockShuffler = new Mock<ICardDeck>();
-            var mockDiceBag = new Mock<DiceBag>();
+            
+            var mockRulesetAccess = CreateMockRulesetAccess(0);
+            
 
             _testClass = new TownsfolkManager(mockRulesetAccess.Object,
-                                              mockShuffler.Object,
-                                              mockDiceBag.Object);
+                                              _mockShuffler,
+                                              _mockDiceBag);
         }
 
         [Then("I should receive a Dictionary with empty arrays for the missing option sets.")]
@@ -157,5 +130,35 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
             Assert.NotNull(vocationCount);
             Assert.True(vocationCount == 0);
         }
+
+        private static Mock<IRulesetAccess> CreateMockRulesetAccess(int? templatesToAdd)
+        {
+            var mockRulesetAccess = new Mock<IRulesetAccess>();
+            var mockRuleset = new Mock<ICharacterCreationRules>();
+
+            if (templatesToAdd != null)
+            {
+                var mockSpeciesRules = RulesetFakes.CreatePopulatedSpeciesRules(templatesToAdd.GetValueOrDefault());
+                var mockBackgroundRules = RulesetFakes.CreatePopulatedBackgrounds(templatesToAdd.GetValueOrDefault());
+                var mockVocationRules = RulesetFakes.CreatePopulatedVocations(templatesToAdd.GetValueOrDefault());
+
+                mockRuleset.Setup(x => x.SpeciesRules)
+                           .Returns(mockSpeciesRules);
+                mockRuleset.Setup(x => x.BackgroundRules)
+                           .Returns(mockBackgroundRules);
+                mockRuleset.Setup(x => x.VocationRules)
+                           .Returns(mockVocationRules);
+                mockRulesetAccess.Setup(x => x.LoadCharacterCreationRules())
+                       .Returns(mockRuleset.Object);
+            }
+            else
+            {
+                mockRulesetAccess.Setup(x => x.LoadCharacterCreationRules())
+                    .Throws(new InvalidOperationException("Ruleset has not been initialized."));
+            }
+
+            return mockRulesetAccess;
+        }
+
     }
 }

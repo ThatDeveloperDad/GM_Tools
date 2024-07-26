@@ -11,15 +11,12 @@ Scenario: Happy Path Scenario: Retrieving NPC Options Successfully
 
 	# Ignore this scenario for now while we get ONE BDD test running and passing
 	# so that we can start working on some automation goodness.
-@ignore @UnhappyPath
+@UnhappyPath
 Scenario:  RulesetAccess is not configured
 	Given Ruleset Access is not properly configured
-	When I call GetNpcOptions
-	Then I should receive an empty dictionary
-	#  Not sure I like this behavior.  If Ruleset Access is null, we have a Fatal failure mode.
+	Then GetNpcOptions throws An InvalidOperationException.
+	
 
-		# Ignore this scenario for now while we get ONE BDD test running and passing
-	# so that we can start working on some automation goodness.
 @UnhappyPath
 Scenario: Empty Lists of CharacterOptions in the Dictionary.
 	Given Ruleset Access is configured but the Ruleset is missing required template collections.
