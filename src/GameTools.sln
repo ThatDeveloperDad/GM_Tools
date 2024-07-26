@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThatDeveloperDad.AIWorkload
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThatDeveloperDad.LlmAccess", "ResourceAccess\ThatDeveloperDad.LlmAccess\ThatDeveloperDad.LlmAccess.csproj", "{16623851-601C-4AB0-875A-1FD2AC91B84F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.TownsfolkManager.Tests", "tests\GameTools.TownsfolkManager.Tests\GameTools.TownsfolkManager.Tests.csproj", "{68FC1ED6-26A4-4472-941D-2ABCBAF4186B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.TownsfolkManager.Tests", "Tests\GameTools.TownsfolkManager.Tests\GameTools.TownsfolkManager.Tests.csproj", "{68FC1ED6-26A4-4472-941D-2ABCBAF4186B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
