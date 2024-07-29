@@ -177,12 +177,12 @@ namespace ConsoleClient
             var services = new ServiceCollection();
 
             #region TownsFolk Subsystem
-            services.AddScoped<ITownsfolkManager, TownsfolkManager>();
+            services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 
             services.AddScoped<IRulesetAccess>((sp) => 
                 {
                     IRulesetAccess service = 
-                        new RulesetAccess()
+                        new RulesetProvider()
                             .Use5eSRD();
 
                     return service;

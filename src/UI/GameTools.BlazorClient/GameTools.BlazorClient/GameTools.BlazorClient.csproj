@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\API\GameTools.API.WorkloadProvider\GameTools.API.WorkloadProvider.csproj" />
+    <ProjectReference Include="..\..\..\Engines\GameTools.DiceEngine\GameTools.DiceEngine.csproj" />
+    <ProjectReference Include="..\..\..\Framework\GameTools.Framework\GameTools.Framework.csproj" />
+    <ProjectReference Include="..\..\..\Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj" />
+    <ProjectReference Include="..\..\..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
+    <ProjectReference Include="..\..\..\ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj" />
+    <ProjectReference Include="..\..\..\Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj" />
+    <ProjectReference Include="..\..\..\ThatDeveloperDad.AIWorkloadManager\ThatDeveloperDad.AIWorkloadManager.csproj" />
+    <ProjectReference Include="..\GameTools.BlazorClient.Client\GameTools.BlazorClient.Client.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
+  </ItemGroup>
+
+</Project>

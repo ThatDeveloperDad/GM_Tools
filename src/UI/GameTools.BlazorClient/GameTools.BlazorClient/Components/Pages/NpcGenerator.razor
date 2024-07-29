@@ -1,0 +1,63 @@
+﻿@page "/NPCs"
+@rendermode InteractiveServer
+@using GameTools.API.WorkloadProvider
+@inject ICharacterWorkloads _charGen;
+
+<PageTitle>Generate an NPC</PageTitle>
+
+<h3>Here's a completely random NPC.</h3>
+<button @onclick="GenerateNpc">Do another one!</button>
+<p>@this._npc</p>
+
+
+@code {
+    const string _npcSample = @"Attributes:
+{
+  'Pronouns': 'She/Her/Hers',
+  'AgeYears': 57,
+  'Species': 'Halfling',
+  'Appearance': {
+    'HeightCm': 75,
+    'WeightKg': 19,
+    'Gender': 'Female',
+    'Complexion': 'Tan',
+    'IntegumentKind': 1,
+    'Integument': 'Hair',
+    'IntegumentColor': 'Brown',
+    'IntegumentStyle': 'Neat'
+  },
+  'Vocation': {
+    'Name': 'Brewer'
+  },
+  'Background': {
+    'Name': 'Soldier'
+  }
+}
+
+NPC Description
+
+ Character Name: Eira Halfling Brewer
+
+Appearance: Eira stands at a modest height of 75 cm, with a lean frame weighing in at 19 kg. Her tan skin is adorned with neat brown hair that falls just below her shoulders, often pulled back to keep it out of the way during brewing sessions.
+
+Personality: Eira is an extroverted and warm-hearted individual who values camaraderie and hard work. She has a penchant for storytelling and finds joy in sharing tales with those around her, often accompanied by laughter and friendly banter.
+ Cooking up concoctions that bring smiles to faces is one of Eira's greatest pleasures.
+
+Circumstances: As a seasoned soldier turned brewer, Eira currently resides in the bustling town of Riversend. The transition from battlefield to brewing hall was sparked by her desire for peace and community after years of conflict. Her current circumstances are marked by the steady rhythm of daily life, overseeing a modest but beloved local brewery.
+
+Backstory: Eira's journey began as a valiant soldier at a young age, serving in various campaigns across her homeland. Witnessing firsthand the transformative power of shared experiences and stories during long marches, she nurtured an innate love for storytelling and fostering connections. Her service instilled in her a strong sense of duty and resilience, characteristics that later translated seamlessly into her role as a brewer. After years on the battlefield, Eira sought solace in creating beverages that not only bring joy but also serve as gathering points for friends and foes alike to celebrate life's triumphs over adversity. The transition from soldier to brewmaster was fueled by her deep-rooted desire for peace and the opportunity to weave a tapestry of stories around each pint she crafted, creating a warm and welcoming atmosphere in Riversend that reflected both her past as a defender and her present role as a purveyor of camaraderie.";
+
+    private string _npc = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        GenerateNpc();
+    }
+
+    private void GenerateNpc()
+    {
+        string gen = _charGen.GenerateNPC();
+        _npc = gen;
+    }
+}
