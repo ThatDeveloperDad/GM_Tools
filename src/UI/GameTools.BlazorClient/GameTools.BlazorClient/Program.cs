@@ -11,6 +11,7 @@ using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.LlmAccess.Contracts;
 using ThatDeveloperDad.LlmAccess;
 using ThatDeveloperDad.AIWorkloadManager;
+using GameTools.BlazorClient.Services;
 
 namespace GameTools.BlazorClient
 {
@@ -20,7 +21,7 @@ namespace GameTools.BlazorClient
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder = AddServices(builder);
+            builder = CreateServices(builder);
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
@@ -54,7 +55,7 @@ namespace GameTools.BlazorClient
             app.Run();
         }
 
-        private static WebApplicationBuilder AddServices(WebApplicationBuilder builder)
+        private static WebApplicationBuilder CreateServices(WebApplicationBuilder builder)
         {
             // Set up "Townsfolk" services and dependencies.
 			builder.Services.AddScoped<IRulesetAccess>((sp) =>
@@ -78,6 +79,8 @@ namespace GameTools.BlazorClient
 
 			
             builder.Services.AddScoped<ICharacterWorkloads, CharacterWorkloads>();
+
+            builder.Services.AddScoped<NpcViewModelManager>();
 
             return builder;
         }

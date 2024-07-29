@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameTools.TownsfolkManager.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,9 +27,13 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="includeAI">If true, additionally sends the generated NPC to the LLM</param>
         /// <returns>The Generated NPC with or without the AI description.</returns>
-        string GenerateNPC();
+        Townsperson GenerateNPC();
 
-        string GenerateNPC(Dictionary<string, string?> selectedAttributes);
+        Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes);
+
+        string GetNpcJson(Townsperson npc);
+
+
 
         /// <summary>
         /// Accepts a JsonString with NPC Attributes and passes that to the LLM Service
@@ -36,6 +41,8 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="npcJson">A JSON string containing the known NPC attributes</param>
         /// <returns>A string with a description of that NPC.</returns>
-        Task<string> DescribeNPC(string npcJson);
+        Task<string> DescribeNPC(Townsperson npc);
+
+
     }
 }

@@ -54,6 +54,7 @@ namespace ConsoleClient
             while (userInput.ToUpper() != stopPhrase.ToUpper() )
             {
                 string npcJson = string.Empty;
+                Townsperson? npc = null;
 
                 if(promptToSelectNPCOptions == true)
                 {
@@ -94,14 +95,15 @@ namespace ConsoleClient
                             }
 
                         }
-
-                        npcJson = app.GenerateNPC(selectedOptions);
+                        npc = app.GenerateNPC();
+                        npcJson = app.GetNpcJson(npc);
                     }
                 }
                
-                if(string.IsNullOrWhiteSpace(npcJson))
+                if(npc == null)
                 {
-                    npcJson = app.GenerateNPC();
+                    npc = app.GenerateNPC();
+                    npcJson = app.GetNpcJson(npc);
                 }
 
                 Console.WriteLine("Here'a preview of the NPC.");
@@ -113,7 +115,7 @@ namespace ConsoleClient
                     Console.WriteLine("This may take a few seconds.  Please be patient.");
                     Console.WriteLine();
                     
-                    string description = app.DescribeNPC(npcJson).Result;
+                    string description = app.DescribeNPC(npc).Result;
                     Console.WriteLine("Attributes:");
                     Console.WriteLine(npcJson);
                     Console.WriteLine();

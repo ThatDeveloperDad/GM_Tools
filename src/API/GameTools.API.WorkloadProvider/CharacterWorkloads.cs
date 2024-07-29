@@ -39,8 +39,10 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="npcJson"></param>
         /// <returns></returns>
-        public async Task<string> DescribeNPC(string npcJson)
+        public async Task<string> DescribeNPC(Townsperson npc)
         {
+            string npcJson = Serialize(npc);
+
             // We need to build the Request Object expected by the AI Workload Manager.
             // We invoke the functions by the names they were registered with.
             string functionName = CharGenFunctions.AiFunction_DescribeNPC;
@@ -77,22 +79,27 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="includeAI"></param>
         /// <returns></returns>
-        public string GenerateNPC()
+        public Townsperson GenerateNPC()
         {
             string npcJson = string.Empty;
             var npc = _npcManager.GenerateTownsperson();
 
-            npcJson = Serialize(npc);
+            
 
-            return npcJson;
+            return npc;
         }
 
-        public string GenerateNPC(Dictionary<string, string?> selectedAttributes)
+        public Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes)
         {
             string npcJson = string.Empty;
             var npc = _npcManager.GenerateTownspersonFromOptions(selectedAttributes);
 
-            npcJson = Serialize(npc);
+            return npc;
+        }
+
+        public string GetNpcJson(Townsperson npc)
+        {
+            string npcJson = Serialize(npc);
             return npcJson;
         }
 
