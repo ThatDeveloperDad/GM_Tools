@@ -1,62 +1,38 @@
 ﻿@page "/NPCs"
-@rendermode InteractiveServer
-@using GameTools.BlazorClient.Services;
-@using GameTools.Framework.Converters;
-@inject NpcViewModelManager vmMgr;
+@inherits NpcGeneratorComponent
 
-@using GameTools.API.WorkloadProvider
-@inject ICharacterWorkloads _charGen;
+@rendermode InteractiveServer
+
+@* @using GameTools.UI.Components.Wrapper;
+@using GameTools.BlazorClient.Services; *@
+@using GameTools.Framework.Converters;
+@* @inject NpcViewModelManager npcVmMgr; *@
+
 
 <PageTitle>Generate an NPC</PageTitle>
 
-<div class="row">
-    <h3 class="col-sm-12 col-md-8">Here's a completely random NPC.</h3>
-    <button class="col-sm-12 col-md-4 btn btn-primary" @onclick="GenerateNpc">Do another one!</button>
-</div>
-<hr />
-<h4>Species: @this._npcModel.Species</h4>
-<p>Gender:  @this._npcModel.Gender (@this._npcModel.Pronouns)</p>
-<p>Age: @this._npcModel.Age</p>
-<p>Height: @this._npcModel.HeightCm.AsFeetInches()  Weight: @this._npcModel.WeightKg.AsPounds()</p>
-<p>@this._npcModel.Appearance</p>
-<hr />
-<p>Background:  @this._npcModel.History</p>
-<hr />
-<p>Profession: @this._npcModel.Profession</p>
+    <div class="row">
+        <h3 class="col-sm-12 col-md-8">Here's a completely random NPC.</h3>
+        <button class="col-sm-12 col-md-4 btn btn-primary" @onclick="GenerateNpc">Do another one!</button>
+    </div>
+    <hr />
+<h4>Species: @this.NPC.Species</h4>
+<p>Gender:  @this.NPC.Gender (@this.NPC.Pronouns)</p>
+<p>Age: @this.NPC.Age</p>
+<p>Height: @this.NPC.HeightCm.AsFeetInches()  Weight: @this.NPC.WeightKg.AsPounds()</p>
+<p>@this.NPC.Appearance</p>
+    <hr />
+<p>Background:  @this.NPC.History</p>
+    <hr />
+<p>Profession: @this.NPC.Profession</p>
 <hr/>
 <div class="row">
     <h4 class="col-sm-12 col-md-8">Description</h4>
     <button class="col-sm-12 col-md-4 btn btn-primary"
-            @onclick="GetAiDescription">
+            @onclick="OnAiButtonClick">
         Generate AI Description
     </button>
 </div>
 <div class="row">
-    <p style="border:solid 1px black;">@this._npcModel.TextDescription</p>
+    <p style="border:solid 1px black;">@this.NPC.TextDescription</p>
 </div>
-
-
-@code {
-
-    private DisplayNPCViewModel _npcModel = new DisplayNPCViewModel();
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        GenerateNpc();
-    }
-
-    private void GenerateNpc()
-    {
-        DisplayNPCViewModel npcViewModel = vmMgr.GenerateRandomNPC();
-        _npcModel = npcViewModel;
-    }
-
-    private async Task GetAiDescription()
-    {
-        
-        var newModel = await vmMgr.GetAiDescription(_npcModel);
-        _npcModel = newModel;
-        
-    }
-}

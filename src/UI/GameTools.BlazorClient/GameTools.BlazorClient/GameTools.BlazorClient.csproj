@@ -11,6 +11,7 @@
     <ProjectReference Include="..\..\..\Engines\GameTools.DiceEngine\GameTools.DiceEngine.csproj" />
     <ProjectReference Include="..\..\..\Framework\GameTools.Framework\GameTools.Framework.csproj" />
     <ProjectReference Include="..\..\..\Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj" />
+    <ProjectReference Include="..\..\..\GameTools.UI.Components\GameTools.UI.Components.csproj" />
     <ProjectReference Include="..\..\..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj" />
     <ProjectReference Include="..\..\..\Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj" />
