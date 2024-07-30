@@ -52,5 +52,21 @@ namespace GameTools.BlazorClient.Services
 
         public string Profession => _npc.Vocation.Name;
 
+        public string TextDescription { get; private set; }
+
+        public bool DescriptionIsAI { get; private set; }
+
+        public void AddAiDescription(string description)
+        {
+            TextDescription = description;
+            DescriptionIsAI = true;
+        }
+
+        // Ignore this for now.  We want to do it eventually, but not today.
+        //public void SetUserEditedDescription(string description)
+        //{
+        //    TextDescription = description;
+        //    DescriptionIsAI = false;
+        //}
     }
 }

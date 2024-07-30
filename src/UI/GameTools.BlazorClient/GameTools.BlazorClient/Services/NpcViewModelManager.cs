@@ -20,5 +20,12 @@ namespace GameTools.BlazorClient.Services
 
             return npcVm;
         }
+
+        public async Task<DisplayNPCViewModel> GetAiDescription(DisplayNPCViewModel npc)
+        {
+            string aiDescription = await _characterWorker.DescribeNPC(npc.NpcModel);
+            npc.AddAiDescription(aiDescription);
+            return npc;
+        }
     }
 }

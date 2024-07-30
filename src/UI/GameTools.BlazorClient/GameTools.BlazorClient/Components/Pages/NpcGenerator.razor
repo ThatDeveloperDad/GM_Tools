@@ -9,8 +9,10 @@
 
 <PageTitle>Generate an NPC</PageTitle>
 
-<h3>Here's a completely random NPC.</h3>
-<button @onclick="GenerateNpc">Do another one!</button>
+<div class="row">
+    <h3 class="col-sm-12 col-md-8">Here's a completely random NPC.</h3>
+    <button class="col-sm-12 col-md-4 btn btn-primary" @onclick="GenerateNpc">Do another one!</button>
+</div>
 <hr />
 <h4>Species: @this._npcModel.Species</h4>
 <p>Gender:  @this._npcModel.Gender (@this._npcModel.Pronouns)</p>
@@ -21,10 +23,20 @@
 <p>Background:  @this._npcModel.History</p>
 <hr />
 <p>Profession: @this._npcModel.Profession</p>
+<hr/>
+<div class="row">
+    <h4 class="col-sm-12 col-md-8">Description</h4>
+    <button class="col-sm-12 col-md-4 btn btn-primary"
+            @onclick="GetAiDescription">
+        Generate AI Description
+    </button>
+</div>
+<div class="row">
+    <p style="border:solid 1px black;">@this._npcModel.TextDescription</p>
+</div>
+
 
 @code {
-
-    private string _npc = string.Empty;
 
     private DisplayNPCViewModel _npcModel = new DisplayNPCViewModel();
 
@@ -38,5 +50,13 @@
     {
         DisplayNPCViewModel npcViewModel = vmMgr.GenerateRandomNPC();
         _npcModel = npcViewModel;
+    }
+
+    private async Task GetAiDescription()
+    {
+        
+        var newModel = await vmMgr.GetAiDescription(_npcModel);
+        _npcModel = newModel;
+        
     }
 }
