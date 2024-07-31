@@ -1,4 +1,5 @@
-﻿using GameTools.TownsfolkManager.Contracts;
+﻿using GameTools.API.WorkloadProvider.AiWorkloads;
+using GameTools.TownsfolkManager.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,13 @@ namespace GameTools.API.WorkloadProvider
         /// <returns>A string with a description of that NPC.</returns>
         Task<string> DescribeNPC(Townsperson npc);
 
-
+        /// <summary>
+        /// Calls the LLM, providing the NPC attributes that have already been selected
+        /// either randomly or by the user, and generates the values for the properties identified
+        /// in the GeneratedCharacterProperties class.
+        /// </summary>
+        /// <param name="npcJson"></param>
+        /// <returns></returns>
+        Task<GeneratedCharacterProperties> GenerateAttributes(string npcJson);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GameTools.API.WorkloadProvider.AiWorkloads;
 using GameTools.TownsfolkManager.Contracts;
 using System.Text;
+using System.Text.Json;
 using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.Framework.Serialization;
 
@@ -41,7 +42,7 @@ namespace GameTools.API.WorkloadProvider
         /// <returns></returns>
         public async Task<string> DescribeNPC(Townsperson npc)
         {
-            string npcJson = Serialize(npc);
+            string npcJson = SerializeClean(npc);
 
             // We need to build the Request Object expected by the AI Workload Manager.
             // We invoke the functions by the names they were registered with.
@@ -73,6 +74,92 @@ namespace GameTools.API.WorkloadProvider
             return description;
         }
 
+        public async Task<GeneratedCharacterProperties> GenerateAttributes(string npcJson)
+        {
+            GeneratedCharacterProperties characterAttributes = new GeneratedCharacterProperties();
+
+            // We need to build the Request Object expected by the AI Workload Manager.
+            // We invoke the functions by the names they were registered with.
+            
+            string functionName = CharGenFunctions.AiFunction_GenerateNPCAttributes;
+
+            // We need to provide a dictionary whose KEYS correspond to the "replacement token" strings
+            // in the prompt template.  The values are what we want injected into the prompt template
+            // in place of those Replacement Tokens.
+            Dictionary<string, object?> functionArgs = new Dictionary<string, object?>();
+            functionArgs.Add("npcJson", npcJson);
+
+            // Finally, we invoke that function on the AI Workload provider and await the result.
+            var functionResult = await _aiWorker.ExecuteFunctionAsync(functionName, functionArgs);
+            string aiJson = string.Empty;
+
+            if (functionResult.IsSuccessful)
+            {
+                aiJson = functionResult.AiResponse ?? string.Empty;
+                characterAttributes = ParseFromJson(aiJson);
+            }
+            else
+            {
+                //TODO:  Add some logging here.
+                aiJson = string.Empty;
+            }
+
+            return characterAttributes;
+        }
+
+        private GeneratedCharacterProperties ParseFromJson(string json)
+        {
+            GeneratedCharacterProperties genProps = new GeneratedCharacterProperties();
+            // Read the Json into a new Json Document, then interrogate its parts for the 
+            // values to assign to the GenProps.
+            
+            using (var doc = JsonDocument.Parse(json))
+            {
+                if(doc == null)
+                {
+                    return genProps;
+                }
+
+                //TODO:  This is unmaintainable CRAP, and needs to be made unCRAPpy.
+                foreach (var element in doc.RootElement.EnumerateObject())
+                {
+                    switch(element.Name.Trim().ToUpper())
+                    {
+                        case "NAME":
+                            string nameVal = element.Value.GetString() ?? string.Empty;
+                            genProps.Name.SetAiValue(nameVal);
+                            break;
+
+                        case "PERSONALITY":
+                            string personalityVal = element.Value.GetString() ?? string.Empty;
+                            genProps.Personality.SetAiValue(personalityVal);
+                            break;
+
+                        case "APPEARANCE":
+                            string looksVal = element.Value.GetString() ?? string.Empty;
+                            genProps.Appearance.SetAiValue(looksVal);
+                            break;
+
+                        case "CURRENTCIRCUMSTANCES":
+                            string jobVal = element.Value.GetString() ?? string.Empty;
+                            genProps.CurrentCircumstances.SetAiValue(jobVal);
+                            break;
+
+                        case "BACKGROUND":
+                            string histVal = element.Value.GetString() ?? string.Empty;
+                            genProps.Background.SetAiValue(histVal);
+                            break;
+
+                        default:
+                            //Do Nothing.
+                            break;
+                    }
+                }
+            }
+
+            return genProps;
+        }
+
         /// <summary>
         /// Randomly generates an NPC from the available options provided by
         /// the configured RuleSet.
@@ -99,7 +186,7 @@ namespace GameTools.API.WorkloadProvider
 
         public string GetNpcJson(Townsperson npc)
         {
-            string npcJson = Serialize(npc);
+            string npcJson = SerializeClean(npc);
             return npcJson;
         }
 
@@ -111,7 +198,7 @@ namespace GameTools.API.WorkloadProvider
         /// <typeparam name="T">The Type of object</typeparam>
         /// <param name="instance">An Instance of T</param>
         /// <returns></returns>
-        private string Serialize<T>(T instance) where T : class
+        private string SerializeClean<T>(T instance) where T : class
         {
             string json = JsonUtilities.GetCleanJson(instance);
 

@@ -1,5 +1,4 @@
-﻿using GameTools.Framework;
-using GameTools.Framework.Concepts;
+﻿using GameTools.Framework.Concepts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

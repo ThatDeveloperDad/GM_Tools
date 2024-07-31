@@ -28,20 +28,7 @@ namespace GameTools.BlazorClient.Components.Pages
 
         protected async Task OnAiButtonClick()
         {
-            try
-            {
-                NPC = await WaitWrapper.AwaitTask(GetAiDescription());
-            }
-            catch (Exception e)
-            {
-                // Don't ever do this.  I'm only try catching to see what's actually happening.
-                throw;
-            }
-        }
-        private async Task<string> FakeTask()
-        {
-            await Task.Delay(3000);
-            return string.Empty;
+            NPC = await WaitWrapper.AwaitTask(GetAiDescription());   
         }
 
         private async Task<DisplayNPCViewModel> GetAiDescription()

@@ -39,6 +39,13 @@ public static class JsonUtilities
 
     }
 
+    public static string SerializeForOutput<T>(this T instance) where T : class
+    {
+        string json = JsonUtilities.GetCleanJson(instance);
+
+        return json;
+    }
+
     /// <summary>
     /// Creates a default JsonSerializerOptions instance
     /// </summary>
