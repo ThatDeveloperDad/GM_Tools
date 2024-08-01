@@ -96,6 +96,7 @@ namespace GameTools.API.WorkloadProvider
             if (functionResult.IsSuccessful)
             {
                 aiJson = functionResult.AiResponse ?? string.Empty;
+                aiJson = aiJson.StripMarkdown();
                 characterAttributes = ParseFromJson(aiJson);
             }
             else

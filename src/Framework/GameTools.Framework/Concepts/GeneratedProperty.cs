@@ -32,9 +32,12 @@
             IsAiGenerated = false;
         }
 
+        private const string AI_Tag = "(AI): ";
         public override string ToString()
         {
-            string aiTag = IsAiGenerated ? "(AI): " : string.Empty;
+            string aiTag = (IsAiGenerated && Value.Contains(AI_Tag) == false)
+                            ? AI_Tag 
+                            : string.Empty;
             string thisAsString = $"{aiTag}{Value}";
 
             return thisAsString;
