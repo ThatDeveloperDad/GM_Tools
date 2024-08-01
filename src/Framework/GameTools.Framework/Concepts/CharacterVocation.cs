@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameTools.Framework;
+namespace GameTools.Framework.Concepts;
 
 public sealed class CharacterVocation
 {
@@ -11,13 +11,13 @@ public sealed class CharacterVocation
     {
         _skills = new List<string>();
         Name = string.Empty;
-        Description = string.Empty;
+        Description = new GeneratedProperty();
         Title = string.Empty;
         LengthOfCareer = (decimal)0.0;
     }
 
     private string _name;
-    public string Name 
+    public string Name
     {
         get
         {
@@ -26,10 +26,10 @@ public sealed class CharacterVocation
         set
         {
             _name = value;
-        } 
+        }
     }
 
-    public string Description { get; set; }
+    public GeneratedProperty Description { get; set; }
 
     public string[] Skills => _skills.ToArray();
 

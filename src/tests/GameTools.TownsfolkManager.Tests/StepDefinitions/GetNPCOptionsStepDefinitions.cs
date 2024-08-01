@@ -39,7 +39,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
             // for these.
             Mock<IRulesetAccess> mockRulesetAccess = CreateMockRulesetAccess(3);
 
-            _testClass = new TownsfolkManager(mockRulesetAccess.Object,
+            _testClass = new TownsfolkMgr(mockRulesetAccess.Object,
                                               _mockShuffler,
                                               _mockDiceBag);
 
@@ -83,7 +83,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
             var mockRulesetAccess = CreateMockRulesetAccess(null);
 
 
-            _testClass = new TownsfolkManager(mockRulesetAccess.Object,
+            _testClass = new TownsfolkMgr(mockRulesetAccess.Object,
                                               _mockShuffler,
                                               _mockDiceBag);
         }
@@ -101,7 +101,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
             var mockRulesetAccess = CreateMockRulesetAccess(0);
             
 
-            _testClass = new TownsfolkManager(mockRulesetAccess.Object,
+            _testClass = new TownsfolkMgr(mockRulesetAccess.Object,
                                               _mockShuffler,
                                               _mockDiceBag);
         }

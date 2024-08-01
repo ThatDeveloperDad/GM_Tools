@@ -18,7 +18,7 @@ namespace ThatDeveloperDad.LlmAccess.Contracts
 
         public FunctionRequest Request { get; private set; }
 
-        public bool IsSuccessful => _errors.Count > 0;
+        public bool IsSuccessful => _errors.Count == 0;
 
         public string[] Errors => _errors.ToArray();
 

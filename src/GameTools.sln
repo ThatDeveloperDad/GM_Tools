@@ -45,7 +45,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThatDeveloperDad.AIWorkload
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThatDeveloperDad.LlmAccess", "ResourceAccess\ThatDeveloperDad.LlmAccess\ThatDeveloperDad.LlmAccess.csproj", "{16623851-601C-4AB0-875A-1FD2AC91B84F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.TownsfolkManager.Tests", "Tests\GameTools.TownsfolkManager.Tests\GameTools.TownsfolkManager.Tests.csproj", "{68FC1ED6-26A4-4472-941D-2ABCBAF4186B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.TownsfolkManager.Tests", "Tests\GameTools.TownsfolkManager.Tests\GameTools.TownsfolkManager.Tests.csproj", "{68FC1ED6-26A4-4472-941D-2ABCBAF4186B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{66B9FBAA-2968-4D13-8DE5-01A1000872FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.BlazorClient", "UI\GameTools.BlazorClient\GameTools.BlazorClient\GameTools.BlazorClient.csproj", "{811C8589-2416-436B-84FD-48A438D0D9E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.BlazorClient.Client", "UI\GameTools.BlazorClient\GameTools.BlazorClient.Client\GameTools.BlazorClient.Client.csproj", "{A88DF681-41FB-42C9-8431-F6E48F833F59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.UI.Components", "GameTools.UI.Components\GameTools.UI.Components.csproj", "{68896010-A661-4525-B5E9-DFAD5D514818}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +121,18 @@ Global
 		{68FC1ED6-26A4-4472-941D-2ABCBAF4186B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68FC1ED6-26A4-4472-941D-2ABCBAF4186B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68FC1ED6-26A4-4472-941D-2ABCBAF4186B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{811C8589-2416-436B-84FD-48A438D0D9E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{811C8589-2416-436B-84FD-48A438D0D9E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{811C8589-2416-436B-84FD-48A438D0D9E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{811C8589-2416-436B-84FD-48A438D0D9E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A88DF681-41FB-42C9-8431-F6E48F833F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88DF681-41FB-42C9-8431-F6E48F833F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88DF681-41FB-42C9-8431-F6E48F833F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88DF681-41FB-42C9-8431-F6E48F833F59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68896010-A661-4525-B5E9-DFAD5D514818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68896010-A661-4525-B5E9-DFAD5D514818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68896010-A661-4525-B5E9-DFAD5D514818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68896010-A661-4525-B5E9-DFAD5D514818}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +151,9 @@ Global
 		{850C7988-1C75-43FE-B415-04C9F0CEDE74} = {062DED4C-E3FF-4F85-BC56-E17E16EFD3A0}
 		{16623851-601C-4AB0-875A-1FD2AC91B84F} = {3609EDE8-0CEE-45B4-9F6A-6AB6B9D0F233}
 		{68FC1ED6-26A4-4472-941D-2ABCBAF4186B} = {AAB96EF5-4EDB-4869-8A8A-67E2B15F7968}
+		{811C8589-2416-436B-84FD-48A438D0D9E9} = {66B9FBAA-2968-4D13-8DE5-01A1000872FB}
+		{A88DF681-41FB-42C9-8431-F6E48F833F59} = {66B9FBAA-2968-4D13-8DE5-01A1000872FB}
+		{68896010-A661-4525-B5E9-DFAD5D514818} = {66B9FBAA-2968-4D13-8DE5-01A1000872FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6609DEA-D173-4C64-90E7-2D85617E377C}

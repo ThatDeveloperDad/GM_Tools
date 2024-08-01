@@ -1,4 +1,4 @@
-﻿using GameTools.Framework;
+﻿using GameTools.Framework.Concepts;
 
 namespace GameTools.TownsfolkManager.Contracts
 {
@@ -22,6 +22,8 @@ namespace GameTools.TownsfolkManager.Contracts
             Background = new CharacterBackground();
             PersonalityNature = string.Empty;
             PersonalityDemeanor = string.Empty;
+            FullName = new GeneratedProperty();
+            PersonalityDescription = new GeneratedProperty();
         }
 
         public string GivenName { get; set; }
@@ -30,7 +32,7 @@ namespace GameTools.TownsfolkManager.Contracts
 
         public string Pronouns { get; set; }
 
-        public string FullName => $"{GivenName} {FamilyName}";
+        public GeneratedProperty FullName { get; private set; }
         
         public int AgeYears { get; set; }
 
@@ -63,6 +65,7 @@ namespace GameTools.TownsfolkManager.Contracts
         /// </summary>
         public string PersonalityDemeanor { get; set; }
 
+        public GeneratedProperty PersonalityDescription { get; private set; }
     }
 
 }

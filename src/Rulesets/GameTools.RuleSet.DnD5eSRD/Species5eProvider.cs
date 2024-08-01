@@ -1,5 +1,3 @@
-
-using GameTools.Framework;
 using GameTools.Framework.Concepts;
 using GameTools.Ruleset.Definitions;
 using GameTools.Ruleset.Definitions.Characters;

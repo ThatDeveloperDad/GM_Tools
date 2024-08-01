@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameTools.Framework;
+namespace GameTools.Framework.Concepts;
 
 public sealed class CharacterBackground
 {
@@ -11,14 +11,14 @@ public sealed class CharacterBackground
     public CharacterBackground()
     {
         Name = string.Empty;
-        Description = string.Empty;
+        Description = new GeneratedProperty();
         _traits = new Dictionary<string, string>();
         _skills = new List<string>();
     }
 
     public string Name { get; set; }
 
-    public string Description { get; set; }
+    public GeneratedProperty Description { get; set; }
 
     public Dictionary<string, string> Traits => _traits;
 

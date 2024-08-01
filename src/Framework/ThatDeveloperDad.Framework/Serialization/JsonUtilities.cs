@@ -11,6 +11,24 @@ namespace ThatDeveloperDad.Framework.Serialization;
 public static class JsonUtilities
 {
     /// <summary>
+    /// Sometimes, when we request that a Language Model return JSON instead of text,
+    /// the model will return that json surrounded by a markdown code fence, despite our instructions.
+    /// This method strips that markdown Codefence if it's present.
+    /// </summary>
+    /// <param name="json"></param>
+    /// <returns></returns>
+    public static string StripMarkdown(this string json)
+    {
+        string jsonFenceStart = "```json";
+        string codeFenceEnd = "```";
+
+        json = json.Replace(jsonFenceStart, string.Empty)
+                   .Replace(codeFenceEnd, string.Empty);
+
+        return json;
+    }
+
+    /// <summary>
     /// Returns a JSON String from the provided object.
     /// Any properties with null, empty string, or default values
     /// are omitted.
@@ -37,6 +55,13 @@ public static class JsonUtilities
 
         return rawJson;
 
+    }
+
+    public static string SerializeForOutput<T>(this T instance) where T : class
+    {
+        string json = JsonUtilities.GetCleanJson(instance);
+
+        return json;
     }
 
     /// <summary>

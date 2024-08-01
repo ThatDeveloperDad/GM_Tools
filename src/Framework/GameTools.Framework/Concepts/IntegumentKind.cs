@@ -1,4 +1,4 @@
-﻿namespace GameTools.Framework;
+﻿namespace GameTools.Framework.Concepts;
 
 /// <summary>
 /// Integument refers to the body adornments
