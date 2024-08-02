@@ -1,0 +1,15 @@
+﻿@page "/create-npc"
+
+@using GameTools.BlazorClient.Components.Pages.Partials;
+@using GameTools.BlazorClient.Components.Pages.PageModels;
+
+@inherits PageModels.CreateNpcPageModel;
+
+<div class="row">
+	<button class="col-sm-12 col-md-6 btn btn-primary" 
+			@onclick="OnRerollClick">Re-Roll</button>
+</div>
+
+<ViewNpcAttributes UseMetric="@false"
+				   CurrentNpc="@this.CurrentNpc"
+				   GenerateAi_Clicked="OnAiDescriptionRequested" />

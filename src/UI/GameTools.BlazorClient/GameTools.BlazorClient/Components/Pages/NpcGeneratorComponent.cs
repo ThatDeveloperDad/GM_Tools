@@ -9,10 +9,10 @@ namespace GameTools.BlazorClient.Components.Pages
         [CascadingParameter] 
         protected WaitWrapper? WaitWrapper { get; set; }
 
-        protected DisplayNPCViewModel NPC = new DisplayNPCViewModel();
+        protected NpcClientModel NPC = new NpcClientModel();
 
         [Inject]
-        protected NpcViewModelManager npcVmMgr { get; set; }
+        protected NpcServiceProvider npcVmMgr { get; set; }
 
         protected override void OnInitialized()
         {
@@ -22,7 +22,7 @@ namespace GameTools.BlazorClient.Components.Pages
 
         protected void GenerateNpc()
         {
-            DisplayNPCViewModel npcViewModel = npcVmMgr.GenerateRandomNPC();
+            NpcClientModel npcViewModel = npcVmMgr.GenerateRandomNPC();
             NPC = npcViewModel;
         }
 
@@ -31,7 +31,7 @@ namespace GameTools.BlazorClient.Components.Pages
             NPC = await WaitWrapper.AwaitTask(GetAiDescription());   
         }
 
-        private async Task<DisplayNPCViewModel> GetAiDescription()
+        private async Task<NpcClientModel> GetAiDescription()
         {
 
             var newModel = await npcVmMgr.GetAiDescription(NPC);

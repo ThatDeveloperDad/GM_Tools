@@ -5,26 +5,26 @@ using ThatDeveloperDad.Framework.Serialization;
 
 namespace GameTools.BlazorClient.Services
 {
-    public class NpcViewModelManager
+    public class NpcServiceProvider
     {
         private readonly ICharacterWorkloads _characterWorker;
 
-        public NpcViewModelManager(ICharacterWorkloads characterWorker)
+        public NpcServiceProvider(ICharacterWorkloads characterWorker)
         {
             _characterWorker = characterWorker;
         }
 
-        public DisplayNPCViewModel GenerateRandomNPC()
+        public NpcClientModel GenerateRandomNPC()
         {
             var npc = _characterWorker.GenerateNPC();
 
             
-            DisplayNPCViewModel npcVm = new DisplayNPCViewModel(npc);
+            NpcClientModel npcVm = new NpcClientModel(npc);
 
             return npcVm;
         }
 
-        public async Task<DisplayNPCViewModel> GetAiDescription(DisplayNPCViewModel npc)
+        public async Task<NpcClientModel> GetAiDescription(NpcClientModel npc)
         {
             // First thing we need is a serialized view of the NPC ViewModel.
             string vmJson = npc.SerializeForOutput();
@@ -43,7 +43,7 @@ namespace GameTools.BlazorClient.Services
             updated.Background.Description.SetAiValue(genProps.Background.ToString());
             updated.Vocation.Description.SetAiValue(genProps.CurrentCircumstances.ToString());
 
-            DisplayNPCViewModel updatedVm = new DisplayNPCViewModel(updated);
+            NpcClientModel updatedVm = new NpcClientModel(updated);
             return updatedVm;
         }
     }

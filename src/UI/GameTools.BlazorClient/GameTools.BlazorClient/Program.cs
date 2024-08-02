@@ -80,7 +80,7 @@ namespace GameTools.BlazorClient
 			
             builder.Services.AddScoped<ICharacterWorkloads, CharacterWorkloads>();
 
-            builder.Services.AddScoped<NpcViewModelManager>();
+            builder.Services.AddScoped<NpcServiceProvider>();
 
             return builder;
         }

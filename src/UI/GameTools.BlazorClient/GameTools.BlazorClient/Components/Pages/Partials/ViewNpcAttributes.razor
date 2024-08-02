@@ -1,0 +1,23 @@
+﻿
+<h2>Selected Attributes</h2>
+<h3>Species: @Species</h3>
+<p>Gender:  @Gender (@Pronouns)</p>
+<p>Age: @Age</p>
+<p>Height: @Height  Weight: @Weight</p>
+<hr />
+<h3>Appearance</h3>
+<p>@Appearance</p>
+<h3>Profession</h3>
+<p>@Profession</p>
+<h3>History</h3>
+<p>@History</p>
+<hr/>
+@if (AiButtonIsHandled)
+{
+    <div class="row">
+        <button class="col-12 btn btn-primary"
+        @onclick="OnAiButtonClick">
+            Generate AI Description
+        </button>
+    </div>
+}
