@@ -1,11 +1,9 @@
 ﻿using GameTools.BlazorClient.Services;
-using GameTools.Framework.Converters;
-using GameTools.TownsfolkManager.Contracts;
 using Microsoft.AspNetCore.Components;
 
 namespace GameTools.BlazorClient.Components.Pages.Partials
 {
-    public partial class ViewNpcAttributes
+	public partial class ViewNpcAttributes
     {
         [Parameter]
         public Func<NpcClientModel, Task>? GenerateAi_Clicked { get; set; }

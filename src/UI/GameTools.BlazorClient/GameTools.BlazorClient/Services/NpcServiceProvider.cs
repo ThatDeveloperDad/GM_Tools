@@ -14,10 +14,24 @@ namespace GameTools.BlazorClient.Services
             _characterWorker = characterWorker;
         }
 
-        public NpcClientModel GenerateRandomNPC()
+        public Dictionary<string, string[]> GetNpcOptions()
         {
-            var npc = _characterWorker.GenerateNPC();
+            Dictionary<string, string[]> options = _characterWorker.GetNpcOptions();
+            return options;
+        }
 
+        public NpcClientModel GenerateRandomNPC(Dictionary<string, string?>? selectedOptions = null)
+        {
+            Townsperson npc;
+
+            if(selectedOptions == null)
+            {
+                npc = _characterWorker.GenerateNPC();
+			}
+            else
+            {
+                npc = _characterWorker.GenerateNPC(selectedOptions);
+            }
             
             NpcClientModel npcVm = new NpcClientModel(npc);
 
