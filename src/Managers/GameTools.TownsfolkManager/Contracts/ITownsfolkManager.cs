@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GameTools.TownsfolkManager.Contracts
 {
@@ -14,7 +15,10 @@ namespace GameTools.TownsfolkManager.Contracts
         /// <returns></returns>
         Townsperson GenerateTownsperson();
 
+        [Obsolete("This version of the method will be going away soon.  Change over to the TownspersonUserOptions parameter instead.")]
         Townsperson GenerateTownspersonFromOptions(Dictionary<string, string?> selectedAttributes);
+
+        Townsperson GenerateTownspersonFromOptions(TownsfolkUserOptions options);
 
         /// <summary>
         /// Retrieves the dictionary of options that are used when creating an

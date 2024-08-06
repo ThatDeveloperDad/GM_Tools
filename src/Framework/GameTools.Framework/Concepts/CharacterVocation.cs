@@ -37,9 +37,10 @@ public sealed class CharacterVocation
 
     public decimal LengthOfCareer { get; set; }
 
-    public bool IsRetired { get; set; }
+    
+    public bool? IsRetired { get; set; }
 
-    private string RetiredValue => IsRetired ? " (Retired)" : string.Empty;
+    private string RetiredValue => IsRetired.GetValueOrDefault() ? " (Retired)" : string.Empty;
 
     public void AddSkill(string skill)
     {

@@ -1,4 +1,5 @@
-﻿using GameTools.TownsfolkManager.Contracts;
+﻿using GameTools.BlazorClient.Services;
+using GameTools.TownsfolkManager.Contracts;
 using Microsoft.AspNetCore.Components;
 
 namespace GameTools.BlazorClient.Components.Pages.Partials
@@ -10,35 +11,37 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 		public Dictionary<string, string[]> SelectableOptions { get; set; }
 
 		[Parameter]
-		public Dictionary<string, string?> SelectedOptions { get; set; }	
+		public NpcUserOptions UserOptions { get; set; }
 
         public SelectNpcOptions()
         {
             SelectableOptions = SelectableOptions?? new Dictionary<string, string[]>();
-			SelectedOptions = SelectedOptions ?? new Dictionary<string, string?>();
+			UserOptions = UserOptions ?? new NpcUserOptions();
         }
 
-        public string? Species 
+
+
+		public string? Species
 		{
 			get
 			{
-				return SelectedOptions[nameof(Townsperson.Species)] ?? string.Empty;
+				return UserOptions.Species;
 			}
 			set
-			{	
-				SelectedOptions[nameof(Townsperson.Species)] = value;
+			{
+				UserOptions.Species = value;
 			}
 		}
 
-        public string? Background 
+		public string? Background 
 		{ 
 			get
 			{
-				return SelectedOptions[nameof(Townsperson.Background)] ?? string.Empty;
+				return UserOptions.Background;
 			}
 			set
 			{
-				SelectedOptions[nameof(Townsperson.Background)] = value;
+				UserOptions.Background = value;
 			}
 		}
 
@@ -46,14 +49,24 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 		{
 			get
 			{
-				return SelectedOptions[nameof(Townsperson.Vocation)] ?? string.Empty;
+				return UserOptions.Vocation;
 			}
 			set
 			{
-				SelectedOptions[nameof(Townsperson.Vocation)] = value;
+				UserOptions.Vocation = value;
 			}
 		}
 
-		
+		public bool? IsRetired
+		{
+			get
+			{
+				return UserOptions.IsRetired;
+			}
+			set
+			{
+				UserOptions.IsRetired = value;
+			}
+		}
     }
 }

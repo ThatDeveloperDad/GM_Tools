@@ -32,7 +32,9 @@ namespace GameTools.TownsfolkManager.InternalOperations
         private static Townsperson SetAgeAttributes(this Townsperson npc, SpeciesTemplate template, IDiceBag dice)
         {
             // For NPC Age, let's see if they're retired or not.
-            bool isRetired = dice.CoinToss();
+            // If the retired status has been user selected, IsRetired won't be null.
+            // If it's null, we'll flip a coin.
+            bool isRetired = npc.Vocation.IsRetired??dice.CoinToss();
             int minAge;
             int maxAge;
             if (isRetired)

@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using GameTools.BlazorClient.Services;
-using GameTools.TownsfolkManager.Contracts;
+﻿using GameTools.BlazorClient.Services;
+using Microsoft.AspNetCore.Components;
 namespace GameTools.BlazorClient.Components.Pages.PageModels
 {
 	public class CreateNpcPageModel:ComponentBase
@@ -12,6 +11,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
             CurrentNpc = new NpcClientModel();
 			SelectableNpcOptions = new Dictionary<string, string[]>();
 			SelectedNpcOptions = new Dictionary<string, string?>();
+			UserOptions = new NpcUserOptions();
         }
 
         protected override void OnInitialized()
@@ -33,6 +33,8 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		public Dictionary<string, string[]> SelectableNpcOptions { get; private set; }
 
 		public Dictionary<string, string?> SelectedNpcOptions { get; private set; }
+
+		public NpcUserOptions UserOptions { get; private set; }
 
 		public void OnRerollClick()
 		{
@@ -58,24 +60,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			GuardNpcServicesExists();
 			NpcClientModel model;
 
-			if(SelectedNpcOptions.Any())
-			{
-				// Any selected options with an empty string for the value must be set null.
-				foreach (string optionKey in SelectedNpcOptions.Keys)
-				{
-					string? optionValue = SelectedNpcOptions[optionKey];
-					if (optionValue != null & optionValue == string.Empty)
-					{
-						SelectedNpcOptions[optionKey] = null;
-					}
-				}
-				model = NpcServices!.GenerateRandomNPC(SelectedNpcOptions);
-			}
-			else
-			{
-				model = NpcServices!.GenerateRandomNPC();
-			}
-			
+			model = NpcServices!.GenerateRandomNPC(UserOptions);
 			return model;
 		}
 

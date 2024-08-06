@@ -38,6 +38,23 @@ namespace GameTools.BlazorClient.Services
             return npcVm;
         }
 
+        public NpcClientModel GenerateRandomNPC(NpcUserOptions userOptions)
+        {
+            TownsfolkUserOptions options = new TownsfolkUserOptions();
+            
+            options.Species = userOptions.Species;
+            options.Gender = userOptions.Gender;
+            options.Background = userOptions.Background;
+            options.Vocation = userOptions.Vocation;
+            options.IsRetired = userOptions.IsRetired;
+
+            Townsperson npc = _characterWorker.GenerateNPC(options);
+
+
+            NpcClientModel npcVm = new NpcClientModel(npc);
+            return npcVm;
+        }
+
         public async Task<NpcClientModel> GetAiDescription(NpcClientModel npc)
         {
             // First thing we need is a serialized view of the NPC ViewModel.

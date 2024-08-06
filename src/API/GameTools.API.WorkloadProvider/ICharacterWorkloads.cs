@@ -30,6 +30,15 @@ namespace GameTools.API.WorkloadProvider
         /// <returns>The Generated NPC with or without the AI description.</returns>
         Townsperson GenerateNPC();
 
+        Townsperson GenerateNPC(TownsfolkUserOptions userOptions);
+
+        /// <summary>
+        /// This exists only for the Console application.
+        /// Remove it as we get closer to done.
+        /// </summary>
+        /// <param name="selectedAttributes"></param>
+        /// <returns></returns>
+        [Obsolete("This will be going away.  Change over to use TownspersonUserOptions instead.")]
         Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes);
 
         string GetNpcJson(Townsperson npc);
