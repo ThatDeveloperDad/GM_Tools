@@ -8,6 +8,8 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         [Parameter]
         public Func<NpcClientModel, Task>? GenerateAi_Clicked { get; set; }
 
+        
+
         [Parameter]
         public NpcClientModel CurrentNpc { get; set; }
 
@@ -40,6 +42,12 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public void OnAiButtonClick()
         {
             GenerateAi_Clicked?.Invoke(CurrentNpc);
+        }
+
+        public void UpdateClientModel(NpcClientModel model)
+        {
+            CurrentNpc = model;
+            StateHasChanged();
         }
     }
 }

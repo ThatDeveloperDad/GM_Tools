@@ -1,6 +1,13 @@
-﻿<p>Select the options you want, or leave them to chance, and click Generate.</p>
+﻿@using ThatDeveloperDad.Framework.Converters
 
 <div class="row">
+	<h3 class="col-9">Select Npc Options</h3>
+	<button class="col-3" @onclick="ToggleOptionPanel">@ToggleText</button>
+</div>
+<p>Select the options you want, or leave them to chance, and click Generate.</p>
+
+
+<div class="row @ShowOptionsPanel.AsString("shown", "hidden")">
 	
 	<div class="col-xs-12 col-md-4 form-group">
 		<label class="col-md-12 col-sm-3  form-label">Species</label>
@@ -36,3 +43,13 @@
 		<label class="form-label">Retired?</label><input type="checkbox" @bind="@IsRetired" style="form-control"/>
 	</div>
 </div>
+
+@if(this.IsRerollVisible)
+{
+	<div class="row">
+		<button class="col-sm-12 col-md-6 btn btn-primary"
+				@onclick="OnCreateNpcClick">
+			Generate!
+		</button>
+	</div>
+}

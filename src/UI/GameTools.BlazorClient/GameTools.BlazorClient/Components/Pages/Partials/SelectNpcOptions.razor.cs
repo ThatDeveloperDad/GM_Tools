@@ -1,25 +1,36 @@
 ﻿using GameTools.BlazorClient.Services;
 using GameTools.TownsfolkManager.Contracts;
 using Microsoft.AspNetCore.Components;
+using ThatDeveloperDad.Framework.Converters;
 
 namespace GameTools.BlazorClient.Components.Pages.Partials
 {
 	public partial class SelectNpcOptions
 	{
-		
+
+		[Parameter]
+		public Action? GenerateNpc_Clicked { get; set; }
+
 		[Parameter]
 		public Dictionary<string, string[]> SelectableOptions { get; set; }
 
 		[Parameter]
 		public NpcUserOptions UserOptions { get; set; }
 
-        public SelectNpcOptions()
+		public bool ShowOptionsPanel { get; set; }
+
+		public SelectNpcOptions()
         {
             SelectableOptions = SelectableOptions?? new Dictionary<string, string[]>();
 			UserOptions = UserOptions ?? new NpcUserOptions();
         }
 
-
+		protected override void OnInitialized()
+		{
+			base.OnInitialized();
+			ToggleText = "Show";
+			ShowOptionsPanel = false;
+		}
 
 		public string? Species
 		{
@@ -67,6 +78,23 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 			{
 				UserOptions.IsRetired = value;
 			}
+		}
+
+		public bool IsRerollVisible => GenerateNpc_Clicked != null;
+
+		public string ToggleText { get; private set; }
+
+		public void ToggleOptionPanel()
+		{
+			bool newState = !ShowOptionsPanel;
+
+			ToggleText = (newState) ? "Hide" : "Show";
+			ShowOptionsPanel = newState;
+		}
+
+		public void OnCreateNpcClick()
+		{
+			this.GenerateNpc_Clicked?.Invoke();
 		}
     }
 }

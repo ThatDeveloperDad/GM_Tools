@@ -6,14 +6,8 @@
 @inherits PageModels.CreateNpcPageModel;
 
 <SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
-				  UserOptions="@this.UserOptions"/>
-
-<div class="row">
-	<button class="col-sm-12 col-md-6 btn btn-primary" 
-			@onclick="OnRerollClick">Generate!</button>
-</div>
-
-
+				  UserOptions="@this.UserOptions"
+				  GenerateNpc_Clicked="OnRerollClick"/>
 
 <ViewNpcAttributes UseMetric="@false"
 				   CurrentNpc="@this.CurrentNpc"

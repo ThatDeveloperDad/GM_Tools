@@ -39,6 +39,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		public void OnRerollClick()
 		{
 			CurrentNpc = GenerateNpc();
+			StateHasChanged();
 		}
 
 		public async Task OnAiDescriptionRequested(NpcClientModel npcModel) 
@@ -73,6 +74,8 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			NpcClientModel npcAi = await NpcServices!.GetAiDescription(npcModel);
 			return npcAi;
 		}
+
+
 
 		private void GuardNpcServicesExists()
 		{
