@@ -1,5 +1,7 @@
 ﻿using GameTools.BlazorClient.Services;
+using GameTools.UI.Components.Wrapper;
 using Microsoft.AspNetCore.Components;
+using ThatDeveloperDad.Framework.Converters;
 namespace GameTools.BlazorClient.Components.Pages.PageModels
 {
 	public class CreateNpcPageModel:ComponentBase
@@ -7,7 +9,8 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
         public CreateNpcPageModel():base()
         {
-			
+			PageState = CreateNpcPageStates.Preview;
+
             CurrentNpc = new NpcClientModel();
 			SelectableNpcOptions = new Dictionary<string, string[]>();
 			SelectedNpcOptions = new Dictionary<string, string?>();
@@ -25,8 +28,10 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			}
 		}
 
-		[Inject]
+        [Inject]
 		protected NpcServiceProvider? NpcServices { get; set; }
+
+		public CreateNpcPageStates PageState { get; set; }
 
 		public NpcClientModel CurrentNpc { get; private set; }
 
@@ -36,15 +41,31 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
 		public NpcUserOptions UserOptions { get; private set; }
 
-		public void OnRerollClick()
+		public void OnRerollClicked()
 		{
+			CurrentNpc = GenerateNpc();
+			StateHasChanged();
+		}
+
+		public void OnStartOverClicked()
+		{
+			PageState = CreateNpcPageStates.Preview;
+			UserOptions = new NpcUserOptions();
 			CurrentNpc = GenerateNpc();
 			StateHasChanged();
 		}
 
 		public async Task OnAiDescriptionRequested(NpcClientModel npcModel) 
 		{
-			await GetAiDescription(npcModel);
+            PageState = CreateNpcPageStates.Details;
+			StateHasChanged();
+            CurrentNpc = await GetAiDescription(npcModel);
+			StateHasChanged();
+		}
+
+		public string ShowForPageState(CreateNpcPageStates requiredState)
+		{
+			return (requiredState == PageState).AsString("shown", "hidden");
 		}
 
 		private Dictionary<string, string[]> LoadSelectableNpcOptions()

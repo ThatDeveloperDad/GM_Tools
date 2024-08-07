@@ -28,8 +28,7 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			ToggleText = "Show";
-			ShowOptionsPanel = false;
+			SetOptionPanelVisibility(false);
 		}
 
 		public string? Species
@@ -87,14 +86,19 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 		public void ToggleOptionPanel()
 		{
 			bool newState = !ShowOptionsPanel;
+			SetOptionPanelVisibility(newState);
+		}
 
-			ToggleText = (newState) ? "Hide" : "Show";
-			ShowOptionsPanel = newState;
+		private void SetOptionPanelVisibility(bool shouldShow)
+		{
+			ToggleText = (shouldShow) ? "Hide" : "Show";
+			ShowOptionsPanel = shouldShow;
 		}
 
 		public void OnCreateNpcClick()
 		{
 			this.GenerateNpc_Clicked?.Invoke();
+			SetOptionPanelVisibility(false);
 		}
     }
 }
