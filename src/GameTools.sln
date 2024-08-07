@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.BlazorClient", "U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.BlazorClient.Client", "UI\GameTools.BlazorClient\GameTools.BlazorClient.Client\GameTools.BlazorClient.Client.csproj", "{A88DF681-41FB-42C9-8431-F6E48F833F59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.UI.Components", "GameTools.UI.Components\GameTools.UI.Components.csproj", "{68896010-A661-4525-B5E9-DFAD5D514818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.UI.Components", "GameTools.UI.Components\GameTools.UI.Components.csproj", "{68896010-A661-4525-B5E9-DFAD5D514818}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,13 +5,13 @@ using System.Text.Json.Serialization;
 
 namespace GameTools.BlazorClient.Services
 {
-    public class DisplayNPCViewModel
+    public class NpcClientModel
     {
         private readonly Townsperson _npc;
         private bool _useMetricMeasurements = false;
-        public DisplayNPCViewModel() : this(new Townsperson()) { }
+        public NpcClientModel() : this(new Townsperson()) { }
 
-        public DisplayNPCViewModel(Townsperson npc)
+        public NpcClientModel(Townsperson npc)
         {
             _npc = npc;
             TextDescription = string.Empty;

@@ -88,6 +88,58 @@ namespace GameTools.TownsfolkManager
             return npc;
         }
 
+        public Townsperson GenerateTownspersonFromOptions(TownsfolkUserOptions options)
+        {
+            Townsperson npc = new Townsperson();
+
+            // IsRetired affects the age calculation that's run based on species.
+            // We need to set that now.
+			if (options.IsRetired.HasValue)
+			{
+				npc.Vocation.IsRetired = options.IsRetired.Value;
+			}
+
+			string selectedSpecies = options.Species??string.Empty;
+            if(string.IsNullOrWhiteSpace(selectedSpecies))
+            {
+                selectedSpecies = _shuffler.PickOne(CharacterRules.SpeciesRules.List())??string.Empty;
+            }
+            SpeciesTemplate? speciesTplt = CharacterRules.SpeciesRules.Load(selectedSpecies);
+            if(speciesTplt == null)
+            {
+                throw new Exception($"Could not apply species template for {selectedSpecies}.");
+            }
+            npc = npc.ApplySpecies(speciesTplt, _shuffler, _diceBag);
+
+            string selectedBackground = options.Background ?? string.Empty;
+            if(string.IsNullOrWhiteSpace(selectedBackground))
+            {
+                selectedBackground = _shuffler.PickOne(CharacterRules.BackgroundRules.List()) ?? string.Empty;
+            }
+            BackgroundTemplate? bgroundTplt = CharacterRules.BackgroundRules.Load(selectedBackground);
+            if(bgroundTplt == null)
+            {
+                throw new Exception($"Could not apply background template for {selectedBackground}");
+            }
+            npc = npc.ApplyBackground(bgroundTplt, _shuffler, _diceBag);
+
+            
+
+            string selectedVocation = options.Vocation ?? string.Empty;
+            if(string.IsNullOrWhiteSpace(selectedVocation))
+            {
+                selectedVocation = _shuffler.PickOne(CharacterRules.VocationRules.List()) ?? string.Empty;
+            }
+            VocationTemplate? jobTplt = CharacterRules.VocationRules.Load(selectedVocation);
+            if(jobTplt == null)
+            {
+                throw new Exception($"Could not apply profession tempalte for {selectedVocation}");
+            }
+            npc = npc.ApplyVocation(jobTplt, _shuffler, _diceBag);
+
+            return npc;
+        }
+
         public Townsperson GenerateTownspersonFromOptions(Dictionary<string, string?> selectedAttributes)
         {
             Townsperson npc = new Townsperson();

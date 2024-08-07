@@ -1,0 +1,28 @@
+﻿@page "/create-npc"
+
+@using GameTools.BlazorClient.Components.Pages.Partials;
+@using GameTools.BlazorClient.Components.Pages.PageModels;
+@using GameTools.UI.Components.Wrapper
+
+@inherits PageModels.CreateNpcPageModel;
+
+<div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
+<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
+				  UserOptions="@this.UserOptions"
+				  GenerateNpc_Clicked="OnRerollClicked"/>
+
+<ViewNpcAttributes UseMetric="@false"
+				   CurrentNpc="@this.CurrentNpc"
+				   GenerateAi_Clicked="OnAiDescriptionRequested" />
+</div>
+
+<div class="@this.ShowForPageState(CreateNpcPageStates.Details)">
+
+		<ViewNpcDetails UseMetric="@false"
+						CurrentNpc="@this.CurrentNpc"/>
+
+</div>
+
+<div class="row">
+	<button class="btn btn-primary" @onclick="OnStartOverClicked">Start Over</button>
+</div>

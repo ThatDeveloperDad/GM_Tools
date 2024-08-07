@@ -177,11 +177,21 @@ namespace GameTools.API.WorkloadProvider
             return npc;
         }
 
+        /// <summary>
+        /// This overload exists only for the console application.
+        /// </summary>
+        /// <param name="selectedAttributes"></param>
+        /// <returns></returns>
         public Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes)
         {
-            string npcJson = string.Empty;
             var npc = _npcManager.GenerateTownspersonFromOptions(selectedAttributes);
 
+            return npc;
+        }
+
+        public Townsperson GenerateNPC(TownsfolkUserOptions options)
+        {
+            Townsperson npc = _npcManager.GenerateTownspersonFromOptions(options);
             return npc;
         }
 

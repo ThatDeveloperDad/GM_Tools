@@ -68,7 +68,7 @@ for a Fantasy setting.  Each generated attribute value must be assigned
 to a named property in a different JSON object, as defined in the OUTPUT SCHEMA.
 
 INSTRUCTIONS:  
-Output Format must be valid Json as specified in the OUTPUT SCHEMA.  Do not add additional text or commentary outside of the JSON object you create.
+Output Format must be VALID JSON as specified in the OUTPUT SCHEMA.  Do not add additional text, commentary, or other decoration outside of the JSON object you create.
 Name: Please create that fits the provided Species.  Keep it to Given and Surname.  Do not include titles or honorifics.
 Appearance:  Write one sentence describing their appearance and mode of dress.  Base this description on the provided data and their current circumstance.
 Personality:  Create a short description of their personality, synthesized from their species, background, and profession.  Be brief, one or two short sentences is sufficient.
@@ -92,6 +92,27 @@ OUTPUT SCHEMA
   'Background': 'Background goes here.'
 }
 ============
+
+EXAMPLE OUTPUT FORMAT
+GOOD EXAMPLE:
+{
+  'Name': 'The name of the character will go here.',
+  'Personality': 'The personality will go here.',
+  'Appearance': 'The appearance will go here.',
+  'CurrentCircumstances': 'Current Circumstances go here.',
+  'Background': 'Background goes here.'
+}
+
+BAD EXAMPLE:
+```json
+{
+  'Name': 'The name of the character will go here.',
+  'Personality': 'The personality will go here.',
+  'Appearance': 'The appearance will go here.',
+  'CurrentCircumstances': 'Current Circumstances go here.',
+  'Background': 'Background goes here.'
+}
+```
 ";
 
             AiFunctionDefinition functionDef = new AiFunctionDefinition(
