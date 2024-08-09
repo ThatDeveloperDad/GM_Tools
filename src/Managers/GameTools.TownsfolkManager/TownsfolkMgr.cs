@@ -1,4 +1,5 @@
 ﻿using GameTools.DiceEngine;
+using GameTools.NPCAccess;
 using GameTools.Ruleset.Definitions;
 using GameTools.Ruleset.Definitions.Characters;
 using GameTools.RulesetAccess.Contracts;
@@ -7,6 +8,8 @@ using GameTools.TownsfolkManager.InternalOperations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.TownsfolkManager
 {
@@ -15,12 +18,14 @@ namespace GameTools.TownsfolkManager
     {
         
         private readonly IRulesetAccess _rulesAccess;
+        private readonly INpcAccess _npcAccess;
         private readonly ICardDeck _shuffler;
         private readonly IDiceBag _diceBag;
 
         public TownsfolkMgr(IRulesetAccess ruleSet,
-                                ICardDeck shuffler,
-                                IDiceBag diceBag)
+                            INpcAccess npcAccess,
+                            ICardDeck shuffler,
+                            IDiceBag diceBag)
         {
             _rulesAccess = ruleSet;
             _shuffler = shuffler;
@@ -140,6 +145,7 @@ namespace GameTools.TownsfolkManager
             return npc;
         }
 
+        [Obsolete("This version is going away.  Use the TownsfolkUserOptions instead.")]
         public Townsperson GenerateTownspersonFromOptions(Dictionary<string, string?> selectedAttributes)
         {
             Townsperson npc = new Townsperson();
@@ -224,17 +230,21 @@ namespace GameTools.TownsfolkManager
 
         public Townsperson[] ListTownspersons()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public Townsperson LoadTownsperson(string location)
+        public async Task<OpResult<Townsperson>> LoadTownsperson(int npcId)
         {
             throw new System.NotImplementedException();
         }
 
-        public string SaveTownsperson(Townsperson townsperson)
+        public async Task<OpResult<int>> SaveTownsperson(Townsperson townsperson)
         {
-            throw new System.NotImplementedException();
+            NpcAccessModel storageModel = townsperson.ToNpcAccessModel();
+
+            OpResult<int> saveResult = await _npcAccess.SaveNpc(storageModel);
+
+            return saveResult;
         }
     }
 }

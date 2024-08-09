@@ -26,6 +26,12 @@ namespace GameTools.TownsfolkManager.Contracts
             PersonalityDescription = new GeneratedProperty();
         }
 
+        //TODO:  Find a way to make sure these init; values don't get tampered with
+        // while they're sitting in a client browser.
+        public int? Id { get; init; }
+        public int UserId { get; init; }
+        public bool IsPublic { get; init; }
+
         public string GivenName { get; set; }
 
         public string FamilyName { get; set; }

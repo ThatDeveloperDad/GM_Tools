@@ -7,6 +7,8 @@ using GameTools.RulesetAccess.Contracts;
 using GameTools.Ruleset.DnD5eSRD;
 using GameTools.TownsfolkManager;
 using GameTools.TownsfolkManager.Contracts;
+using GameTools.NPCAccess;
+using GameTools.NPCAccess.SqlServer;
 using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.LlmAccess.Contracts;
 using ThatDeveloperDad.LlmAccess;
@@ -20,6 +22,8 @@ namespace GameTools.BlazorClient
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder = SetUpConfiguration(builder);
 
             builder = CreateServices(builder);
 
@@ -55,8 +59,19 @@ namespace GameTools.BlazorClient
             app.Run();
         }
 
+        private static WebApplicationBuilder SetUpConfiguration(WebApplicationBuilder builder)
+        {
+            builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
+            builder.Configuration.AddJsonFile("appsettings.json");
+
+
+            return builder;
+        }
+
         private static WebApplicationBuilder CreateServices(WebApplicationBuilder builder)
         {
+            builder.Logging.AddConsole();
+
             // Set up "Townsfolk" services and dependencies.
 			builder.Services.AddScoped<IRulesetAccess>((sp) =>
 			{
@@ -71,7 +86,10 @@ namespace GameTools.BlazorClient
 
 			builder.Services.AddScoped<IDiceBag, DiceBag>();
 
-			builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
+            builder.Services.UseNpcSqlServerAccess(builder.Configuration);
+
+
+            builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 
 			// Set up AI Aubsystem and dependencies.
 			builder.Services.AddScoped<ILlmProvider, LlmProvider>();
