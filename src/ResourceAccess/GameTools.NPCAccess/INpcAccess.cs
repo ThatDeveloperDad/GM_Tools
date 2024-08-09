@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.NPCAccess
 {
@@ -14,6 +10,6 @@ namespace GameTools.NPCAccess
         /// </summary>
         /// <param name="npc"></param>
         /// <returns>Task with an int result.</returns>
-        Task<int> SaveNpc(NpcAccessModel npc);
+        Task<OpResult<int>> SaveNpc(NpcAccessModel npc);
     }
 }
