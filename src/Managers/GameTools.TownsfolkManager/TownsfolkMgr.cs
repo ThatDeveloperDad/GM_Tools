@@ -27,6 +27,7 @@ namespace GameTools.TownsfolkManager
                             ICardDeck shuffler,
                             IDiceBag diceBag)
         {
+            _npcAccess = npcAccess;
             _rulesAccess = ruleSet;
             _shuffler = shuffler;
             _diceBag = diceBag;
@@ -238,13 +239,28 @@ namespace GameTools.TownsfolkManager
             throw new System.NotImplementedException();
         }
 
-        public async Task<OpResult<int>> SaveTownsperson(Townsperson townsperson)
+        public async Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson)
         {
+            OpResult<Townsperson> managerResult = new OpResult<Townsperson>();
+            managerResult.Result = townsperson;
+
             NpcAccessModel storageModel = townsperson.ToNpcAccessModel();
 
             OpResult<int> saveResult = await _npcAccess.SaveNpc(storageModel);
 
-            return saveResult;
+            if(saveResult.WasSuccessful)
+            {
+                managerResult.Result.SetId(saveResult.Result);
+            }
+            else
+            {
+                foreach (var item in saveResult.Errors)
+                {
+                    managerResult.AddError(item.Key, item.Value);
+                }
+            }
+
+            return managerResult;
         }
     }
 }

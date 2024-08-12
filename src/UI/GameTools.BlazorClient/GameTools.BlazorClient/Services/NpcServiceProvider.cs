@@ -2,6 +2,7 @@
 using GameTools.API.WorkloadProvider.AiWorkloads;
 using GameTools.TownsfolkManager.Contracts;
 using ThatDeveloperDad.Framework.Serialization;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.BlazorClient.Services
 {
@@ -63,19 +64,43 @@ namespace GameTools.BlazorClient.Services
             //string aiDescription = await _characterWorker.DescribeNPC(npc.NpcModel);
             //npc.AddAiDescription(aiDescription);
 
-            GeneratedCharacterProperties genProps = await _characterWorker.GenerateAttributes(vmJson);
+            GeneratedCharacterProperties genAiAttributes = await _characterWorker.GenerateAttributes(vmJson);
             // Need to apply the properties to the inner Townsfolk Model.  lol, oops!
             
             //TODO:  This code is CRAP.  Refactor it for maintainability once it works.
             Townsperson updated = npc.NpcModel;
-            updated.FullName.SetAiValue(genProps.Name.ToString());
-            updated.Appearance.Description.SetAiValue(genProps.Appearance.ToString());
-            updated.PersonalityDescription.SetAiValue(genProps.Personality.ToString());
-            updated.Background.Description.SetAiValue(genProps.Background.ToString());
-            updated.Vocation.Description.SetAiValue(genProps.CurrentCircumstances.ToString());
+            updated.FullName.SetAiValue(genAiAttributes.Name.ToString());
+            updated.Appearance.Description.SetAiValue(genAiAttributes.Appearance.ToString());
+            updated.PersonalityDescription.SetAiValue(genAiAttributes.Personality.ToString());
+            updated.Background.Description.SetAiValue(genAiAttributes.Background.ToString());
+            updated.Vocation.Description.SetAiValue(genAiAttributes.CurrentCircumstances.ToString());
 
             NpcClientModel updatedVm = new NpcClientModel(updated);
             return updatedVm;
+        }
+
+        public async Task<OpResult<NpcClientModel>> SaveNpc(NpcClientModel npc)
+        {
+            OpResult<NpcClientModel> proxyResult = new OpResult<NpcClientModel>();
+            
+            Townsperson npcData = npc.NpcModel;
+            var apiResult = await _characterWorker.SaveNpc(npcData);
+
+            if(apiResult.WasSuccessful)
+            {
+                Townsperson? apiPayload = apiResult.Result;
+                NpcClientModel proxyPayload = new NpcClientModel(apiPayload);
+                proxyResult.Result = proxyPayload;
+            }
+            else
+            {
+                foreach(var kvp in apiResult.Errors)
+                {
+                    proxyResult.AddError(kvp.Key, kvp.Value);
+                }
+            }
+
+            return proxyResult;
         }
     }
 }

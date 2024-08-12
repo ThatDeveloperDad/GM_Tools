@@ -2,6 +2,7 @@
 using GameTools.UI.Components.Wrapper;
 using Microsoft.AspNetCore.Components;
 using ThatDeveloperDad.Framework.Converters;
+using ThatDeveloperDad.Framework.Wrappers;
 namespace GameTools.BlazorClient.Components.Pages.PageModels
 {
 	public class CreateNpcPageModel:ComponentBase
@@ -63,7 +64,16 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			StateHasChanged();
 		}
 
-		public string ShowForPageState(CreateNpcPageStates requiredState)
+		public async Task OnSaveNpc(NpcClientModel npcModel)
+		{
+			PageState = CreateNpcPageStates.Details;
+			StateHasChanged();
+			CurrentNpc = await SaveNpc(npcModel);
+			StateHasChanged();
+		}
+
+
+        public string ShowForPageState(CreateNpcPageStates requiredState)
 		{
 			return (requiredState == PageState).AsString("shown", "hidden");
 		}
@@ -96,7 +106,24 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			return npcAi;
 		}
 
+		private async Task<NpcClientModel> SaveNpc(NpcClientModel npcModel)
+		{
+			GuardNpcServicesExists();
+			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel);
 
+			if(proxyResult.WasSuccessful && proxyResult.Result !=null)
+			{
+				return proxyResult.Result;
+			}
+			else
+			{
+				//TODO:  FIgure out how Blazor handles errors once they reach the UI.
+				//Also TODO:  Figure out how to get the appsettings.Developer.json pulled in.
+				//Also also TODO: Fix the tests I broke by changing the TOwnspersonMgr ctor
+				string error = proxyResult.Errors.FirstOrDefault().Value;
+				throw new Exception(error);
+			}
+		}
 
 		private void GuardNpcServicesExists()
 		{

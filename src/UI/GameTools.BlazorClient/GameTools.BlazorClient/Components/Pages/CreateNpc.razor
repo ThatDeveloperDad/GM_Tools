@@ -19,10 +19,11 @@
 <div class="@this.ShowForPageState(CreateNpcPageStates.Details)">
 
 		<ViewNpcDetails UseMetric="@false"
-						CurrentNpc="@this.CurrentNpc"/>
+						CurrentNpc="@this.CurrentNpc"
+						SaveNpc_Clicked="OnSaveNpc"/>
 
 </div>
 
 <div class="row">
-	<button class="btn btn-primary" @onclick="OnStartOverClicked">Start Over</button>
+	<button class="btn btn-outline-secondary" @onclick="OnStartOverClicked">Start Over</button>
 </div>

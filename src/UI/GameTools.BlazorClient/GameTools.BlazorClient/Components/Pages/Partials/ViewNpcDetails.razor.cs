@@ -7,6 +7,9 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 	{
 
         [Parameter]
+        public Func<NpcClientModel, Task>? SaveNpc_Clicked { get; set; }
+
+        [Parameter]
         public NpcClientModel CurrentNpc { get; set; }
 
         [Parameter]
@@ -38,5 +41,12 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public string Profession => CurrentNpc.Profession;
 
         public string DetailedProfession => CurrentNpc.GenProfession;
+
+        public bool IsSaveButtonVisible => SaveNpc_Clicked != null;
+
+        public void OnSaveNpcClicked()
+        {
+            SaveNpc_Clicked?.Invoke(CurrentNpc);
+        }
     }
 }

@@ -61,8 +61,10 @@ namespace GameTools.BlazorClient
 
         private static WebApplicationBuilder SetUpConfiguration(WebApplicationBuilder builder)
         {
+            var environment = builder.Environment.EnvironmentName;
             builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
             builder.Configuration.AddJsonFile("appsettings.json");
+            builder.Configuration.AddJsonFile($"appsettings.{environment}.json", true);
 
 
             return builder;
@@ -87,7 +89,6 @@ namespace GameTools.BlazorClient
 			builder.Services.AddScoped<IDiceBag, DiceBag>();
 
             builder.Services.UseNpcSqlServerAccess(builder.Configuration);
-
 
             builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 

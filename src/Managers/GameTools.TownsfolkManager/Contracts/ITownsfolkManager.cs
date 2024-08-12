@@ -34,7 +34,7 @@ namespace GameTools.TownsfolkManager.Contracts
         /// </summary>
         /// <param name="townsperson">The NPC instance to save.</param>
         /// <returns>Returns a Task with an OpResult carrying the ID of the townsperson that was persisted.</returns>
-        Task<OpResult<int>> SaveTownsperson(Townsperson townsperson);
+        Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson);
 
         /// <summary>
         /// Retrieves the identified Townsperson instance from the configured storage location.

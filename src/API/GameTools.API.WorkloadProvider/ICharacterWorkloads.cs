@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.API.WorkloadProvider
 {
@@ -61,5 +62,7 @@ namespace GameTools.API.WorkloadProvider
         /// <param name="npcJson"></param>
         /// <returns></returns>
         Task<GeneratedCharacterProperties> GenerateAttributes(string npcJson);
+
+        Task<OpResult<Townsperson>> SaveNpc(Townsperson npc); 
     }
 }

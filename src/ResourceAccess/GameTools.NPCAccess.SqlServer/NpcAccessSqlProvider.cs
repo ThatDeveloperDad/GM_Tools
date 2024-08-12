@@ -14,7 +14,6 @@ namespace GameTools.NPCAccess.SqlServer
         private readonly string _userDataCn;
         private NpcAccessDbContext? _ctx;
         
-
         public NpcAccessSqlProvider(ILogger<NpcAccessSqlProvider> logger,
                                     string userDataCn)
         {

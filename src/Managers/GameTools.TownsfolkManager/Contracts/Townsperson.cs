@@ -28,7 +28,24 @@ namespace GameTools.TownsfolkManager.Contracts
 
         //TODO:  Find a way to make sure these init; values don't get tampered with
         // while they're sitting in a client browser.
-        public int? Id { get; init; }
+        private int? _id;
+        public int? Id 
+        { 
+            get
+            {
+                return _id;
+            }
+            init
+            {
+                _id = value;
+            }
+        }
+
+        internal void SetId(int id)
+        {
+            _id = id;
+        }
+
         public int UserId { get; init; }
         public bool IsPublic { get; init; }
 
