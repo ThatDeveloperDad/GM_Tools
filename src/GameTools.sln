@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.BlazorClient.Clie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.UI.Components", "GameTools.UI.Components\GameTools.UI.Components.csproj", "{68896010-A661-4525-B5E9-DFAD5D514818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.NPCAccess.SqlServer", "ResourceAccess\GameTools.NPCAccess.SqlServer\GameTools.NPCAccess.SqlServer.csproj", "{165991AB-0C59-495E-BA49-FB3BAC290CDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.NPCAccess.SqlServer", "ResourceAccess\GameTools.NPCAccess.SqlServer\GameTools.NPCAccess.SqlServer.csproj", "{165991AB-0C59-495E-BA49-FB3BAC290CDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

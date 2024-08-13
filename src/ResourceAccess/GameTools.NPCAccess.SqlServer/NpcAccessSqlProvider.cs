@@ -8,6 +8,7 @@ using GameTools.NPCAccess.SqlServer.Transformers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameTools.NPCAccess.SqlServer
 {
@@ -48,7 +49,7 @@ namespace GameTools.NPCAccess.SqlServer
             {
                 IQueryable<NpcRowModel> query 
                     = Ctx.Npcs
-                         .Where(n=> n.DeletedDate == null);
+                         .Where(n=> n.DeletedDate.HasValue == false);
 
                 string? speciesFilter = filter.Species;
                 string? vocationFilter = filter.Vocation;

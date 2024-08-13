@@ -10,7 +10,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
         public CreateNpcPageModel():base()
         {
-			PageState = CreateNpcPageStates.Preview;
+			PageState = CreateNpcPageStates.List;
 
             CurrentNpc = new NpcClientModel();
 			SelectableNpcOptions = new Dictionary<string, string[]>();
@@ -30,7 +30,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		}
 
         [Inject]
-		protected NpcServiceProvider? NpcServices { get; set; }
+		protected NpcServiceProxy? NpcServices { get; set; }
 
 		public CreateNpcPageStates PageState { get; set; }
 

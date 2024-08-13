@@ -6,14 +6,18 @@
 
 @inherits PageModels.CreateNpcPageModel;
 
-<div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
-<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
-				  UserOptions="@this.UserOptions"
-				  GenerateNpc_Clicked="OnRerollClicked"/>
+<div class="@this.ShowForPageState(CreateNpcPageStates.List)">
+	<NpcList />
+</div>
 
-<ViewNpcAttributes UseMetric="@false"
-				   CurrentNpc="@this.CurrentNpc"
-				   GenerateAi_Clicked="OnAiDescriptionRequested" />
+<div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
+	<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
+					  UserOptions="@this.UserOptions"
+					  GenerateNpc_Clicked="OnRerollClicked"/>
+
+	<ViewNpcAttributes UseMetric="@false"
+					   CurrentNpc="@this.CurrentNpc"
+					   GenerateAi_Clicked="OnAiDescriptionRequested" />
 </div>
 
 <div class="@this.ShowForPageState(CreateNpcPageStates.Details)">
@@ -24,6 +28,6 @@
 
 </div>
 
-<div class="row">
+@* <div class="row">
 	<button class="btn btn-outline-secondary" @onclick="OnStartOverClicked">Start Over</button>
-</div>
+</div> *@

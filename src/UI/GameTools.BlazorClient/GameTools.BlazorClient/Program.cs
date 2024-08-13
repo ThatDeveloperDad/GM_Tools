@@ -99,7 +99,7 @@ namespace GameTools.BlazorClient
 			
             builder.Services.AddScoped<ICharacterWorkloads, CharacterWorkloads>();
 
-            builder.Services.AddScoped<NpcServiceProvider>();
+            builder.Services.AddScoped<NpcServiceProxy>();
 
             return builder;
         }

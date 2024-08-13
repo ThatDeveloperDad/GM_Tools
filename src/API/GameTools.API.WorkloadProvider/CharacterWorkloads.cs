@@ -205,7 +205,6 @@ namespace GameTools.API.WorkloadProvider
         public async Task<OpResult<Townsperson>> SaveNpc(Townsperson npc)
         {
             var managerResult = await _npcManager.SaveTownsperson(npc);
-            
             return managerResult;
         }
 

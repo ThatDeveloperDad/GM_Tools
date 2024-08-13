@@ -1,0 +1,29 @@
+﻿
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Species</th>
+			<th>Job</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if(FilteredNpcs.Any())
+		{
+			foreach(var npc in FilteredNpcs)
+			{
+				<tr>
+					<td>@npc.Name</td>
+					<td>@npc.Species</td>
+					<td>@npc.Vocation</td>
+				</tr>
+			}
+		}
+		else
+		{
+			<tr>
+				<td colspan="3">No Characters Found.</td>
+			</tr>
+		}
+	</tbody>
+</table>
