@@ -11,25 +11,23 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
         protected override void OnInitialized()
         {
-            
             base.OnInitialized();
         }
 
-        protected override void OnAfterRender(bool firstRender)
-        {
-            base.OnAfterRender(firstRender);
-
-            if(firstRender)
-            {
-                ExecuteFilter().Wait();
-                StateHasChanged();
-            }
-        }
+		protected async override Task OnAfterRenderAsync(bool firstRender)
+		{
+			await base.OnAfterRenderAsync(firstRender);
+            await ExecuteFilter();
+            StateHasChanged();
+		}
 
         public NpcList()
         {
             FilteredNpcs = Array.Empty<NpcFilterRowModel>();
+            EmptyTableText = "Loading ...";
         }
+
+        public string EmptyTableText { get; private set; }
 
         public NpcFilterRowModel[] FilteredNpcs { get; set; }
 
@@ -49,6 +47,11 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
                 {
                     FilteredNpcs = proxyResult.Payload?.ToArray()
                         ?? Array.Empty<NpcFilterRowModel>();
+
+                    if(FilteredNpcs.Length == 0)
+                    {
+                        EmptyTableText = "No Characters Found.";
+					}
                 }
                 else
                 {

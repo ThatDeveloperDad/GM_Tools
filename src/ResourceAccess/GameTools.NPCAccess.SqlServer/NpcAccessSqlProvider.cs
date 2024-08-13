@@ -63,7 +63,11 @@ namespace GameTools.NPCAccess.SqlServer
                     query = query.Where(n=> n.VocationName.ToUpper() == vocationFilter.ToUpper());
                 }
 
-                var rowModels = query.ToList();
+                //var rowModels = query.ToList();
+
+                var rowModels = await query.ToListAsync()
+                                           .ConfigureAwait(false);
+
                 foreach(var row in rowModels)
                 {
                     NpcAccessFilterResult filteredResult = new NpcAccessFilterResult
