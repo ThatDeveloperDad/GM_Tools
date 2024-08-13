@@ -23,6 +23,7 @@ namespace GameTools.NPCAccess.SqlServer.Context.SqlModels
         public int UserId { get; set; }
         public string SpeciesName { get; set; }
         public string VocationName { get; set; }
+        public string? CharacterName { get; set; }
         public string CharacterDetails { get; set; }
         public bool IsPublic { get; set; }
         public DateTime CreatedDate { get; set; }

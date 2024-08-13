@@ -88,9 +88,9 @@ namespace GameTools.BlazorClient.Services
 
             if(apiResult.WasSuccessful)
             {
-                Townsperson? apiPayload = apiResult.Result;
+                Townsperson? apiPayload = apiResult.Payload;
                 NpcClientModel proxyPayload = new NpcClientModel(apiPayload);
-                proxyResult.Result = proxyPayload;
+                proxyResult.Payload = proxyPayload;
             }
             else
             {

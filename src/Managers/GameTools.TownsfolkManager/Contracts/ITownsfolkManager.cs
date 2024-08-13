@@ -47,6 +47,6 @@ namespace GameTools.TownsfolkManager.Contracts
         /// Returns a list of all Townsperson instances currently stored in the configured storage location.
         /// </summary>
         /// <returns></returns>
-        Townsperson[] ListTownspersons();
+        Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownspeople(TownspersonFilter filter);
     }
 }

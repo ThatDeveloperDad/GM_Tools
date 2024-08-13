@@ -7,6 +7,8 @@ using GameTools.TownsfolkManager.Contracts;
 using GameTools.TownsfolkManager.InternalOperations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using ThatDeveloperDad.Framework.Wrappers;
@@ -229,9 +231,43 @@ namespace GameTools.TownsfolkManager
             return npcOptions;
         }
 
-        public Townsperson[] ListTownspersons()
+        public async Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownspeople(TownspersonFilter filter)
         {
-            throw new NotImplementedException();
+            List<FilteredTownsperson> managerPayload = new List<FilteredTownsperson>();
+            OpResult<IEnumerable<FilteredTownsperson>> managerResult 
+                = new OpResult<IEnumerable<FilteredTownsperson>>(managerPayload);
+
+            
+            NpcAccessFilter accessFilter = filter.ToNpcAccessFilter();
+            
+            var accessResult = await _npcAccess.FilterNpcs(accessFilter);
+
+            if(accessResult != null && accessResult.WasSuccessful)
+            {
+                var filteredNpcs = accessResult.Payload ?? Array.Empty<NpcAccessFilterResult>();
+
+                foreach(var npc in filteredNpcs)
+                {
+                    var mgrResult = npc.ToManagerModel();
+                    managerPayload.Add(mgrResult);
+                }
+            }
+            else
+            {
+                if(accessResult == null)
+                {
+                    managerResult.AddError(Guid.NewGuid(), "Something Very Bad happened.");
+                }
+                else
+                {
+                    foreach (var accessError in accessResult.Errors)
+                    {
+                        managerResult.AddError(accessError.Key, accessError.Value);
+                    }
+                }
+            }
+
+            return managerResult;
         }
 
         public async Task<OpResult<Townsperson>> LoadTownsperson(int npcId)
@@ -242,15 +278,16 @@ namespace GameTools.TownsfolkManager
         public async Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson)
         {
             OpResult<Townsperson> managerResult = new OpResult<Townsperson>();
-            managerResult.Result = townsperson;
+            managerResult.Payload = townsperson;
 
+            //TODO:  Fix the transformer method to also map the Name.
             NpcAccessModel storageModel = townsperson.ToNpcAccessModel();
 
             OpResult<int> saveResult = await _npcAccess.SaveNpc(storageModel);
 
             if(saveResult.WasSuccessful)
             {
-                managerResult.Result.SetId(saveResult.Result);
+                managerResult.Payload.SetId(saveResult.Payload);
             }
             else
             {

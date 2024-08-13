@@ -12,7 +12,6 @@ public class NpcAccessModel
         Species = string.Empty;
         Vocation = string.Empty;
         CharacterDetails = string.Empty;
-
     }
 
     public int? NpcId { get; set; }
@@ -24,6 +23,8 @@ public class NpcAccessModel
     public string Vocation { get; set; }
 
     public string CharacterDetails { get; set; }
+
+    public string? CharacterName { get; set; }
 
     public bool IsPublic { get; set; }
 }

@@ -11,5 +11,13 @@ namespace GameTools.NPCAccess
         /// <param name="npc"></param>
         /// <returns>Task with an int result.</returns>
         Task<OpResult<int>> SaveNpc(NpcAccessModel npc);
+
+        /// <summary>
+        /// Returns an Enumerable collection of NPCFilterResult objects
+        /// that match the provided filter.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        Task<OpResult<IEnumerable<NpcAccessFilterResult>>> FilterNpcs(NpcAccessFilter filter);
     }
 }

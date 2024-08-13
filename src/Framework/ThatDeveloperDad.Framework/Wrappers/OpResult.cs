@@ -42,14 +42,14 @@ namespace ThatDeveloperDad.Framework.Wrappers
     {
         public OpResult(T result)
         {
-            Result = result;
+            Payload = result;
         }
 
         public OpResult()
         {
-            Result = default(T);
+            Payload = default(T);
         }
 
-        public T? Result { get; set; }
+        public T? Payload { get; set; }
     }
 }

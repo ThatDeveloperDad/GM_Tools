@@ -64,5 +64,7 @@ namespace GameTools.API.WorkloadProvider
         Task<GeneratedCharacterProperties> GenerateAttributes(string npcJson);
 
         Task<OpResult<Townsperson>> SaveNpc(Townsperson npc); 
+
+        Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownsfolk(TownspersonFilter filter);
     }
 }

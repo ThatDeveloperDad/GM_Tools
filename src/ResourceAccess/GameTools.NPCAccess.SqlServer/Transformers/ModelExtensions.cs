@@ -14,6 +14,7 @@ namespace GameTools.NPCAccess.SqlServer.Transformers
             model.SpeciesName = dto.Species;
             model.VocationName = dto.Vocation;
             model.CharacterDetails = dto.CharacterDetails;
+            model.CharacterName = dto.CharacterName;
 
             // Not going to touch the model Date props.
             // We'll do that in the actual method that is writing the NPC.
@@ -31,6 +32,7 @@ namespace GameTools.NPCAccess.SqlServer.Transformers
             model.SpeciesName = dto.Species;
             model.VocationName = dto.Vocation;
             model.CharacterDetails = dto.CharacterDetails;
+            model.CharacterName = dto.CharacterName;
 
             return model;
         }
@@ -45,6 +47,7 @@ namespace GameTools.NPCAccess.SqlServer.Transformers
             dto.Species = model.SpeciesName;
             dto.Vocation = model.VocationName;
             dto.CharacterDetails = model.CharacterDetails;
+            dto.CharacterName = model.CharacterName;
 
             return dto;
         }

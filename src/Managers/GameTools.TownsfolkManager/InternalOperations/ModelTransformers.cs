@@ -32,5 +32,27 @@ namespace GameTools.TownsfolkManager.InternalOperations
 
             return app;
         }
+
+        public static NpcAccessFilter ToNpcAccessFilter(this TownspersonFilter filter)
+        {
+            var model = new NpcAccessFilter()
+            { 
+                Species = filter.Species,
+                Vocation = filter.Vocation
+            };
+
+            return model;
+        }
+
+        public static FilteredTownsperson ToManagerModel(this NpcAccessFilterResult accessModel)
+        {
+            var mgrModel = new FilteredTownsperson
+                (npcId: accessModel.Id,
+                 name: accessModel.Name,
+                 species: accessModel.Species,
+                 vocation: accessModel.Vocation);
+
+            return mgrModel;
+        }
     }
 }

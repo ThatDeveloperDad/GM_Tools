@@ -111,9 +111,9 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			GuardNpcServicesExists();
 			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel);
 
-			if(proxyResult.WasSuccessful && proxyResult.Result !=null)
+			if(proxyResult.WasSuccessful && proxyResult.Payload !=null)
 			{
-				return proxyResult.Result;
+				return proxyResult.Payload;
 			}
 			else
 			{

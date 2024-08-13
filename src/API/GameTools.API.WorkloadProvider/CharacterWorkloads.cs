@@ -209,6 +209,12 @@ namespace GameTools.API.WorkloadProvider
             return managerResult;
         }
 
+        public async Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownsfolk(TownspersonFilter filter)
+        {
+            var apiResult = await _npcManager.FilterTownspeople(filter);
+            return apiResult;
+        }
+
         /// <summary>
         /// Serializes an object to JSON
         /// Uses the JsonFunctions to strip all properties

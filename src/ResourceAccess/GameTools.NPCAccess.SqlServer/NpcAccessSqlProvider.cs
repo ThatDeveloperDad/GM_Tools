@@ -5,6 +5,9 @@ using ThatDeveloperDad.Framework.Wrappers;
 using GameTools.NPCAccess.SqlServer.Context;
 using GameTools.NPCAccess.SqlServer.Context.SqlModels;
 using GameTools.NPCAccess.SqlServer.Transformers;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GameTools.NPCAccess.SqlServer
 {
@@ -28,6 +31,65 @@ namespace GameTools.NPCAccess.SqlServer
                 _ctx = _ctx ?? new NpcAccessDbContext(_userDataCn);
                 return _ctx;
             }
+        }
+
+        /// <summary>
+        /// Queries the NPC Storage for all NPCs that match the filter properties.
+        /// </summary>
+        /// <param name="filter">A collection of nullable properties that will be used to build the where clause for the NPC Query.</param>
+        /// <returns></returns>
+        public async Task<OpResult<IEnumerable<NpcAccessFilterResult>>> FilterNpcs(NpcAccessFilter filter)
+        {
+            List<NpcAccessFilterResult> filteredNpcs = new List<NpcAccessFilterResult>();
+            OpResult<IEnumerable<NpcAccessFilterResult>> accessResult = new OpResult<IEnumerable<NpcAccessFilterResult>>();
+            accessResult.Payload = filteredNpcs;
+
+            try
+            {
+                IQueryable<NpcRowModel> query 
+                    = Ctx.Npcs
+                         .Where(n=> n.DeletedDate == null);
+
+                string? speciesFilter = filter.Species;
+                string? vocationFilter = filter.Vocation;
+                if(string.IsNullOrWhiteSpace(speciesFilter) == false)
+                {
+                    query = query.Where(n=> n.SpeciesName.ToUpper() == speciesFilter.ToUpper());
+                }
+
+                if (string.IsNullOrWhiteSpace(vocationFilter) == false)
+                {
+                    query = query.Where(n=> n.VocationName.ToUpper() == vocationFilter.ToUpper());
+                }
+
+                var rowModels = query.ToList();
+                foreach(var row in rowModels)
+                {
+                    NpcAccessFilterResult filteredResult = new NpcAccessFilterResult
+                        (id: row.NpcId,
+                         species: row.SpeciesName,
+                         vocation: row.VocationName,
+                         name: row.CharacterName??string.Empty);
+                    filteredNpcs.Add(filteredResult);
+                }
+
+            }
+            catch(Exception ex)
+            {
+                Guid errorId = Guid.NewGuid();
+                string errorMessage = $"There was a problem accessing the NPCs.";
+                _logger.LogError(ex.Message
+                                , new
+                                {
+                                    ErrorId = errorId,
+                                    ExceptionType = ex.GetType().Name,
+                                    TimeStampUTC = DateTime.UtcNow,
+                                    Site = $"{nameof(NpcAccessSqlProvider)}.{FilterNpcs}"
+                                });
+                accessResult.AddError(errorId, errorMessage);
+            }
+
+            return accessResult;
         }
 
         public async Task<OpResult<int>> SaveNpc(NpcAccessModel npc)
@@ -54,7 +116,7 @@ namespace GameTools.NPCAccess.SqlServer
                 }
 
                 await Ctx.SaveChangesAsync();
-                result.Result = model.NpcId;
+                result.Payload = model.NpcId;
             }
             catch (Exception e)
             {
