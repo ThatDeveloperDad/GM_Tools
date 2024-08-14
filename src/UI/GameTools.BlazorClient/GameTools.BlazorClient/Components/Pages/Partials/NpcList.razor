@@ -1,29 +1,31 @@
-﻿
-<table>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Species</th>
-			<th>Job</th>
-		</tr>
-	</thead>
-	<tbody>
-		@if(FilteredNpcs.Any())
+﻿@using ThatDeveloperDad.Framework.Converters;
+
+
+<div class="row">
+	<h4 class="col-9">Townsfolk Index</h4>
+	<button class="col-3 btn btn-primary @ShowCreateButton.AsString("shown", "hidden")" 
+			style="margin-bottom: 2px;"
+			@onclick="OnNewNpcClicked">
+		Create
+	</button>
+</div>
+<div class="npc-list">
+	@if(FilteredNpcs.Any())
+	{
+		foreach(var npc in FilteredNpcs)
 		{
-			foreach(var npc in FilteredNpcs)
-			{
-				<tr>
-					<td>@npc.Name</td>
-					<td>@npc.Species</td>
-					<td>@npc.Vocation</td>
-				</tr>
-			}
+			<div class="row npc-list-item">
+				<div class="col-10">
+					<span class="npc-name-label">@npc.Name</span><br/>
+					<span class="npc-list-detail">@npc.Species @npc.Vocation</span>
+				</div>
+				<button class="col-2 btn btn-secondary @(ShowViewNpcButton.AsString("shown", "hidden"))"
+						@onclick="() => OnViewNpcClicked(npc.NpcId)">View</button>
+			</div>
 		}
-		else
-		{
-			<tr>
-				<td colspan="3">@EmptyTableText</td>
-			</tr>
-		}
-	</tbody>
-</table>
+	}
+	else
+	{	
+		<p>@EmptyTableText</p>			
+	}
+</div>

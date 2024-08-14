@@ -1,4 +1,5 @@
-﻿using GameTools.BlazorClient.Services;
+﻿using GameTools.BlazorClient.Components.Pages.PageModels;
+using GameTools.BlazorClient.Services;
 using Microsoft.AspNetCore.Components;
 using System.Text;
 
@@ -6,10 +7,25 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 {
     public partial class NpcList
     {
+        [Parameter]
+        public Action? NewNpcHandler { get; set; }
+
+        [Parameter]
+        public Func<int, Task> ViewNpcHandler { get; set; }
+
+        [Parameter]
+        public CreateNpcPageStates CurrentPageState { get; set; }
+
         [Inject]
         protected NpcServiceProxy? NpcServices { get; set; }
 
-        protected override void OnInitialized()
+		public NpcList()
+		{
+			FilteredNpcs = Array.Empty<NpcFilterRowModel>();
+			EmptyTableText = "Loading ...";
+		}
+
+		protected override void OnInitialized()
         {
             base.OnInitialized();
         }
@@ -17,19 +33,34 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 		protected async override Task OnAfterRenderAsync(bool firstRender)
 		{
 			await base.OnAfterRenderAsync(firstRender);
-            await ExecuteFilter();
-            StateHasChanged();
+            if (firstRender)
+            {
+                await ExecuteFilter();
+                StateHasChanged();
+            }
 		}
-
-        public NpcList()
-        {
-            FilteredNpcs = Array.Empty<NpcFilterRowModel>();
-            EmptyTableText = "Loading ...";
-        }
 
         public string EmptyTableText { get; private set; }
 
         public NpcFilterRowModel[] FilteredNpcs { get; set; }
+
+        public bool ShowCreateButton => NewNpcHandler != null;
+
+        public bool ShowViewNpcButton => ViewNpcHandler != null;
+
+        public void OnNewNpcClicked()
+        {
+            NewNpcHandler?.Invoke();
+        }
+
+        public async Task OnViewNpcClicked(int npcId)
+        {
+            if(ViewNpcHandler !=null)
+            {
+                await ViewNpcHandler.Invoke(npcId);
+            }
+            
+        }
 
         private async Task ExecuteFilter()
         {

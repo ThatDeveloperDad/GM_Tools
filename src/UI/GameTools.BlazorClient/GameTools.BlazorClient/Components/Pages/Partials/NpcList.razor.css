@@ -1,0 +1,29 @@
+﻿.npc-list {
+    padding-top: .5em;
+    border-top: solid 1px black;
+    padding-bottom: .25em;
+    margin-bottom: .75em;
+}
+
+.npc-list .npc-list-item:nth-child(odd) {
+    background-color: #ECECEC;
+}
+
+    
+
+.npc-list-item {
+    border: solid 1px #ACACAC;
+    border-radius: .25em;
+    margin-bottom: .15em;
+    padding: .5em;
+}
+
+.npc-name-label {
+    font-size:1.2em;
+    font-weight:bold;
+}
+
+.npc-list-detail {
+    padding-left: 1em;
+    font-size:1.2em;
+}

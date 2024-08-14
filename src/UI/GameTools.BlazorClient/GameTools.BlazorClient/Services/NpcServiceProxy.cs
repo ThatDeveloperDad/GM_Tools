@@ -8,16 +8,16 @@ namespace GameTools.BlazorClient.Services
 {
     public class NpcServiceProxy
     {
-        private readonly ICharacterWorkloads _characterProxy;
+        private readonly ICharacterWorkloads _npcApi;
 
         public NpcServiceProxy(ICharacterWorkloads characterProxy)
         {
-            _characterProxy = characterProxy;
+            _npcApi = characterProxy;
         }
 
         public Dictionary<string, string[]> GetNpcOptions()
         {
-            Dictionary<string, string[]> options = _characterProxy.GetNpcOptions();
+            Dictionary<string, string[]> options = _npcApi.GetNpcOptions();
             return options;
         }
 
@@ -28,11 +28,11 @@ namespace GameTools.BlazorClient.Services
 
             if(selectedOptions == null)
             {
-                npc = _characterProxy.GenerateNPC();
+                npc = _npcApi.GenerateNPC();
 			}
             else
             {
-                npc = _characterProxy.GenerateNPC(selectedOptions);
+                npc = _npcApi.GenerateNPC(selectedOptions);
             }
             
             NpcClientModel npcVm = new NpcClientModel(npc);
@@ -50,7 +50,7 @@ namespace GameTools.BlazorClient.Services
             options.Vocation = userOptions.Vocation;
             options.IsRetired = userOptions.IsRetired;
 
-            Townsperson npc = _characterProxy.GenerateNPC(options);
+            Townsperson npc = _npcApi.GenerateNPC(options);
 
 
             NpcClientModel npcVm = new NpcClientModel(npc);
@@ -65,7 +65,7 @@ namespace GameTools.BlazorClient.Services
             //string aiDescription = await _characterWorker.DescribeNPC(npc.NpcModel);
             //npc.AddAiDescription(aiDescription);
 
-            GeneratedCharacterProperties genAiAttributes = await _characterProxy.GenerateAttributes(vmJson);
+            GeneratedCharacterProperties genAiAttributes = await _npcApi.GenerateAttributes(vmJson);
             // Need to apply the properties to the inner Townsfolk Model.  lol, oops!
             
             //TODO:  This code is CRAP.  Refactor it for maintainability once it works.
@@ -85,7 +85,7 @@ namespace GameTools.BlazorClient.Services
             OpResult<NpcClientModel> proxyResult = new OpResult<NpcClientModel>();
             
             Townsperson npcData = npc.NpcModel;
-            var apiResult = await _characterProxy.SaveNpc(npcData);
+            var apiResult = await _npcApi.SaveNpc(npcData);
 
             if(apiResult.WasSuccessful)
             {
@@ -117,7 +117,7 @@ namespace GameTools.BlazorClient.Services
             };
 
             // Call & Await the API.
-            var apiResult = await _characterProxy.FilterTownsfolk(apiFilter);
+            var apiResult = await _npcApi.FilterTownsfolk(apiFilter);
 
             // Convert the result back to the client model types.
             if(apiResult == null)
@@ -150,6 +150,45 @@ namespace GameTools.BlazorClient.Services
             }
 
             // Send it back to the invoking PageModel.
+            return proxyResult;
+        }
+
+        public async Task<OpResult<NpcClientModel?>> LoadNpc(int npcId)
+        {
+            NpcClientModel? proxyPayload = null;
+            OpResult<NpcClientModel?> proxyResult = new OpResult<NpcClientModel?>(proxyPayload);
+
+            var apiResult = await _npcApi.LoadTownsperson(npcId);
+
+            //TODO:  This is where we left off on Wednesday, 8/14.
+            // Pick up troubleshooting here.
+            if(apiResult == null)
+            {
+                proxyResult.AddError(Guid.NewGuid(), "The API did not return any result.");
+            }
+            else
+            {
+                if(apiResult.WasSuccessful)
+                {
+                    var apiPayload = apiResult.Payload;
+                    if(apiPayload !=null)
+                    {
+						proxyPayload = new NpcClientModel(apiPayload);
+					}
+                    else
+                    {
+                        proxyResult.AddError(Guid.NewGuid(), $"The Api did not return the Npc with Id {npcId}.");
+                    }
+                }
+                else
+                {
+                    foreach(var kvp in apiResult.Errors)
+                    {
+                        proxyResult.AddError(kvp.Key, kvp.Value);
+                    }
+                }
+            }
+
             return proxyResult;
         }
     }

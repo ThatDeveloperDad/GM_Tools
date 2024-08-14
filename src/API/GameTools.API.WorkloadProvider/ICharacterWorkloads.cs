@@ -66,5 +66,7 @@ namespace GameTools.API.WorkloadProvider
         Task<OpResult<Townsperson>> SaveNpc(Townsperson npc); 
 
         Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownsfolk(TownspersonFilter filter);
+
+        Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId);
     }
 }

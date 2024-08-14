@@ -19,6 +19,7 @@ namespace GameTools.TownsfolkManager.InternalOperations
             model.UserId = app.UserId;
             model.Species = app.Species;
             model.Vocation = app.Vocation.Name;
+            model.CharacterName = app.FullName.ToString();
             model.CharacterDetails = app.SerializeForOutput();
 
             return model;

@@ -57,6 +57,12 @@ public static class JsonUtilities
 
     }
 
+    public static T? ToInstance<T>(this string json)
+    {
+        var rehydrated = JsonSerializer.Deserialize<T>(json);
+        return rehydrated;
+    }
+
     public static string SerializeForOutput<T>(this T instance) where T : class
     {
         string json = JsonUtilities.GetCleanJson(instance);

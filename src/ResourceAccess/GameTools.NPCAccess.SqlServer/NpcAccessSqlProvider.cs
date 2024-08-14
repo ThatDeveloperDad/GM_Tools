@@ -141,7 +141,43 @@ namespace GameTools.NPCAccess.SqlServer
             return result;
         }
 
-        
+        public async Task<OpResult<NpcAccessModel?>> LoadNpc(int npcId)
+        {
+            NpcAccessModel? accessPayload = null;
+            OpResult<NpcAccessModel?> accessResult = new OpResult<NpcAccessModel?>(accessPayload);
+
+            try
+            {
+                var sqlModel = await Ctx.Npcs.FindAsync(npcId);
+
+                if(sqlModel == null)
+                {
+                    accessResult.AddError(Guid.NewGuid(), $"The requested Npc with id {npcId} was not found.");
+                }
+                else
+                {
+                    accessPayload = sqlModel.ToDto();
+                    accessResult.Payload = accessPayload;
+                }
+            }
+            catch(Exception ex)
+            {
+				Guid errorId = Guid.NewGuid();
+				string errorMessage = $"Could not save the NPC.";
+				_logger.LogError(ex.Message
+								, new
+								{
+									ErrorId = errorId,
+									ExceptionType = ex.GetType().Name,
+									TimeStampUTC = DateTime.UtcNow,
+									Site = $"{nameof(NpcAccessSqlProvider)}.{LoadNpc}"
+								});
+				accessResult.AddError(errorId, errorMessage);
+			}
+
+            return accessResult;
+
+        }
 
         #region IDisposable Implementation
 

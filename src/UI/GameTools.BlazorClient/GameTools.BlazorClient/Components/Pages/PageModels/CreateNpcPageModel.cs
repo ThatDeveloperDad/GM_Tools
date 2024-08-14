@@ -1,6 +1,7 @@
 ﻿using GameTools.BlazorClient.Services;
 using GameTools.UI.Components.Wrapper;
 using Microsoft.AspNetCore.Components;
+using System.Text;
 using ThatDeveloperDad.Framework.Converters;
 using ThatDeveloperDad.Framework.Wrappers;
 namespace GameTools.BlazorClient.Components.Pages.PageModels
@@ -72,6 +73,20 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			StateHasChanged();
 		}
 
+		public void OnCreateNewClicked()
+		{
+			PageState = CreateNpcPageStates.Preview;
+			UserOptions = new NpcUserOptions();
+			CurrentNpc = GenerateNpc();
+			StateHasChanged();
+		}
+
+		public async Task OnNpcList_ViewClicked(int npcId)
+		{
+			CurrentNpc = await LoadNpc(npcId);
+			PageState = CreateNpcPageStates.Details;
+			StateHasChanged();
+		}
 
         public string ShowForPageState(CreateNpcPageStates requiredState)
 		{
@@ -122,6 +137,42 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 				//Also also TODO: Fix the tests I broke by changing the TOwnspersonMgr ctor
 				string error = proxyResult.Errors.FirstOrDefault().Value;
 				throw new Exception(error);
+			}
+		}
+
+		private async Task<NpcClientModel> LoadNpc(int npcId)
+		{
+			GuardNpcServicesExists();
+			var proxyResult = await NpcServices!.LoadNpc(npcId);
+			if(proxyResult == null)
+			{
+				throw new Exception("The attempt to load the NPC failed.");
+			}
+			else
+			{
+				if (proxyResult.WasSuccessful)
+				{
+					var newModel = proxyResult.Payload;
+
+					if (newModel != null)
+					{
+						return newModel;
+					}
+					else
+					{
+						throw new Exception($"Could not load an NPC with id {npcId}");
+					}
+				}
+				else
+				{
+					var sb = new StringBuilder();
+					foreach(var item in proxyResult.Errors)
+					{
+						sb.AppendLine(item.Value);
+					}
+					throw new Exception(sb.ToString());
+				}
+				
 			}
 		}
 

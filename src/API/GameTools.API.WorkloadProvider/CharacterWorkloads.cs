@@ -214,6 +214,12 @@ namespace GameTools.API.WorkloadProvider
             return apiResult;
         }
 
+        public async Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId)
+        {
+            var apiResult = await _npcManager.LoadTownsperson(townspersonId);
+            return apiResult;
+        }
+
         /// <summary>
         /// Serializes an object to JSON
         /// Uses the JsonFunctions to strip all properties

@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using ThatDeveloperDad.Framework.Serialization;
 using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.TownsfolkManager
@@ -270,9 +271,42 @@ namespace GameTools.TownsfolkManager
             return managerResult;
         }
 
-        public async Task<OpResult<Townsperson>> LoadTownsperson(int npcId)
+        public async Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId)
         {
-            throw new System.NotImplementedException();
+            Townsperson? managerPayload = null;
+            OpResult<Townsperson?> managerResult = new OpResult<Townsperson?>(managerPayload);
+
+            var accessResult = await _npcAccess.LoadNpc(townspersonId);
+
+            if(accessResult == null)
+            {
+                managerResult.AddError(Guid.NewGuid(), "Something very Bad happened.");
+            }
+            else
+            {
+                if(accessResult.WasSuccessful)
+                {
+                    // Map the NpcAccessModel to the Townsperson.
+                    var accessPayload = accessResult.Payload;
+                    if(accessPayload != null)
+                    {
+                        managerPayload = accessPayload.CharacterDetails.ToInstance<Townsperson>();
+					}
+                    else
+                    {
+                        managerResult.AddError(Guid.NewGuid(), $"Could not locate the NPC with Id {townspersonId}.");
+                    }
+                }
+                else
+                {
+					foreach (var accessError in accessResult.Errors)
+					{
+						managerResult.AddError(accessError.Key, accessError.Value);
+					}
+				}
+            }
+
+            return managerResult;
         }
 
         public async Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson)
