@@ -55,7 +55,7 @@ namespace GameTools.TownsfolkManager.Contracts
 
         public string Pronouns { get; set; }
 
-        public GeneratedProperty FullName { get; private set; }
+        public GeneratedProperty FullName { get; init; }
         
         public int AgeYears { get; set; }
 
@@ -63,19 +63,19 @@ namespace GameTools.TownsfolkManager.Contracts
 
         public string? SubSpecies {get;set;}
 
-        public CharacterAppearance Appearance {get;private set;}
+        public CharacterAppearance Appearance {get;init;}
 
         /// <summary>
         /// What does the character do?
         /// </summary>
-        public CharacterVocation Vocation {get; private set;}
+        public CharacterVocation Vocation {get; init;}
 
         /// <summary>
         /// How did they grow up?
         /// What impacts has this background had on their life, 
         /// worldview, and personality?
         /// </summary>
-        public CharacterBackground Background {get; private set;}
+        public CharacterBackground Background {get; init;}
 
         /// <summary>
         /// What is the character like in their inner world?
@@ -88,7 +88,7 @@ namespace GameTools.TownsfolkManager.Contracts
         /// </summary>
         public string PersonalityDemeanor { get; set; }
 
-        public GeneratedProperty PersonalityDescription { get; private set; }
+        public GeneratedProperty PersonalityDescription { get; init; }
     }
 
 }

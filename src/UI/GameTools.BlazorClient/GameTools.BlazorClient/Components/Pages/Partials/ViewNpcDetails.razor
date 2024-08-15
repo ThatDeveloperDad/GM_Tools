@@ -53,3 +53,12 @@ else
         </button>
     </div>
 }
+@if(IsListButtonVisible)
+{
+    <div class="row">
+        <button class="col-12 btn btn-secondary"
+                @onclick="OnShowListClicked">
+            Back to List
+        </button>
+    </div>
+}

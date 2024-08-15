@@ -174,6 +174,7 @@ namespace GameTools.BlazorClient.Services
                     if(apiPayload !=null)
                     {
 						proxyPayload = new NpcClientModel(apiPayload);
+                        proxyResult.Payload = proxyPayload;
 					}
                     else
                     {

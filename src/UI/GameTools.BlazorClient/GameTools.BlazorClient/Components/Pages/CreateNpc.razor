@@ -8,7 +8,8 @@
 
 <div class="@this.ShowForPageState(CreateNpcPageStates.List)">
 	<NpcList NewNpcHandler="OnCreateNewClicked"
-			 ViewNpcHandler="OnNpcList_ViewClicked" />
+			 ViewNpcHandler="OnNpcList_ViewClicked"
+			 CurrentPageState="@this.PageState"/>
 </div>
 
 <div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
@@ -25,7 +26,8 @@
 
 		<ViewNpcDetails UseMetric="@false"
 						CurrentNpc="@this.CurrentNpc"
-						SaveNpc_Clicked="OnSaveNpc"/>
+						SaveNpc_Clicked="OnSaveNpc"
+						ShowList_Clicked="OnShowList_Clicked"/>
 
 </div>
 

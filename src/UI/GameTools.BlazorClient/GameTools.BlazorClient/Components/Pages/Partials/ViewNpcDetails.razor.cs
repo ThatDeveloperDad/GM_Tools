@@ -10,6 +10,9 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public Func<NpcClientModel, Task>? SaveNpc_Clicked { get; set; }
 
         [Parameter]
+        public Action ShowList_Clicked { get; set; }
+
+        [Parameter]
         public NpcClientModel CurrentNpc { get; set; }
 
         [Parameter]
@@ -47,6 +50,13 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public void OnSaveNpcClicked()
         {
             SaveNpc_Clicked?.Invoke(CurrentNpc);
+        }
+
+        public bool IsListButtonVisible => ShowList_Clicked != null;
+
+        public void OnShowListClicked()
+        {
+            ShowList_Clicked?.Invoke();
         }
     }
 }

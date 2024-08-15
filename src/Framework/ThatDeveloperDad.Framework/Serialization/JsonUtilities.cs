@@ -70,6 +70,16 @@ public static class JsonUtilities
         return json;
     }
 
+    public static string SerializeForStorage<T>(this T instance) where T: class
+    {
+        JsonSerializerOptions options
+            = JsonUtilities.CreateJsonOptions();
+        //options.TypeInfoResolver =                  
+
+        string json = JsonSerializer.Serialize<T>(instance, options);
+        return json;
+    }
+
     /// <summary>
     /// Creates a default JsonSerializerOptions instance
     /// </summary>

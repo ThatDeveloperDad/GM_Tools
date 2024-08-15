@@ -88,6 +88,12 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			StateHasChanged();
 		}
 
+		public void OnShowList_Clicked()
+		{
+			PageState = CreateNpcPageStates.List;
+			StateHasChanged();
+		}
+
         public string ShowForPageState(CreateNpcPageStates requiredState)
 		{
 			return (requiredState == PageState).AsString("shown", "hidden");

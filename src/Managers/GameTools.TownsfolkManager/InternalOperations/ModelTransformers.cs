@@ -20,7 +20,7 @@ namespace GameTools.TownsfolkManager.InternalOperations
             model.Species = app.Species;
             model.Vocation = app.Vocation.Name;
             model.CharacterName = app.FullName.ToString();
-            model.CharacterDetails = app.SerializeForOutput();
+            model.CharacterDetails = app.SerializeForStorage();
 
             return model;
         }
@@ -55,5 +55,6 @@ namespace GameTools.TownsfolkManager.InternalOperations
 
             return mgrModel;
         }
+
     }
 }

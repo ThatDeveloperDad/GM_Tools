@@ -13,9 +13,10 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         [Parameter]
         public Func<int, Task> ViewNpcHandler { get; set; }
 
+        private CreateNpcPageStates _currentPageState;
         [Parameter]
         public CreateNpcPageStates CurrentPageState { get; set; }
-
+        
         [Inject]
         protected NpcServiceProxy? NpcServices { get; set; }
 
@@ -40,6 +41,14 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             }
 		}
 
+        public async Task OnPageStateChangingAsync(CreateNpcPageStates newState)
+        {
+            if(newState == CreateNpcPageStates.List)
+            {
+                await ExecuteFilter();
+            }
+        }
+
         public string EmptyTableText { get; private set; }
 
         public NpcFilterRowModel[] FilteredNpcs { get; set; }
@@ -62,9 +71,19 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             
         }
 
+        
         private async Task ExecuteFilter()
         {
+            
+            // If we're not looking at the NPC List, don't fetch.
+            if(_currentPageState != CreateNpcPageStates.List)
+            {
+                return;
+            }
+
             GuardNpcServicesExist();
+
+          
 
             NpcClientFilter filter = new NpcClientFilter();
             var proxyResult = await NpcServices!.FilterTownsfolk(filter);
@@ -83,6 +102,8 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
                     {
                         EmptyTableText = "No Characters Found.";
 					}
+
+                   
                 }
                 else
                 {
@@ -92,6 +113,8 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
                     {
                         sb.AppendLine(kvp.Value);
                     }
+
+                   
 
                     throw new Exception($"Fetching the NPC list failed.  {Environment.NewLine}{sb.ToString()}");
                 }

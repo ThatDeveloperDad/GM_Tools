@@ -291,6 +291,7 @@ namespace GameTools.TownsfolkManager
                     if(accessPayload != null)
                     {
                         managerPayload = accessPayload.CharacterDetails.ToInstance<Townsperson>();
+                        managerResult.Payload = managerPayload;
 					}
                     else
                     {
