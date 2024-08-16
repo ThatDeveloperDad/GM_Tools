@@ -1,4 +1,5 @@
-﻿using GameTools.BlazorClient.Components.Pages.PageModels;
+﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
+using GameTools.BlazorClient.Components.Pages.PageModels;
 using GameTools.BlazorClient.Services;
 using Microsoft.AspNetCore.Components;
 using System.Text;
@@ -16,7 +17,10 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         private CreateNpcPageStates _currentPageState;
         [Parameter]
         public CreateNpcPageStates CurrentPageState { get; set; }
-        
+
+        [Parameter]
+        public PageEventSink? NpcNotifier { get; set; }
+
         [Inject]
         protected NpcServiceProxy? NpcServices { get; set; }
 
@@ -24,11 +28,13 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 		{
 			FilteredNpcs = Array.Empty<NpcFilterRowModel>();
 			EmptyTableText = "Loading ...";
+            
 		}
 
 		protected override void OnInitialized()
         {
             base.OnInitialized();
+            RegisterNpcEventHandlers();
         }
 
 		protected async override Task OnAfterRenderAsync(bool firstRender)
@@ -71,7 +77,21 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             
         }
 
-        
+        private void RegisterNpcEventHandlers()
+        {
+            NpcNotifier?.RegisterEventListener(HandlePageStateChanged);
+        }
+
+
+        private async Task HandlePageStateChanged(PageStateChangedEvent notification)
+        {
+            if(notification.NewValue == CreateNpcPageStates.List)
+            {
+                await ExecuteFilter();
+                StateHasChanged();
+            }
+        }
+
         private async Task ExecuteFilter()
         {
             

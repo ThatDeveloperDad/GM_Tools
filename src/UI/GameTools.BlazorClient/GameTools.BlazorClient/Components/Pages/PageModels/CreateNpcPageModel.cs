@@ -1,4 +1,5 @@
-﻿using GameTools.BlazorClient.Services;
+﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
+using GameTools.BlazorClient.Services;
 using GameTools.UI.Components.Wrapper;
 using Microsoft.AspNetCore.Components;
 using System.Text;
@@ -11,7 +12,9 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
         public CreateNpcPageModel():base()
         {
-			PageState = CreateNpcPageStates.List;
+			NpcEventNotifier = new PageEventSink();
+
+            PageState = CreateNpcPageStates.List;
 
             CurrentNpc = new NpcClientModel();
 			SelectableNpcOptions = new Dictionary<string, string[]>();
@@ -22,6 +25,8 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
         protected override void OnInitialized()
 		{
 			base.OnInitialized();
+			RegisterNpcEventHandlers();
+
 			CurrentNpc = GenerateNpc();
 			SelectableNpcOptions = LoadSelectableNpcOptions();
 			foreach(string optionKey in SelectableNpcOptions.Keys)
@@ -29,6 +34,8 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 				SelectedNpcOptions[optionKey] = null;
 			}
 		}
+
+		public PageEventSink NpcEventNotifier { get; set; }
 
         [Inject]
 		protected NpcServiceProxy? NpcServices { get; set; }
@@ -91,12 +98,28 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		public void OnShowList_Clicked()
 		{
 			PageState = CreateNpcPageStates.List;
+
+			PageStateChangedEvent evt = new PageStateChangedEvent
+				(
+					name: "PageState",
+					value: PageState
+				);
+			
+
+			
+			NpcEventNotifier.NotifyPropertyChangedAsync(evt)
+							.ConfigureAwait(false);
 			StateHasChanged();
 		}
 
         public string ShowForPageState(CreateNpcPageStates requiredState)
 		{
 			return (requiredState == PageState).AsString("shown", "hidden");
+		}
+
+		private void RegisterNpcEventHandlers()
+		{
+			// Nothing to do here.  Yet.
 		}
 
 		private Dictionary<string, string[]> LoadSelectableNpcOptions()

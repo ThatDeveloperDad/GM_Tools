@@ -9,17 +9,20 @@
 <div class="@this.ShowForPageState(CreateNpcPageStates.List)">
 	<NpcList NewNpcHandler="OnCreateNewClicked"
 			 ViewNpcHandler="OnNpcList_ViewClicked"
-			 CurrentPageState="@this.PageState"/>
+			 CurrentPageState="@this.PageState"
+			 NpcNotifier="@this.NpcEventNotifier"/>
 </div>
 
 <div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
 	<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
 					  UserOptions="@this.UserOptions"
-					  GenerateNpc_Clicked="OnRerollClicked"/>
+					  GenerateNpc_Clicked="OnRerollClicked"
+					  NpcNotifier="NpcEventNotifier"/>
 
 	<ViewNpcAttributes UseMetric="@false"
 					   CurrentNpc="@this.CurrentNpc"
-					   GenerateAi_Clicked="OnAiDescriptionRequested" />
+					   GenerateAi_Clicked="OnAiDescriptionRequested"
+					   NpcNotifier="NpcEventNotifier" />
 </div>
 
 <div class="@this.ShowForPageState(CreateNpcPageStates.Details)">

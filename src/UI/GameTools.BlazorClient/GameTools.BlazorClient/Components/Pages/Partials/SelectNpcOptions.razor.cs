@@ -1,4 +1,5 @@
-﻿using GameTools.BlazorClient.Services;
+﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
+using GameTools.BlazorClient.Services;
 using GameTools.TownsfolkManager.Contracts;
 using Microsoft.AspNetCore.Components;
 using ThatDeveloperDad.Framework.Converters;
@@ -18,6 +19,9 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 		public NpcUserOptions UserOptions { get; set; }
 
 		public bool ShowOptionsPanel { get; set; }
+
+		[Parameter]
+		public PageEventSink? NpcNotifier { get; set; }
 
 		public SelectNpcOptions()
         {
