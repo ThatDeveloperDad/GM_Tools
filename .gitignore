@@ -401,3 +401,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 src/.DS_Store
+/src/UI/GameTools.BlazorClient/GameTools.BlazorClient/appsettings.Development.json
