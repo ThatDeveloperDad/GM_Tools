@@ -1,4 +1,5 @@
 ﻿using GameTools.DiceEngine;
+using GameTools.NPCAccess;
 using GameTools.Ruleset.Definitions;
 using GameTools.Ruleset.Definitions.Characters;
 using GameTools.RulesetAccess.Contracts;
@@ -6,7 +7,12 @@ using GameTools.TownsfolkManager.Contracts;
 using GameTools.TownsfolkManager.InternalOperations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using ThatDeveloperDad.Framework.Serialization;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.TownsfolkManager
 {
@@ -15,13 +21,16 @@ namespace GameTools.TownsfolkManager
     {
         
         private readonly IRulesetAccess _rulesAccess;
+        private readonly INpcAccess _npcAccess;
         private readonly ICardDeck _shuffler;
         private readonly IDiceBag _diceBag;
 
         public TownsfolkMgr(IRulesetAccess ruleSet,
-                                ICardDeck shuffler,
-                                IDiceBag diceBag)
+                            INpcAccess npcAccess,
+                            ICardDeck shuffler,
+                            IDiceBag diceBag)
         {
+            _npcAccess = npcAccess;
             _rulesAccess = ruleSet;
             _shuffler = shuffler;
             _diceBag = diceBag;
@@ -140,6 +149,7 @@ namespace GameTools.TownsfolkManager
             return npc;
         }
 
+        [Obsolete("This version is going away.  Use the TownsfolkUserOptions instead.")]
         public Townsperson GenerateTownspersonFromOptions(Dictionary<string, string?> selectedAttributes)
         {
             Townsperson npc = new Townsperson();
@@ -222,19 +232,107 @@ namespace GameTools.TownsfolkManager
             return npcOptions;
         }
 
-        public Townsperson[] ListTownspersons()
+        public async Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownspeople(TownspersonFilter filter)
         {
-            throw new System.NotImplementedException();
+            List<FilteredTownsperson> managerPayload = new List<FilteredTownsperson>();
+            OpResult<IEnumerable<FilteredTownsperson>> managerResult 
+                = new OpResult<IEnumerable<FilteredTownsperson>>(managerPayload);
+
+            
+            NpcAccessFilter accessFilter = filter.ToNpcAccessFilter();
+            
+            var accessResult = await _npcAccess.FilterNpcs(accessFilter);
+
+            if(accessResult != null && accessResult.WasSuccessful)
+            {
+                var filteredNpcs = accessResult.Payload ?? Array.Empty<NpcAccessFilterResult>();
+
+                foreach(var npc in filteredNpcs)
+                {
+                    var mgrResult = npc.ToManagerModel();
+                    managerPayload.Add(mgrResult);
+                }
+            }
+            else
+            {
+                if(accessResult == null)
+                {
+                    managerResult.AddError(Guid.NewGuid(), "Something Very Bad happened.");
+                }
+                else
+                {
+                    foreach (var accessError in accessResult.Errors)
+                    {
+                        managerResult.AddError(accessError.Key, accessError.Value);
+                    }
+                }
+            }
+
+            return managerResult;
         }
 
-        public Townsperson LoadTownsperson(string location)
+        public async Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId)
         {
-            throw new System.NotImplementedException();
+            Townsperson? managerPayload = null;
+            OpResult<Townsperson?> managerResult = new OpResult<Townsperson?>(managerPayload);
+
+            var accessResult = await _npcAccess.LoadNpc(townspersonId);
+
+            if(accessResult == null)
+            {
+                managerResult.AddError(Guid.NewGuid(), "Something very Bad happened.");
+            }
+            else
+            {
+                if(accessResult.WasSuccessful)
+                {
+                    // Map the NpcAccessModel to the Townsperson.
+                    var accessPayload = accessResult.Payload;
+                    if(accessPayload != null)
+                    {
+                        managerPayload = accessPayload.CharacterDetails.ToInstance<Townsperson>();
+                        managerResult.Payload = managerPayload;
+					}
+                    else
+                    {
+                        managerResult.AddError(Guid.NewGuid(), $"Could not locate the NPC with Id {townspersonId}.");
+                    }
+                }
+                else
+                {
+					foreach (var accessError in accessResult.Errors)
+					{
+						managerResult.AddError(accessError.Key, accessError.Value);
+					}
+				}
+            }
+
+            return managerResult;
         }
 
-        public string SaveTownsperson(Townsperson townsperson)
+        public async Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson)
         {
-            throw new System.NotImplementedException();
+            OpResult<Townsperson> managerResult = new OpResult<Townsperson>();
+            managerResult.Payload = townsperson;
+
+            //TODO:  Fix the transformer method to also map the Name.
+            NpcAccessModel storageModel = townsperson.ToNpcAccessModel();
+
+            OpResult<int> saveResult = await _npcAccess.SaveNpc(storageModel);
+
+            if(saveResult.WasSuccessful)
+            {
+                managerResult.Payload.SetId(saveResult.Payload);
+            }
+            else
+            {
+                foreach (var item in saveResult.Errors)
+                {
+                    managerResult.AddError(item.Key, item.Value);
+                }
+            }
+
+            return managerResult;
         }
     }
 }

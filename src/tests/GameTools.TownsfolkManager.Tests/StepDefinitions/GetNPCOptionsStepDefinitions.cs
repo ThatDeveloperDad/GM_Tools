@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GameTools.DiceEngine;
+using GameTools.NPCAccess;
 using GameTools.Ruleset.Definitions;
 using GameTools.Ruleset.Definitions.Characters;
 using GameTools.RulesetAccess.Contracts;
@@ -19,7 +20,8 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
         private ITownsfolkManager _testClass;
         private Dictionary<string, string[]?>? _npcOptions;
         private ICardDeck _mockShuffler = new Mock<ICardDeck>().Object;
-        private IDiceBag _mockDiceBag = new Mock<DiceBag>().Object;
+        private IDiceBag _mockDiceBag = new Mock<IDiceBag>().Object;
+        private INpcAccess _mockNpcAccess = new Mock<INpcAccess>().Object;
 
 
         [BeforeScenario]
@@ -40,6 +42,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
             Mock<IRulesetAccess> mockRulesetAccess = CreateMockRulesetAccess(3);
 
             _testClass = new TownsfolkMgr(mockRulesetAccess.Object,
+                                              _mockNpcAccess,
                                               _mockShuffler,
                                               _mockDiceBag);
 
@@ -84,6 +87,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
 
 
             _testClass = new TownsfolkMgr(mockRulesetAccess.Object,
+                                              _mockNpcAccess,
                                               _mockShuffler,
                                               _mockDiceBag);
         }
@@ -99,9 +103,10 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
         {
             
             var mockRulesetAccess = CreateMockRulesetAccess(0);
-            
+
 
             _testClass = new TownsfolkMgr(mockRulesetAccess.Object,
+                                              _mockNpcAccess,
                                               _mockShuffler,
                                               _mockDiceBag);
         }

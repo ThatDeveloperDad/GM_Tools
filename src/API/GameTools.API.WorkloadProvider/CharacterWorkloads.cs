@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.Framework.Serialization;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.API.WorkloadProvider
 {
@@ -199,6 +200,24 @@ namespace GameTools.API.WorkloadProvider
         {
             string npcJson = SerializeClean(npc);
             return npcJson;
+        }
+
+        public async Task<OpResult<Townsperson>> SaveNpc(Townsperson npc)
+        {
+            var managerResult = await _npcManager.SaveTownsperson(npc);
+            return managerResult;
+        }
+
+        public async Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownsfolk(TownspersonFilter filter)
+        {
+            var apiResult = await _npcManager.FilterTownspeople(filter);
+            return apiResult;
+        }
+
+        public async Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId)
+        {
+            var apiResult = await _npcManager.LoadTownsperson(townspersonId);
+            return apiResult;
         }
 
         /// <summary>

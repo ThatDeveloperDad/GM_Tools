@@ -1,4 +1,5 @@
-﻿using GameTools.BlazorClient.Services;
+﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
+using GameTools.BlazorClient.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace GameTools.BlazorClient.Components.Pages.Partials
@@ -15,6 +16,9 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
         [Parameter]
         public bool UseMetric { get; set; }
+
+        [Parameter]
+        public PageEventSink? NpcNotifier { get; set; }
 
         /// <summary>
         /// Handles displaying the Townsperson in the ViewNpcAttributes view.

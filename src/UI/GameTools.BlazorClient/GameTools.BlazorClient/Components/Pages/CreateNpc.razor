@@ -6,23 +6,34 @@
 
 @inherits PageModels.CreateNpcPageModel;
 
-<div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
-<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
-				  UserOptions="@this.UserOptions"
-				  GenerateNpc_Clicked="OnRerollClicked"/>
+<div class="@this.ShowForPageState(CreateNpcPageStates.List)">
+	<NpcList NewNpcHandler="OnCreateNewClicked"
+			 ViewNpcHandler="OnNpcList_ViewClicked"
+			 CurrentPageState="@this.PageState"
+			 NpcNotifier="@this.NpcEventNotifier"/>
+</div>
 
-<ViewNpcAttributes UseMetric="@false"
-				   CurrentNpc="@this.CurrentNpc"
-				   GenerateAi_Clicked="OnAiDescriptionRequested" />
+<div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
+	<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
+					  UserOptions="@this.UserOptions"
+					  GenerateNpc_Clicked="OnRerollClicked"
+					  NpcNotifier="NpcEventNotifier"/>
+
+	<ViewNpcAttributes UseMetric="@false"
+					   CurrentNpc="@this.CurrentNpc"
+					   GenerateAi_Clicked="OnAiDescriptionRequested"
+					   NpcNotifier="NpcEventNotifier" />
 </div>
 
 <div class="@this.ShowForPageState(CreateNpcPageStates.Details)">
 
 		<ViewNpcDetails UseMetric="@false"
-						CurrentNpc="@this.CurrentNpc"/>
+						CurrentNpc="@this.CurrentNpc"
+						SaveNpc_Clicked="OnSaveNpc"
+						ShowList_Clicked="OnShowList_Clicked"/>
 
 </div>
 
-<div class="row">
-	<button class="btn btn-primary" @onclick="OnStartOverClicked">Start Over</button>
-</div>
+@* <div class="row">
+	<button class="btn btn-outline-secondary" @onclick="OnStartOverClicked">Start Over</button>
+</div> *@

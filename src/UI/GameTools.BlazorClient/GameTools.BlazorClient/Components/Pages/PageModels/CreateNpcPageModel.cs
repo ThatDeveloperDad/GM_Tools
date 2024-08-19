@@ -1,7 +1,10 @@
-﻿using GameTools.BlazorClient.Services;
+﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
+using GameTools.BlazorClient.Services;
 using GameTools.UI.Components.Wrapper;
 using Microsoft.AspNetCore.Components;
+using System.Text;
 using ThatDeveloperDad.Framework.Converters;
+using ThatDeveloperDad.Framework.Wrappers;
 namespace GameTools.BlazorClient.Components.Pages.PageModels
 {
 	public class CreateNpcPageModel:ComponentBase
@@ -9,7 +12,9 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
         public CreateNpcPageModel():base()
         {
-			PageState = CreateNpcPageStates.Preview;
+			NpcEventNotifier = new PageEventSink();
+
+            PageState = CreateNpcPageStates.List;
 
             CurrentNpc = new NpcClientModel();
 			SelectableNpcOptions = new Dictionary<string, string[]>();
@@ -20,6 +25,8 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
         protected override void OnInitialized()
 		{
 			base.OnInitialized();
+			RegisterNpcEventHandlers();
+
 			CurrentNpc = GenerateNpc();
 			SelectableNpcOptions = LoadSelectableNpcOptions();
 			foreach(string optionKey in SelectableNpcOptions.Keys)
@@ -28,8 +35,10 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			}
 		}
 
+		public PageEventSink NpcEventNotifier { get; set; }
+
         [Inject]
-		protected NpcServiceProvider? NpcServices { get; set; }
+		protected NpcServiceProxy? NpcServices { get; set; }
 
 		public CreateNpcPageStates PageState { get; set; }
 
@@ -63,9 +72,54 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			StateHasChanged();
 		}
 
-		public string ShowForPageState(CreateNpcPageStates requiredState)
+		public async Task OnSaveNpc(NpcClientModel npcModel)
+		{
+			PageState = CreateNpcPageStates.Details;
+			StateHasChanged();
+			CurrentNpc = await SaveNpc(npcModel);
+			StateHasChanged();
+		}
+
+		public void OnCreateNewClicked()
+		{
+			PageState = CreateNpcPageStates.Preview;
+			UserOptions = new NpcUserOptions();
+			CurrentNpc = GenerateNpc();
+			StateHasChanged();
+		}
+
+		public async Task OnNpcList_ViewClicked(int npcId)
+		{
+			CurrentNpc = await LoadNpc(npcId);
+			PageState = CreateNpcPageStates.Details;
+			StateHasChanged();
+		}
+
+		public void OnShowList_Clicked()
+		{
+			PageState = CreateNpcPageStates.List;
+
+			PageStateChangedEvent evt = new PageStateChangedEvent
+				(
+					name: "PageState",
+					value: PageState
+				);
+			
+
+			
+			NpcEventNotifier.NotifyPropertyChangedAsync(evt)
+							.ConfigureAwait(false);
+			StateHasChanged();
+		}
+
+        public string ShowForPageState(CreateNpcPageStates requiredState)
 		{
 			return (requiredState == PageState).AsString("shown", "hidden");
+		}
+
+		private void RegisterNpcEventHandlers()
+		{
+			// Nothing to do here.  Yet.
 		}
 
 		private Dictionary<string, string[]> LoadSelectableNpcOptions()
@@ -96,7 +150,60 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			return npcAi;
 		}
 
+		private async Task<NpcClientModel> SaveNpc(NpcClientModel npcModel)
+		{
+			GuardNpcServicesExists();
+			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel);
 
+			if(proxyResult.WasSuccessful && proxyResult.Payload !=null)
+			{
+				return proxyResult.Payload;
+			}
+			else
+			{
+				//TODO:  FIgure out how Blazor handles errors once they reach the UI.
+				//Also TODO:  Figure out how to get the appsettings.Developer.json pulled in.
+				//Also also TODO: Fix the tests I broke by changing the TOwnspersonMgr ctor
+				string error = proxyResult.Errors.FirstOrDefault().Value;
+				throw new Exception(error);
+			}
+		}
+
+		private async Task<NpcClientModel> LoadNpc(int npcId)
+		{
+			GuardNpcServicesExists();
+			var proxyResult = await NpcServices!.LoadNpc(npcId);
+			if(proxyResult == null)
+			{
+				throw new Exception("The attempt to load the NPC failed.");
+			}
+			else
+			{
+				if (proxyResult.WasSuccessful)
+				{
+					var newModel = proxyResult.Payload;
+
+					if (newModel != null)
+					{
+						return newModel;
+					}
+					else
+					{
+						throw new Exception($"Could not load an NPC with id {npcId}");
+					}
+				}
+				else
+				{
+					var sb = new StringBuilder();
+					foreach(var item in proxyResult.Errors)
+					{
+						sb.AppendLine(item.Value);
+					}
+					throw new Exception(sb.ToString());
+				}
+				
+			}
+		}
 
 		private void GuardNpcServicesExists()
 		{

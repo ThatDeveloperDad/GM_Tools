@@ -3,6 +3,12 @@
 	public enum CreateNpcPageStates
 	{
 		/// <summary>
+		/// This page state means we're looking at a list of NPCs that 
+		/// we can load, or choose to generate a new NPC.
+		/// </summary>
+		List,
+
+		/// <summary>
 		/// This page state means we're still setting up the attributes of the NPC
 		/// and we have not yet generated or added any details.
 		/// </summary>
