@@ -1,5 +1,15 @@
 ﻿namespace GameTools.BlazorClient.Components.Pages.ComponentServices
 {
+    /// <summary>
+    /// Simple implementation of a Mediator pattern.
+    /// 
+    /// Routes events that happen within a composed Blazor Page to its
+    /// child components.
+    /// 
+    /// The Page "owns" the eventSink instance, and passes it as a parameter
+    /// into child components that need to be notified when events happen outside
+    /// of their own context.
+    /// </summary>
     public class PageEventSink
     {
         private List<Func<PageStateChangedEvent, Task>> _handlers;
