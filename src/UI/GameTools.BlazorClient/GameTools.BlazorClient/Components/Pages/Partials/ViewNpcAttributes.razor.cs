@@ -14,7 +14,10 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         [Parameter]
         public NpcClientModel CurrentNpc { get; set; }
 
-        [Parameter]
+		[Parameter]
+		public string Visibility { get; set; }
+
+		[Parameter]
         public bool UseMetric { get; set; }
 
         [Parameter]

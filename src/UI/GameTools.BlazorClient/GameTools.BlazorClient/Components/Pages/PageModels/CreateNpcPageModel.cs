@@ -104,9 +104,6 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 					name: "PageState",
 					value: PageState
 				);
-			
-
-			
 			NpcEventNotifier.NotifyPropertyChangedAsync(evt)
 							.ConfigureAwait(false);
 			StateHasChanged();
@@ -115,6 +112,11 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
         public string ShowForPageState(CreateNpcPageStates requiredState)
 		{
 			return (requiredState == PageState).AsString("shown", "hidden");
+		}
+
+		public string HideWhenPageState(CreateNpcPageStates requiredState)
+		{
+			return (requiredState != PageState).AsString("shown", "hidden");
 		}
 
 		private void RegisterNpcEventHandlers()
