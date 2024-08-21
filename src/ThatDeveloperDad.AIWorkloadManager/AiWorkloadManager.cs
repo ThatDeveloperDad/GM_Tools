@@ -50,7 +50,7 @@ namespace ThatDeveloperDad.AIWorkloadManager
                 }
             }
             result.AiResponse = aiResult.Result;
-
+            result.Consumption = aiResult.TokenUsage?.ToLocalModel();
             return result;
         }
 

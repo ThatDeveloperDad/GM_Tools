@@ -32,7 +32,10 @@ namespace ThatDeveloperDad.LlmAccess
                 var functionResult = await toExecute.InvokeAsync(kernel, arguments);
 
                 var theAnswer = functionResult.ToString();
+                var usageData = QueryResultForUsage(functionResult);
+
                 response.Result = theAnswer;
+                response.TokenUsage = usageData;
             }
             catch (Exception ex)
             {
@@ -96,6 +99,32 @@ namespace ThatDeveloperDad.LlmAccess
             return args;
         }
 
-        #endregion //private methods
-    }
+        private AiUsage QueryResultForUsage(FunctionResult result)
+        {
+            int tokensIn = 0;
+            int tokensOut = 0;
+
+            var metadata = result.Metadata;
+            object? usageData = null;
+            metadata?.TryGetValue("Usage", out usageData);
+
+            if (usageData != null)
+            {
+                var completionsUsage = usageData as Azure.AI.OpenAI.CompletionsUsage;
+                tokensIn = completionsUsage?.PromptTokens??default(int);
+                tokensOut = completionsUsage?.CompletionTokens ?? default(int);
+			}
+
+            AiUsage usage = new AiUsage
+                (
+                    modelId: _lmConfig.ModelId,
+                    inputTokens: tokensIn,
+                    outputTokens: tokensOut
+                );
+
+            return usage;
+        }
+
+		#endregion //private methods
+	}
 }
