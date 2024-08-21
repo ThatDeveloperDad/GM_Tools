@@ -1,6 +1,7 @@
 ﻿using ThatDeveloperDad.LlmAccess.Contracts;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace ThatDeveloperDad.LlmAccess
 {
@@ -19,9 +20,12 @@ namespace ThatDeveloperDad.LlmAccess
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<FunctionResponse> ExecuteFunctionAsync(FunctionRequest request)
+        public async Task<OpResult<LlmResponse>> ExecuteFunctionAsync(LlmRequest request)
         {
-            FunctionResponse response = new FunctionResponse(request);
+            OpResult<LlmResponse> providerResult = new OpResult<LlmResponse>();
+            LlmResponse aiResponse = new LlmResponse(request);
+
+            providerResult.Payload = aiResponse;
 
             try
             {
@@ -34,16 +38,16 @@ namespace ThatDeveloperDad.LlmAccess
                 var theAnswer = functionResult.ToString();
                 var usageData = QueryResultForUsage(functionResult);
 
-                response.Result = theAnswer;
-                response.TokenUsage = usageData;
+                providerResult.Payload.Result = theAnswer;
+                providerResult.Payload.TokenUsage = usageData;
             }
             catch (Exception ex)
             {
                 var message = ex.Message;
-                response.AddErrorMessage(message);
+                providerResult.AddError(Guid.NewGuid(), message);
             }
 
-            return response;
+            return providerResult;
         }
 
         #region private methods
@@ -60,7 +64,7 @@ namespace ThatDeveloperDad.LlmAccess
 			return kernel;
         }
 
-        private KernelFunction BuildFunction(FunctionRequest request)
+        private KernelFunction BuildFunction(LlmRequest request)
         {
             string template = request.Function.Template;
             string name = request.Function.Name;
@@ -84,7 +88,7 @@ namespace ThatDeveloperDad.LlmAccess
             return func;
         }
 
-        private KernelArguments ConvertRequestParams(FunctionRequest request)
+        private KernelArguments ConvertRequestParams(LlmRequest request)
         {
             KernelArguments args = new KernelArguments();
 
