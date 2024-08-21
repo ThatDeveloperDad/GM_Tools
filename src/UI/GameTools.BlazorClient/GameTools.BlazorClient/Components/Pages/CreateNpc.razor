@@ -26,14 +26,17 @@
 			NpcNotifier="@this.NpcEventNotifier"/>
 
 <div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
-	<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
+@* 	<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
 					  UserOptions="@this.UserOptions"
 					  GenerateNpc_Clicked="OnRerollClicked"
-					  NpcNotifier="NpcEventNotifier"/>
+					  NpcNotifier="NpcEventNotifier"/> *@
 
 	<ViewNpcAttributes UseMetric="@false"
+					   SelectableOptions="@this.SelectableNpcOptions"
+					   UserOptions="@this.UserOptions"
 					   CurrentNpc="@this.CurrentNpc"
 					   Visibility="@this.ShowForPageState(CreateNpcPageStates.Preview)"
+					   GenerateNpc_Clicked="OnRerollClicked"
 					   GenerateAi_Clicked="OnAiDescriptionRequested"
 					   NpcNotifier="NpcEventNotifier" />
 </div>

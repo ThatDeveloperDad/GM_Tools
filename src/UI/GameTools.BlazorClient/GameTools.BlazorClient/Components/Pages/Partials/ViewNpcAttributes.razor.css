@@ -1,0 +1,27 @@
+﻿.task-host header {
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+}
+
+.task-host header heading{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+
+.options-panel{
+    display:flex;
+    flex-direction: column;
+}
+
+.options-panel .form-group {
+    flex:1 0 auto;
+}
+
+@media only screen and (min-width: 600px) {
+        .options-panel{
+            flex-direction:row;
+            justify-content:center;
+        }
+    }
