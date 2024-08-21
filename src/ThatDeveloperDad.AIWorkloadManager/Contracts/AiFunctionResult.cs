@@ -34,5 +34,7 @@ namespace ThatDeveloperDad.AIWorkloadManager.Contracts
         }
 
         public string? AiResponse { get; set; }
+
+        public AiConsumption? Consumption { get; set; }
     }
 }

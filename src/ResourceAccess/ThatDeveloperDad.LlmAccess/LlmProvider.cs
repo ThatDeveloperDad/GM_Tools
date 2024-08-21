@@ -6,6 +6,19 @@ namespace ThatDeveloperDad.LlmAccess
 {
     public class LlmProvider : ILlmProvider
     {
+
+        private readonly SemanticKernelConfiguration _lmConfig;
+
+        public LlmProvider(SemanticKernelConfiguration lmConfig)
+        {
+            _lmConfig = lmConfig;
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<FunctionResponse> ExecuteFunctionAsync(FunctionRequest request)
         {
             FunctionResponse response = new FunctionResponse(request);
@@ -19,7 +32,10 @@ namespace ThatDeveloperDad.LlmAccess
                 var functionResult = await toExecute.InvokeAsync(kernel, arguments);
 
                 var theAnswer = functionResult.ToString();
+                var usageData = QueryResultForUsage(functionResult);
+
                 response.Result = theAnswer;
+                response.TokenUsage = usageData;
             }
             catch (Exception ex)
             {
@@ -30,46 +46,18 @@ namespace ThatDeveloperDad.LlmAccess
             return response;
         }
 
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        /// <param name="prompt"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public async Task<string> ExecutePromptAsync(string prompt)
-        {
-            //TODO:  Move this hardcoded stuff out to configuration.
-#pragma warning disable SKEXP0010
-            Kernel kernel = BuildKernel();
-
-            var aiService = kernel.GetRequiredService<IChatCompletionService>();
-            var chatHistory = new ChatHistory();
-
-            
-            chatHistory.Add(new ChatMessageContent(AuthorRole.User, prompt));
-
-            string aiResponse = string.Empty;
-
-            await foreach(var item in
-                aiService.GetStreamingChatMessageContentsAsync(chatHistory))
-            {
-                aiResponse += item.Content;
-            }
-            return aiResponse;
-
-        }
-
         #region private methods
 
         private Kernel BuildKernel()
         {
-            Kernel kernel = Kernel.CreateBuilder()
-                .AddOpenAIChatCompletion(
-                    modelId: "phi3:mini",
-                    endpoint: new Uri("http://localhost:1234"),
-                    apiKey: string.Empty)
-                .Build();
-            return kernel;
+#pragma warning disable SKEXP0010
+			Kernel kernel = Kernel.CreateBuilder()
+						 .AddOpenAIChatCompletion(
+							 modelId: _lmConfig.ModelId,
+							 endpoint: new Uri(_lmConfig.EndpointUrl),
+							 apiKey: _lmConfig.ApiKey)
+						 .Build();
+			return kernel;
         }
 
         private KernelFunction BuildFunction(FunctionRequest request)
@@ -111,6 +99,32 @@ namespace ThatDeveloperDad.LlmAccess
             return args;
         }
 
-        #endregion //private methods
-    }
+        private AiUsage QueryResultForUsage(FunctionResult result)
+        {
+            int tokensIn = 0;
+            int tokensOut = 0;
+
+            var metadata = result.Metadata;
+            object? usageData = null;
+            metadata?.TryGetValue("Usage", out usageData);
+
+            if (usageData != null)
+            {
+                var completionsUsage = usageData as Azure.AI.OpenAI.CompletionsUsage;
+                tokensIn = completionsUsage?.PromptTokens??default(int);
+                tokensOut = completionsUsage?.CompletionTokens ?? default(int);
+			}
+
+            AiUsage usage = new AiUsage
+                (
+                    modelId: _lmConfig.ModelId,
+                    inputTokens: tokensIn,
+                    outputTokens: tokensOut
+                );
+
+            return usage;
+        }
+
+		#endregion //private methods
+	}
 }

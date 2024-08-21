@@ -196,7 +196,16 @@ namespace ConsoleClient
             #endregion
 
             #region AI Subsystem
-
+            
+            services.AddScoped<SemanticKernelConfiguration>((sp) =>
+            {
+				return new SemanticKernelConfiguration
+				(
+					modelId: "phi3:mini",
+					endpoint: "http://localhost:1234",
+					apiKey: string.Empty
+				);
+			});
             services.AddScoped<ILlmProvider, LlmProvider>();
             services.AddScoped<IAiWorkloadManager, AiWorkloadManager>();
 

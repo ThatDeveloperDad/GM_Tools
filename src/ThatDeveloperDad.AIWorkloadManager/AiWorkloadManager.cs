@@ -8,7 +8,6 @@ namespace ThatDeveloperDad.AIWorkloadManager
         private readonly ILlmProvider _llmProvider;
         private readonly Dictionary<string, AiFunctionDefinition> _functions;
 
-
         public AiWorkloadManager(ILlmProvider llmProvider)
         {
             _llmProvider = llmProvider;
@@ -51,7 +50,7 @@ namespace ThatDeveloperDad.AIWorkloadManager
                 }
             }
             result.AiResponse = aiResult.Result;
-
+            result.Consumption = aiResult.TokenUsage?.ToLocalModel();
             return result;
         }
 
@@ -59,17 +58,6 @@ namespace ThatDeveloperDad.AIWorkloadManager
         {
             _functions[aiFunction.Name] = aiFunction;
         }
-
-        public string TestLLM()
-        {
-
-            string simplePrompt = "How many days are in a week?";
-            string result = _llmProvider.ExecutePromptAsync(simplePrompt)
-                                        .Result;
-
-            return result;
-        }
-
 
         #region private methods
 

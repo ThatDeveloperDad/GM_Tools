@@ -52,6 +52,7 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="npcJson">A JSON string containing the known NPC attributes</param>
         /// <returns>A string with a description of that NPC.</returns>
+        [Obsolete("This method is being deprecated.")]
         Task<string> DescribeNPC(Townsperson npc);
 
         /// <summary>

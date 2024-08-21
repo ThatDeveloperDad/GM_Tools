@@ -24,6 +24,8 @@ namespace ThatDeveloperDad.LlmAccess.Contracts
 
         public string Result { get; set; }
 
+        public AiUsage? TokenUsage { get; set; }
+
         public void AddErrorMessage(string message)
         {
             _errors.Add(message);
