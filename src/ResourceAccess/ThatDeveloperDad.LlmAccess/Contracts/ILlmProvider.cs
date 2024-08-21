@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ThatDeveloperDad.LlmAccess.Contracts
+﻿namespace ThatDeveloperDad.LlmAccess.Contracts
 {
-    public interface ILlmProvider
+    /// <summary>
+    /// Provides access to a Language Model using Semantic Kernel
+    /// </summary>
+	public interface ILlmProvider
     {
 
+        
         /// <summary>
-        /// Executes a simple text prompt against a LanguageModel
-        /// and returns the reply.
+        /// Converts the prompt template found in the FunctionRequest into
+        /// a semantic function, turns the function arguments into KernelArguments
+        /// and uses Semantic Kernel to execute the function with the provided args.
         /// </summary>
-        /// <param name="prompt">THe User prompt to send</param>
-        /// <returns>The Reply from the LLM</returns>
-        Task<string> ExecutePromptAsync(string prompt);
-
+        /// <param name="request"></param>
+        /// <returns></returns>
         Task<FunctionResponse> ExecuteFunctionAsync(FunctionRequest request);
     }
 }

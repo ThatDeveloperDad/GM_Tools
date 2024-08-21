@@ -93,7 +93,7 @@ namespace GameTools.BlazorClient
             builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 
 			// Set up AI Aubsystem and dependencies.
-			builder.Services.AddScoped<ILlmProvider, LlmProvider>();
+			builder.Services.UseSemanticKernelProvider(builder.Configuration);
 			builder.Services.AddScoped<IAiWorkloadManager, AiWorkloadManager>();
 
 			
