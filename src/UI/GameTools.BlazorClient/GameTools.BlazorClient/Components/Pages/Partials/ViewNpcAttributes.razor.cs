@@ -9,12 +9,24 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         [Parameter]
         public Func<NpcClientModel, Task>? GenerateAi_Clicked { get; set; }
 
-        
+		[Parameter]
+		public Action? GenerateNpc_Clicked { get; set; }
 
-        [Parameter]
+		[Parameter]
         public NpcClientModel CurrentNpc { get; set; }
 
-        [Parameter]
+		[Parameter]
+		public Dictionary<string, string[]> SelectableOptions { get; set; }
+
+		[Parameter]
+		public NpcUserOptions UserOptions { get; set; }
+
+		public bool ShowOptionsPanel { get; set; }
+
+		[Parameter]
+		public string Visibility { get; set; }
+
+		[Parameter]
         public bool UseMetric { get; set; }
 
         [Parameter]
@@ -29,7 +41,53 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         {
             CurrentNpc = CurrentNpc??new NpcClientModel();
             UseMetric = false;
+			SelectableOptions = SelectableOptions ?? new Dictionary<string, string[]>();
+			UserOptions = UserOptions ?? new NpcUserOptions();
+		}
+
+		protected override void OnInitialized()
+		{
+			base.OnInitialized();
+			SetOptionPanelVisibility(false);
+		}
+
+        public string? SelectedSpecies
+        {
+            get
+            {
+                return UserOptions.Species;
+            }
+            set
+            {
+                UserOptions.Species = value;
+            }
         }
+
+        public string? SelectedBackground
+        {
+            get
+            {
+                return UserOptions.Background;
+            }
+            set
+            {
+                UserOptions.Background = value;
+            }
+        }
+
+        public string? SelectedVocation
+        {
+            get
+            {
+                return UserOptions.Vocation;
+            }
+            set
+            {
+                UserOptions.Vocation = value;
+            }
+        }
+
+        public bool? IsRetired {  get; set; }
 
         public string Species => CurrentNpc.Species;
         public string Gender => CurrentNpc.Gender;
@@ -41,7 +99,30 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public string History => CurrentNpc.History;
         public string Profession => CurrentNpc.Profession;
 
-        public bool AiButtonIsHandled => GenerateAi_Clicked != null;
+		public bool IsRerollVisible => GenerateNpc_Clicked != null;
+
+        public void ToggleOptionPanel()
+        {
+            bool newState = !ShowOptionsPanel;
+            SetOptionPanelVisibility(newState);
+            StateHasChanged();
+        }
+
+        public string ToggleText { get; private set; }
+
+		private void SetOptionPanelVisibility(bool shouldShow)
+		{
+			ToggleText = (shouldShow) ? "Hide" : "Show";
+			ShowOptionsPanel = shouldShow;
+		}
+
+		public void OnCreateNpcClick()
+		{
+			this.GenerateNpc_Clicked?.Invoke();
+			SetOptionPanelVisibility(false);
+		}
+
+		public bool AiButtonIsHandled => GenerateAi_Clicked != null;
 
         public void OnAiButtonClick()
         {

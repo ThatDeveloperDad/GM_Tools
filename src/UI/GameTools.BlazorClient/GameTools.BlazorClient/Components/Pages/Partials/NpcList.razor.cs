@@ -19,6 +19,9 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public CreateNpcPageStates CurrentPageState { get; set; }
 
         [Parameter]
+        public string Visibility { get; set; }
+
+        [Parameter]
         public PageEventSink? NpcNotifier { get; set; }
 
         [Inject]

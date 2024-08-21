@@ -1,31 +1,37 @@
 ﻿@using ThatDeveloperDad.Framework.Converters;
 
-
-<div class="row">
-	<h4 class="col-9">Townsfolk Index</h4>
-	<button class="col-3 btn btn-primary @ShowCreateButton.AsString("shown", "hidden")" 
+<div class="task-host @this.Visibility">
+<header>
+	<heading>Townsfolk Index</heading>
+	<button class="btn btn-primary @ShowCreateButton.AsString("shown", "hidden")" 
 			style="margin-bottom: 2px;"
 			@onclick="OnNewNpcClicked">
 		Create
 	</button>
-</div>
-<div class="npc-list">
+</header>
+<main>
 	@if(FilteredNpcs.Any())
 	{
-		foreach(var npc in FilteredNpcs)
+		<div class="npc-list">
+		@foreach(var npc in FilteredNpcs)
 		{
-			<div class="row npc-list-item">
-				<div class="col-10">
-					<span class="npc-name-label">@npc.Name</span><br/>
+			<div class="npc-list-item">
+				<div class="npc-list-item-data">
+					<span class="npc-name-label">@npc.Name</span>
 					<span class="npc-list-detail">@npc.Species @npc.Vocation</span>
 				</div>
-				<button class="col-2 btn btn-secondary @(ShowViewNpcButton.AsString("shown", "hidden"))"
-						@onclick="() => OnViewNpcClicked(npc.NpcId)">View</button>
+				<div class="npc-list-item-actions">
+					<button class="btn btn-secondary @(ShowViewNpcButton.AsString("shown", "hidden"))"
+							@onclick="() => OnViewNpcClicked(npc.NpcId)">View</button>
+				</div>
 			</div>
 		}
+		</div>
 	}
 	else
 	{	
 		<p>@EmptyTableText</p>			
 	}
+</main>
+<footer>NPC List Footer will go here.</footer>
 </div>

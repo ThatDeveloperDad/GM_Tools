@@ -3,27 +3,48 @@
     border-top: solid 1px black;
     padding-bottom: .25em;
     margin-bottom: .75em;
+    display:flex;
+    flex-direction:column;
 }
 
 .npc-list .npc-list-item:nth-child(odd) {
     background-color: #ECECEC;
 }
 
-    
-
 .npc-list-item {
     border: solid 1px #ACACAC;
     border-radius: .25em;
     margin-bottom: .15em;
     padding: .5em;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+
+.npc-list-item-data{
+    display:flex;
+    flex-direction:column;
+    /*justify-content:flex-start;*/
+}
+
+.npc-list-item-actions{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    gap: .2rem;
+}
+
+.npc-list-item-actions > button {
+    height:clamp(2rem, 3rem, 4rem);
 }
 
 .npc-name-label {
-    font-size:1.2em;
+    font-size:1.2rem;
     font-weight:bold;
 }
 
 .npc-list-detail {
-    padding-left: 1em;
-    font-size:1.2em;
+    padding-left: 1rem;
+    font-size:1.2rem;
 }

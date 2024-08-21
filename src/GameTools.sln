@@ -20,6 +20,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.RulesetAccess", "ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj", "{829FA022-8045-46BD-9A8B-2A19EB2FE016}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AAB96EF5-4EDB-4869-8A8A-67E2B15F7968}"
+	ProjectSection(SolutionItems) = preProject
+		UI\GameTools.BlazorClient\GameTools.BlazorClient\wwwroot\bootstrap\StyleSheet.css = UI\GameTools.BlazorClient\GameTools.BlazorClient\wwwroot\bootstrap\StyleSheet.css
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.DiceEngine.Tests", "Tests\GameTools.DiceEngine.Tests\GameTools.DiceEngine.Tests.csproj", "{D1FA08F0-3ABF-40F2-998B-F79F324B7DE1}"
 EndProject
