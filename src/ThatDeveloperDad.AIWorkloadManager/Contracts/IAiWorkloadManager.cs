@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace ThatDeveloperDad.AIWorkloadManager.Contracts
 {
@@ -13,12 +14,21 @@ namespace ThatDeveloperDad.AIWorkloadManager.Contracts
     /// </summary>
     public interface IAiWorkloadManager
     {
-        string TestLLM();
-
+        /// <summary>
+        /// Allows a component or service to register an AI
+        /// function with the AI Workload Manager so that it can be
+        /// executed as needed, later.
+        /// </summary>
+        /// <param name="aiFunction"></param>
         void RegisterAiFunction(AiFunctionDefinition aiFunction);
 
-        Task<AiFunctionResult> ExecuteFunctionAsync(string functionName, Dictionary<string, object?> arguments);
-
-        
+        /// <summary>
+        /// Executes a previously Registered AI Function by name,
+        /// providing the required argument values.
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        Task<OpResult<AiFunctionResult>> ExecuteFunctionAsync(string functionName, Dictionary<string, object?> arguments);   
     }
 }

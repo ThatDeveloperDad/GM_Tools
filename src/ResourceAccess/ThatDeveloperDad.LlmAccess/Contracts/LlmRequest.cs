@@ -9,9 +9,9 @@ namespace ThatDeveloperDad.LlmAccess.Contracts
     /// <summary>
     /// Allows us to request that a function be executed by the SementicKernel
     /// </summary>
-    public class FunctionRequest
+    public class LlmRequest
     {
-        public FunctionRequest() 
+        public LlmRequest() 
         {
             Function = new SemanticDefinition();
             Parameters = new Dictionary<string, object?>();

@@ -17,6 +17,8 @@
     <ProjectReference Include="..\..\..\Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj" />
     <ProjectReference Include="..\..\..\GameTools.UI.Components\GameTools.UI.Components.csproj" />
     <ProjectReference Include="..\..\..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
+    <ProjectReference Include="..\..\..\ResourceAccess\GameTools.NPCAccess.SqlServer\GameTools.NPCAccess.SqlServer.csproj" />
+    <ProjectReference Include="..\..\..\ResourceAccess\GameTools.NPCAccess\GameTools.NPCAccess.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj" />
     <ProjectReference Include="..\..\..\Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj" />
     <ProjectReference Include="..\..\..\ThatDeveloperDad.AIWorkloadManager\ThatDeveloperDad.AIWorkloadManager.csproj" />

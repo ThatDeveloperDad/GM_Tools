@@ -15,6 +15,7 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+*.Development.json
 
 # Mono auto generated files
 mono_crash.*
@@ -400,3 +401,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 src/.DS_Store
+/src/UI/GameTools.BlazorClient/GameTools.BlazorClient/appsettings.Development.json

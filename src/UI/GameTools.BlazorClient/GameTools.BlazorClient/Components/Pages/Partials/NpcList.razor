@@ -1,0 +1,37 @@
+﻿@using ThatDeveloperDad.Framework.Converters;
+
+<div class="task-host @this.Visibility">
+<header>
+	<heading>Townsfolk Index</heading>
+	<button class="btn btn-primary @ShowCreateButton.AsString("shown", "hidden")" 
+			style="margin-bottom: 2px;"
+			@onclick="OnNewNpcClicked">
+		Create
+	</button>
+</header>
+<main>
+	@if(FilteredNpcs.Any())
+	{
+		<div class="npc-list">
+		@foreach(var npc in FilteredNpcs)
+		{
+			<div class="npc-list-item">
+				<div class="npc-list-item-data">
+					<span class="npc-name-label">@npc.Name</span>
+					<span class="npc-list-detail">@npc.Species @npc.Vocation</span>
+				</div>
+				<div class="npc-list-item-actions">
+					<button class="btn btn-secondary @(ShowViewNpcButton.AsString("shown", "hidden"))"
+							@onclick="() => OnViewNpcClicked(npc.NpcId)">View</button>
+				</div>
+			</div>
+		}
+		</div>
+	}
+	else
+	{	
+		<p>@EmptyTableText</p>			
+	}
+</main>
+<footer>NPC List Footer will go here.</footer>
+</div>

@@ -1,22 +1,82 @@
-﻿
-<h3>Species: @Species</h3>
-<p>Gender:  @Gender (@Pronouns)</p>
-<p>Age: @Age</p>
-<p>Height: @Height  Weight: @Weight</p>
-<hr />
-<h3>Appearance</h3>
-<p>@Appearance</p>
-<h3>Profession</h3>
-<p>@Profession</p>
-<h3>History</h3>
-<p>@History</p>
-<hr/>
-@if (AiButtonIsHandled)
+﻿@using ThatDeveloperDad.Framework.Converters
+
+<div class="task-host">
+    <header>
+        <heading>
+            
+                <h3 class="col-9">Select Npc Options</h3>
+                <button class="col-3" @onclick="ToggleOptionPanel">@ToggleText</button>
+        </heading>
+        <div class=" @ShowOptionsPanel.AsString("options-panel", "hidden")">
+	
+			<div class="form-group">
+				<label class="form-label">Species</label>
+				<select @bind="@SelectedSpecies" class="form-select">
+					<option value="">random</option>
+					@foreach (var choice in SelectableOptions["Species"])
+					{
+						<option value="@choice">@choice</option>
+					}
+				</select>
+			</div>
+		
+			<div class="form-group">
+				<label class="form-label">Background</label>
+				<select @bind="@SelectedBackground" class="form-select">
+					<option value="">random</option>
+					@foreach (var choice in SelectableOptions["Background"])
+					{
+						<option value="@choice">@choice</option>
+					}
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label class ="form-label">Profession</label>
+				<select @bind="@SelectedVocation" class="form-select">
+					<option value="">random</option>
+					@foreach (var choice in SelectableOptions["Vocation"])
+					{
+						<option value="@choice">@choice</option>
+					}
+				</select>
+				<label class="form-label">Retired?</label><input type="checkbox" @bind="@IsRetired" style="form-control"/>
+			</div>
+		</div>
+
+@if(this.IsRerollVisible)
 {
-    <div class="row">
-        <button class="col-12 btn btn-primary"
-        @onclick="OnAiButtonClick">
-            Generate AI Description
-        </button>
-    </div>
+	<button class="btn btn-primary"
+			@onclick="OnCreateNpcClick">
+		Generate!
+	</button>
 }
+    </header>
+    <main>
+        <h3>Species: @Species</h3>
+        <p>Gender:  @Gender (@Pronouns)</p>
+        <p>Age: @Age</p>
+        <p>Height: @Height  Weight: @Weight</p>
+        <hr />
+        <h3>Appearance</h3>
+        <p>@Appearance</p>
+        <h3>Profession</h3>
+        <p>@Profession</p>
+        <h3>History</h3>
+        <p>@History</p>
+        <hr />
+    </main>
+    <footer>
+        @if (AiButtonIsHandled)
+        {
+            <div class="row">
+                <button class="col-12 btn btn-primary"
+                        @onclick="OnAiButtonClick">
+                    Generate AI Description
+                </button>
+            </div>
+        }
+    </footer>
+</div>
+
+

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.API.WorkloadProvider
 {
@@ -51,6 +52,7 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="npcJson">A JSON string containing the known NPC attributes</param>
         /// <returns>A string with a description of that NPC.</returns>
+        [Obsolete("This method is being deprecated.")]
         Task<string> DescribeNPC(Townsperson npc);
 
         /// <summary>
@@ -61,5 +63,11 @@ namespace GameTools.API.WorkloadProvider
         /// <param name="npcJson"></param>
         /// <returns></returns>
         Task<GeneratedCharacterProperties> GenerateAttributes(string npcJson);
+
+        Task<OpResult<Townsperson>> SaveNpc(Townsperson npc); 
+
+        Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownsfolk(TownspersonFilter filter);
+
+        Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId);
     }
 }
