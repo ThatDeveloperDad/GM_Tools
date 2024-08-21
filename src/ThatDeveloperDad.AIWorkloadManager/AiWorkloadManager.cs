@@ -1,4 +1,5 @@
 ﻿using ThatDeveloperDad.AIWorkloadManager.Contracts;
+using ThatDeveloperDad.Framework.Wrappers;
 using ThatDeveloperDad.LlmAccess.Contracts;
 
 namespace ThatDeveloperDad.AIWorkloadManager
@@ -14,20 +15,25 @@ namespace ThatDeveloperDad.AIWorkloadManager
             _functions = new Dictionary<string, AiFunctionDefinition>();
         }
 
-        public async Task<AiFunctionResult> ExecuteFunctionAsync(string functionName, Dictionary<string, object?> arguments)
+        public async Task<OpResult<AiFunctionResult>> ExecuteFunctionAsync(string functionName, Dictionary<string, object?> arguments)
         {
+            OpResult<AiFunctionResult> aiManagerResult = new OpResult<AiFunctionResult>();
+
             AiFunctionDefinition? storedFunction =  GuardFunctionExists(functionName);
 
             if (storedFunction == null)
             {
                 string error = $"The requested function ({functionName}) is not registered";
-                return new AiFunctionResult(error);
+                aiManagerResult.AddError(Guid.NewGuid(), error);
+                
+                return aiManagerResult;
             }
 
             var funcDef = storedFunction!;
             AiFunctionResult result = new AiFunctionResult(funcDef);
+            aiManagerResult.Payload = result;
 
-            var request = new FunctionRequest();
+            var request = new LlmRequest();
             // set up the request.
             request.Function.Name = funcDef.Name;
             request.Function.Description = funcDef.Description;
@@ -39,19 +45,26 @@ namespace ThatDeveloperDad.AIWorkloadManager
             }
 
             // send the Request to the LLM Provider
-            var aiResult = await _llmProvider.ExecuteFunctionAsync(request);
+            var aiProviderResult = await _llmProvider.ExecuteFunctionAsync(request);
 
             // Process the result.
-            if(aiResult.IsSuccessful == false)
+            if(aiProviderResult.WasSuccessful == false)
             {
-                foreach (var error in aiResult.Errors)
+                foreach (var kvp in aiProviderResult.Errors)
                 {
-                    result.AddError(error);
+                    aiManagerResult.AddError(kvp.Key, kvp.Value);
                 }
             }
-            result.AiResponse = aiResult.Result;
-            result.Consumption = aiResult.TokenUsage?.ToLocalModel();
-            return result;
+            else
+            {
+                string? aiResult = aiProviderResult.Payload?.Result;
+                var usage = aiProviderResult.Payload?.TokenUsage?.ToLocalModel();
+
+				aiManagerResult.Payload.AiResponse = aiResult;
+				aiManagerResult.Payload.Consumption = usage;
+			}
+
+			return aiManagerResult;
         }
 
         public void RegisterAiFunction(AiFunctionDefinition aiFunction)

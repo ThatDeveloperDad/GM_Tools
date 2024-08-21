@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ThatDeveloperDad.Framework.Wrappers;
 
 namespace ThatDeveloperDad.AIWorkloadManager.Contracts
 {
@@ -28,6 +29,6 @@ namespace ThatDeveloperDad.AIWorkloadManager.Contracts
         /// <param name="functionName"></param>
         /// <param name="arguments"></param>
         /// <returns></returns>
-        Task<AiFunctionResult> ExecuteFunctionAsync(string functionName, Dictionary<string, object?> arguments);   
+        Task<OpResult<AiFunctionResult>> ExecuteFunctionAsync(string functionName, Dictionary<string, object?> arguments);   
     }
 }

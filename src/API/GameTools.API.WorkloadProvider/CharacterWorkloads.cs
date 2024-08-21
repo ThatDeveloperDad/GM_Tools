@@ -62,9 +62,9 @@ namespace GameTools.API.WorkloadProvider
             // If it's successful, we should have an answer from the AI.
             // If it's not, the output of THIS method is going to the UI.
             // Let's just return an empty string when the AI Workload fails.
-            if (functionResult.IsSuccessful)
+            if (functionResult.WasSuccessful)
             {
-                description = functionResult.AiResponse??string.Empty;
+                description = functionResult.Payload?.AiResponse??string.Empty;
             }
             else
             {
@@ -91,14 +91,21 @@ namespace GameTools.API.WorkloadProvider
             functionArgs.Add("npcJson", npcJson);
 
             // Finally, we invoke that function on the AI Workload provider and await the result.
-            var functionResult = await _aiWorker.ExecuteFunctionAsync(functionName, functionArgs);
+            var aiManagerResult = await _aiWorker.ExecuteFunctionAsync(functionName, functionArgs);
             string aiJson = string.Empty;
 
-            if (functionResult.IsSuccessful)
+            if (aiManagerResult.WasSuccessful)
             {
-                aiJson = functionResult.AiResponse ?? string.Empty;
+                var resultPayload = aiManagerResult.Payload;
+
+                aiJson = resultPayload?.AiResponse ?? string.Empty;
                 aiJson = aiJson.StripMarkdown();
                 characterAttributes = ParseFromJson(aiJson);
+
+                //TODO:  Once we have User stuff, update the user's Usage info
+                // Consider doing this as a disconnected async operation
+                // so we don't have to wait for the DB write to return
+                // the AI response to the user.
             }
             else
             {
@@ -235,6 +242,5 @@ namespace GameTools.API.WorkloadProvider
             return json;
         }
 
-        
     }
 }
