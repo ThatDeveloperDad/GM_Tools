@@ -16,6 +16,10 @@ Third, We'll cross reference our components with each other to identify their de
 
 _**Client**_:  THis, for now, is just a console application.
 
+_**BlazorClient**_:  This forms the Web Application that makes the NPC Creator available in a browser.
+
+_**API.WorkloadProvider**_: Provides the workload methods that allow an NPC to be randomly generated (with user selectable options,) and then optionally sent to an AI Language Model for a more detailed text description.
+
 **Logic Layer**
 
 _**TownsfolkManager**_:  composes the capabilities and functions we'll add to the Engines and ResourceAccess components to perform the different use cases we'll have when generating Townsfolk.
@@ -30,7 +34,7 @@ _**RulesetAccess**_:  Gives us access to various lists, and game rules that we'l
 
 _**RuleSet Data**_:  For now, we're going to do this as a bunch of hard-coded C# classes.  I don't want to use a SQL Server or anything else like that, because that' too complicated for what I'm trying to demonstrate.
 
-_**App Data**_:  For this first version, we're just going to store the characters we generate in a folder as one file / character.
+_**App Data**_:  Will use a SQL Server database, with volatilities segmented by DB Schema and limited access DB Users.
 
 ---
 
@@ -39,7 +43,8 @@ _**App Data**_:  For this first version, we're just going to store the character
 - /Managers/GameTools.TownsfolkManager:  Defines and exposes the Use Cases that our application will facilitate.
 - [/Engines/GameTools.DiceEngine](/src/Engines/GameTools.DiceEngine/README.md):  
 Rolls dice, allows for result modifications, and different ways to make rolls.
-- /ResourceAccess/GameTools.NPCAccess:  This allows us to save and load NPCs that we've generated.
+- /ResourceAccess/GameTools.NPCAccess:  Defines the component behavior and data exchange contracts that allow us to save and load NPCs that we've generated.
+- /ResourceAccess/GameTools.NPCAccess.SqlServer:  Implements the contracts defined by the NPCAccess assembly against SQL Server, using EntityFramework Core.
 - /ResourceAccess/GameTools.RulesetAccess: Defines common concepts for different rules in Tabletop RolePlaying Games.
 
 
