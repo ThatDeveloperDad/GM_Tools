@@ -2,6 +2,8 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using ThatDeveloperDad.Framework.Wrappers;
+using Azure.AI.OpenAI;
+using Azure;
 
 namespace ThatDeveloperDad.LlmAccess
 {
@@ -55,11 +57,19 @@ namespace ThatDeveloperDad.LlmAccess
         private Kernel BuildKernel()
         {
 #pragma warning disable SKEXP0010
-			Kernel kernel = Kernel.CreateBuilder()
-						 .AddOpenAIChatCompletion(
-							 modelId: _lmConfig.ModelId,
-							 endpoint: new Uri(_lmConfig.EndpointUrl),
-							 apiKey: _lmConfig.ApiKey)
+            var endpoint = new Uri(_lmConfig.EndpointUrl);
+            var apiKey = _lmConfig.ApiKey;
+            var aoaiClient = new OpenAIClient(endpoint: endpoint,
+                                              keyCredential: new AzureKeyCredential(apiKey));
+            
+            Kernel kernel = Kernel.CreateBuilder()
+						 //.AddOpenAIChatCompletion(
+							// modelId: _lmConfig.ModelId,
+							// endpoint: new Uri(_lmConfig.EndpointUrl),
+							// apiKey: _lmConfig.ApiKey)
+                         .AddAzureOpenAIChatCompletion(
+                            deploymentName: _lmConfig.ModelId,
+                            openAIClient: aoaiClient)
 						 .Build();
 			return kernel;
         }
