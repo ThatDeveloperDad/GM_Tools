@@ -4,10 +4,10 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - gmtools-app
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+
+env:
+  TARGET_PROJECT_DIRECTORY: 'src/UI/GameTools.BlazorClient'
 
 jobs:
   build:
@@ -23,11 +23,11 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
-        working-directory: src
+        working-directory: ${{TARGET_PROJECT_DIRECTORY}}
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-        working-directory: src
+        working-directory: ${{TARGET_PROJECT_DIRECTORY}}
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
