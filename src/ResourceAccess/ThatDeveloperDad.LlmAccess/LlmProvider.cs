@@ -4,6 +4,8 @@ using Microsoft.SemanticKernel.ChatCompletion;
 using ThatDeveloperDad.Framework.Wrappers;
 using Azure.AI.OpenAI;
 using Azure;
+using Azure.Identity;
+using Azure.Core;
 
 namespace ThatDeveloperDad.LlmAccess
 {
@@ -59,9 +61,21 @@ namespace ThatDeveloperDad.LlmAccess
 #pragma warning disable SKEXP0010
             var endpoint = new Uri(_lmConfig.EndpointUrl);
             var apiKey = _lmConfig.ApiKey;
-            var aoaiClient = new OpenAIClient(endpoint: endpoint,
-                                              keyCredential: new AzureKeyCredential(apiKey));
+
+            OpenAIClient? aoaiClient = null; new (endpoint: endpoint,
+                                           keyCredential: );
             
+            if(_lmConfig.ApiKey == DependencyBuilder.apiKeySource)
+            {
+                TokenCredential cred = new DefaultAzureCredential();
+                aoaiClient = new OpenAIClient(endpoint, cred);
+            }
+            else
+            {
+                var cred = new AzureKeyCredential(apiKey);
+                aoaiClient= new OpenAIClient(endpoint, cred);
+            }
+
             Kernel kernel = Kernel.CreateBuilder()
 						 //.AddOpenAIChatCompletion(
 							// modelId: _lmConfig.ModelId,
