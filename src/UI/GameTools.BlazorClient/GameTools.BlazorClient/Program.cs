@@ -8,6 +8,7 @@ using GameTools.RulesetAccess;
 using GameTools.RulesetAccess.Contracts;
 using GameTools.TownsfolkManager;
 using GameTools.TownsfolkManager.Contracts;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 using ThatDeveloperDad.AIWorkloadManager;
@@ -86,6 +87,13 @@ namespace GameTools.BlazorClient
                 if(environment == "Production")
                 {
                     builder.Configuration.AddEnvironmentVariables();
+                }
+
+                // CHeck to make sure the config has what it needs.
+                var sqlCn = builder.Configuration.GetConnectionString("userdata");
+                if (sqlCn == null || sqlCn?.Contains("gmtool-data") == false)
+                {
+                    startupLogger.LogError("Sql Connection string is sus.");
                 }
 
                 startupLogger.LogInformation("I THINK(???) I have the configuration settings.");
