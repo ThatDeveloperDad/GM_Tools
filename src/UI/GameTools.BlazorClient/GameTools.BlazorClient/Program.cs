@@ -22,6 +22,7 @@ namespace GameTools.BlazorClient
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Logging.AddConsole();
+            builder.Logging.AddAzureWebAppDiagnostics();
 
             var startupLog = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
             startupLog.LogInformation("Startup Log has been created.  Let's see what's going on.");
