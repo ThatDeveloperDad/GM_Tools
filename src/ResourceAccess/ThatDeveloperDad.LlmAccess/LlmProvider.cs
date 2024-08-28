@@ -62,8 +62,7 @@ namespace ThatDeveloperDad.LlmAccess
             var endpoint = new Uri(_lmConfig.EndpointUrl);
             var apiKey = _lmConfig.ApiKey;
 
-            OpenAIClient? aoaiClient = null; new (endpoint: endpoint,
-                                           keyCredential: );
+            OpenAIClient? aoaiClient = null;
             
             if(_lmConfig.ApiKey == DependencyBuilder.apiKeySource)
             {
@@ -76,11 +75,12 @@ namespace ThatDeveloperDad.LlmAccess
                 aoaiClient= new OpenAIClient(endpoint, cred);
             }
 
+            if(aoaiClient == null)
+            {
+                throw new Exception("Could not configure the AI Service Connection.");
+            }
+
             Kernel kernel = Kernel.CreateBuilder()
-						 //.AddOpenAIChatCompletion(
-							// modelId: _lmConfig.ModelId,
-							// endpoint: new Uri(_lmConfig.EndpointUrl),
-							// apiKey: _lmConfig.ApiKey)
                          .AddAzureOpenAIChatCompletion(
                             deploymentName: _lmConfig.ModelId,
                             openAIClient: aoaiClient)
