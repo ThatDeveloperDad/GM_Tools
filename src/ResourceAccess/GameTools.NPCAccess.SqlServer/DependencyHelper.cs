@@ -31,16 +31,9 @@ namespace GameTools.NPCAccess.SqlServer
 
         private static string? GetConnectionString(string name, IConfiguration configuration)
         {
-            //string envVarPrefix = "AZURE_SQL_";
             string? cn = null;
 
             cn = configuration.GetConnectionString(name);
-
-            //if (string.IsNullOrWhiteSpace(cn))
-            //{
-            //    string cnEnvName = $"{envVarPrefix}{name.ToUpper()}";
-            //    cn = configuration.GetConnectionString(cnEnvName);
-            //}
 
             return cn;
         }

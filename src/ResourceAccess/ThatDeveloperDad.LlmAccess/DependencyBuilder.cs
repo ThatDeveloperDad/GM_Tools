@@ -12,10 +12,12 @@ namespace ThatDeveloperDad.LlmAccess
 	public static class DependencyBuilder
 	{
 		private const string LmSectionName = "LmConfig";
+		internal const string apiKeySource = "UseManagedId";
 
 		public static IServiceCollection UseSemanticKernelProvider(
 			this IServiceCollection services,
-			IConfiguration config)
+			IConfiguration config,
+			string? hostEnv = null)
 		{
 			var lmCfgSection = config.GetRequiredSection(LmSectionName);
 
@@ -24,13 +26,27 @@ namespace ThatDeveloperDad.LlmAccess
 				throw new InvalidOperationException("The configuration for the LanguageModel Provider is missing.");
 			}
 
-			services.AddScoped<ILlmProvider, LlmProvider>((sp) => { 
+			services.AddScoped<ILlmProvider, LlmProvider>((sp) => {
+				string modelId = lmCfgSection["modelId"] ?? string.Empty;
+				string endpoint = lmCfgSection["endpoint"] ?? string.Empty;
+				string apiKey = lmCfgSection["apiKey"] ?? string.Empty;
+				
+				if(hostEnv == "Production")
+				{
+					apiKey = apiKeySource;
+					if(endpoint == string.Empty)
+					{
+                        endpoint = config["AZURE_OPENAI_ENDPOINT"] ?? string.Empty;
+                    }
+                }
+
 				var lmCfg= new SemanticKernelConfiguration
 					(
-						modelId: lmCfgSection["modelId"] ?? string.Empty,
-						endpoint: lmCfgSection["endpoint"] ?? string.Empty,
-						apiKey: lmCfgSection["apiKey"] ?? string.Empty
+						modelId: modelId,
+						endpoint: endpoint,
+						apiKey: apiKey
 					);
+
 				return new LlmProvider(lmCfg);
 			});
 

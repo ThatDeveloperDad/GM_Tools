@@ -110,7 +110,7 @@ namespace GameTools.BlazorClient
             WebApplicationBuilder builder,
             ILogger<Program> startupLog)
         {
-            
+            var hostEnv = builder.Environment.EnvironmentName;
 
             // Set up "Townsfolk" services and dependencies.
 			builder.Services.AddScoped<IRulesetAccess>((sp) =>
@@ -138,9 +138,17 @@ namespace GameTools.BlazorClient
             
             builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 
-			// Set up AI Aubsystem and dependencies.
-			builder.Services.UseSemanticKernelProvider(builder.Configuration);
-			builder.Services.AddScoped<IAiWorkloadManager, AiWorkloadManager>();
+            // Set up AI Subsystem and dependencies.
+            try
+            {
+                builder.Services.UseSemanticKernelProvider(builder.Configuration, hostEnv);
+                builder.Services.AddScoped<IAiWorkloadManager, AiWorkloadManager>();
+            }
+            catch(Exception ex)
+            {
+                startupLog.LogError(ex, "Could not access the LM Configurations.");
+            }
+			
 
 			
             builder.Services.AddScoped<ICharacterWorkloads, CharacterWorkloads>();
