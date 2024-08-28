@@ -1,19 +1,18 @@
 using GameTools.API.WorkloadProvider;
-using GameTools.BlazorClient.Client.Pages;
 using GameTools.BlazorClient.Components;
+using GameTools.BlazorClient.Services;
 using GameTools.DiceEngine;
+using GameTools.NPCAccess.SqlServer;
+using GameTools.Ruleset.DnD5eSRD;
 using GameTools.RulesetAccess;
 using GameTools.RulesetAccess.Contracts;
-using GameTools.Ruleset.DnD5eSRD;
 using GameTools.TownsfolkManager;
 using GameTools.TownsfolkManager.Contracts;
-using GameTools.NPCAccess;
-using GameTools.NPCAccess.SqlServer;
-using ThatDeveloperDad.AIWorkloadManager.Contracts;
-using ThatDeveloperDad.LlmAccess.Contracts;
-using ThatDeveloperDad.LlmAccess;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Options;
 using ThatDeveloperDad.AIWorkloadManager;
-using GameTools.BlazorClient.Services;
+using ThatDeveloperDad.AIWorkloadManager.Contracts;
+using ThatDeveloperDad.LlmAccess;
 
 namespace GameTools.BlazorClient
 {
@@ -22,10 +21,14 @@ namespace GameTools.BlazorClient
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Logging.AddConsole();
 
-            builder = SetUpConfiguration(builder);
+            var startupLog = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
+            startupLog.LogInformation("Startup Log has been created.  Let's see what's going on.");
 
-            builder = CreateServices(builder);
+            builder = SetUpConfiguration(builder, startupLog);
+
+            builder = CreateServices(builder, startupLog);
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
@@ -59,20 +62,35 @@ namespace GameTools.BlazorClient
             app.Run();
         }
 
-        private static WebApplicationBuilder SetUpConfiguration(WebApplicationBuilder builder)
+        private static WebApplicationBuilder SetUpConfiguration(
+            WebApplicationBuilder builder,
+            ILogger<Program> startupLogger)
         {
             var environment = builder.Environment.EnvironmentName;
-            builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
-            builder.Configuration.AddJsonFile("appsettings.json");
-            builder.Configuration.AddJsonFile($"appsettings.{environment}.json", true);
 
+            startupLogger.LogInformation($"Loading configuration for {environment}");
+
+            try
+            {
+                builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
+                builder.Configuration.AddJsonFile("appsettings.json");
+                builder.Configuration.AddJsonFile($"appsettings.{environment}.json", true);
+
+                startupLogger.LogInformation("I THINK(???) I have the configuration settings.");
+            }
+            catch (Exception ex)
+            {
+                startupLogger.LogError(ex, "An exception occurred while getting app configuration.");
+            }
 
             return builder;
         }
 
-        private static WebApplicationBuilder CreateServices(WebApplicationBuilder builder)
+        private static WebApplicationBuilder CreateServices(
+            WebApplicationBuilder builder,
+            ILogger<Program> startupLog)
         {
-            builder.Logging.AddConsole();
+            
 
             // Set up "Townsfolk" services and dependencies.
 			builder.Services.AddScoped<IRulesetAccess>((sp) =>
@@ -88,8 +106,16 @@ namespace GameTools.BlazorClient
 
 			builder.Services.AddScoped<IDiceBag, DiceBag>();
 
-            builder.Services.UseNpcSqlServerAccess(builder.Configuration);
-
+            try
+            {
+                builder.Services.UseNpcSqlServerAccess(builder.Configuration);
+            }
+            catch(Exception ex)
+            {
+                startupLog.LogError(ex, "Could not attach the SqlProvider.");
+                throw;
+            }
+            
             builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 
 			// Set up AI Aubsystem and dependencies.

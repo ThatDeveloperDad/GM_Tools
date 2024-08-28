@@ -11,6 +11,8 @@ namespace GameTools.NPCAccess.SqlServer
             this IServiceCollection services,
             IConfiguration configuration)
         {
+            
+
             string? userdataCn = configuration.GetConnectionString("userdata");
             if(string.IsNullOrWhiteSpace(userdataCn))
             {
