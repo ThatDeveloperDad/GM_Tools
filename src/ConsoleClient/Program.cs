@@ -15,6 +15,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using GameTools.UserAccess.MsGraphProvider;
 
 // See https://aka.ms/new-console-template for more information
 namespace ConsoleClient
@@ -23,6 +24,7 @@ namespace ConsoleClient
     {
         static void Main()
         {
+
 
             var services = CreateServices();
 
@@ -134,6 +136,8 @@ namespace ConsoleClient
             }
 
         }
+
+        
 
         static string PromptUser(string promptText, string[] validAnswers)
         {

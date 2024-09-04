@@ -1,0 +1,48 @@
+﻿@page "/user-info"
+@using System.Security.Principal
+@using System.Security.Claims
+@using GameTools.BlazorClient.Middleware
+
+@inject IHttpContextAccessor httpContextAccessor
+
+
+<h1>Everyone should see this no matter who they are.</h1>
+<AuthorizeView Policy=@AuthZConstants.pol_KnownUsers>
+	<NotAuthorized>
+		<h3>Things that only Strangers (Not known users) should see.</h3>
+	</NotAuthorized>
+	<Authorized>
+		<h3>Only Logged in users in the app-users group should see this.</h3>
+		<AuthorizeView Context="authNCtx" Policy=@AuthZConstants.pol_PaidUsers>
+			<NotAuthorized>
+				<p>"This would be where I'd put the Use AI Button."</p>
+				<p>IF YOU HAD ONE!!!!  (Buy Now?)</p>
+			</NotAuthorized>
+			<Authorized>
+				<p>Hello, paid user!  here's that AI Button.  Thanks for feeding me.</p>
+			</Authorized>
+			
+		</AuthorizeView>
+	</Authorized>
+</AuthorizeView>
+
+
+	@code {
+	string? userName;
+	ClaimsPrincipal? user;
+	protected override void OnInitialized()
+	{
+		var context = httpContextAccessor.HttpContext;
+		if(context == null)
+		{
+			userName = "Ghost";
+			user = null;
+			return;
+		}
+
+		user = context.User as ClaimsPrincipal;
+
+		var name = context.User?.Identity?.Name ?? "Stranger";
+
+	}
+}
