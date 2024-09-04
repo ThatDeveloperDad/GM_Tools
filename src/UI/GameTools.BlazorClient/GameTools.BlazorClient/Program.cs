@@ -97,22 +97,24 @@ namespace GameTools.BlazorClient
 
             try
             {
+                if(environment == "Development")
+                {
+                    DotNetEnv.Env.Load();
+                }
+
                 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
                 builder.Configuration.AddJsonFile("appsettings.json");
                 builder.Configuration.AddJsonFile($"appsettings.{environment}.json", true);
-                // If we're in the development environment, use appsettings.
+				// If we're in the development environment, use appsettings.
 
-                // If we're in production, we want to bring in other config sources as well.
-                // i.e.:  Environment vars.
-                // Remember, there's some kind override that happens when 
-                // "stacking" configuration sources.  (I believe it's Last One Added has precedence.)
-                
-                if(environment == "Production")
-                {
-                    builder.Configuration.AddEnvironmentVariables();
-                }
+				// If we're in production, we want to bring in other config sources as well.
+				// i.e.:  Environment vars.
+				// Remember, there's some kind override that happens when 
+				// "stacking" configuration sources.  (I believe it's Last One Added has precedence.)
+				builder.Configuration.AddEnvironmentVariables();
+				
 
-                // CHeck to make sure the config has what it needs.
+                // Check to make sure the config has what it needs.
                 var sqlCn = builder.Configuration.GetConnectionString("userdata");
                 if (sqlCn == null || sqlCn?.Contains("gmtool-data") == false)
                 {
