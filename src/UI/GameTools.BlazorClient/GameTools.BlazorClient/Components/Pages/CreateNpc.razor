@@ -4,6 +4,10 @@
 @using GameTools.BlazorClient.Components.Pages.PageModels;
 @using GameTools.UI.Components.Wrapper
 
+@using GameTools.BlazorClient.Middleware
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Policy = AuthZConstants.pol_KnownUsers)]
+
 @inherits PageModels.CreateNpcPageModel;
 
 @if (PageState != CreateNpcPageStates.List)
@@ -26,10 +30,7 @@
 			NpcNotifier="@this.NpcEventNotifier"/>
 
 <div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
-@* 	<SelectNpcOptions SelectableOptions="@this.SelectableNpcOptions"
-					  UserOptions="@this.UserOptions"
-					  GenerateNpc_Clicked="OnRerollClicked"
-					  NpcNotifier="NpcEventNotifier"/> *@
+
 
 	<ViewNpcAttributes UseMetric="@false"
 					   SelectableOptions="@this.SelectableNpcOptions"
@@ -38,6 +39,7 @@
 					   Visibility="@this.ShowForPageState(CreateNpcPageStates.Preview)"
 					   GenerateNpc_Clicked="OnRerollClicked"
 					   GenerateAi_Clicked="OnAiDescriptionRequested"
+					   SaveNpc_Clicked="OnSaveNpc"
 					   NpcNotifier="NpcEventNotifier" />
 </div>
 
@@ -47,6 +49,4 @@
 					SaveNpc_Clicked="OnSaveNpc"/>
 </main>
 <footer class="hidden"></footer>
-@* <div class="row">
-	<button class="btn btn-outline-secondary" @onclick="OnStartOverClicked">Start Over</button>
-</div> *@
+

@@ -9,6 +9,9 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         [Parameter]
         public Func<NpcClientModel, Task>? GenerateAi_Clicked { get; set; }
 
+        [Parameter]
+        public Func<NpcClientModel, Task>? SaveNpc_Clicked { get; set; }
+
 		[Parameter]
 		public Action? GenerateNpc_Clicked { get; set; }
 
@@ -127,6 +130,13 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public void OnAiButtonClick()
         {
             GenerateAi_Clicked?.Invoke(CurrentNpc);
+        }
+
+        public bool SaveButtonIsHandled => SaveNpc_Clicked != null;
+
+        public void OnSaveButtonClick()
+        {
+            SaveNpc_Clicked?.Invoke(CurrentNpc);
         }
 
         public void UpdateClientModel(NpcClientModel model)
