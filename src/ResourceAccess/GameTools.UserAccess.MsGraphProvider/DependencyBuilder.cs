@@ -21,26 +21,15 @@ namespace GameTools.UserAccess.MsGraphProvider
 			string? hostEnv = null)
 		{
 			var cfg = new GraphConfiguration();
+			var cfgNode = config.GetRequiredSection(GraphConfiguration.SettingNode);
 
-			//if ((hostEnv??"Development") == "Production")
-			//{
-			//	cfg.TenantId = config[GraphConfiguration.EnvVar_TenantId];
-			//	cfg.ClientId = config[GraphConfiguration.EnvVar_ClientId];
-			//	cfg.ClientSecret = config[GraphConfiguration.EnvVar_ClientSecret];
-			//	cfg.ApplicationGroupPrefix = config[GraphConfiguration.EnvVar_AppGrpPrefix];
-			//}
-			//else 
-			//{
-				var cfgNode = config.GetRequiredSection(GraphConfiguration.SettingNode);
+			cfgNode.GuardNullReference(MissingConfigMessage);
 
-				cfgNode.GuardNullReference(MissingConfigMessage);
-
-				cfg.TenantId = cfgNode[GraphConfiguration.SettingKey_TenantId];
-				cfg.ClientId = cfgNode[GraphConfiguration.SettingKey_ClientId];
-				cfg.ClientSecret = cfgNode[GraphConfiguration.SettingKey_ClientSecret];
-				cfg.ApplicationGroupPrefix = cfgNode[GraphConfiguration.SettingKey_AppGrpPrefix];
-			//}
-
+			cfg.TenantId = cfgNode[GraphConfiguration.SettingKey_TenantId];
+			cfg.ClientId = cfgNode[GraphConfiguration.SettingKey_ClientId];
+			cfg.ClientSecret = cfgNode[GraphConfiguration.SettingKey_ClientSecret];
+			cfg.ApplicationGroupPrefix = cfgNode[GraphConfiguration.SettingKey_AppGrpPrefix];
+			
 			cfg.TenantId.GuardNullReference("TenantId is required to start the app.  Check the configuration settings or Environment Variables.");
 			cfg.ClientId.GuardNullReference("ClientId is required to start the app.   Check the configuration settings or Environment Variables.");
 			cfg.ClientSecret.GuardNullReference("ClientSecret is required to start the app.   Check the configuration settings or Environment Variables.");

@@ -13,11 +13,7 @@ namespace GameTools.UserAccess.MsGraphProvider
         internal const string SettingKey_ClientId = "ClientId";
         internal const string SettingKey_ClientSecret = "ClientSecret";
         internal const string SettingKey_AppGrpPrefix = "AppGroupPrefixPattern";
-		internal const string EnvVar_TenantId = "ENTRA_TENANT_ID";
-		internal const string EnvVar_ClientId = "ENTRA_GRAPH_CLIENTID";
-		internal const string EnvVar_ClientSecret = "ENTRA_GRAPH_SECRET";
-		internal const string EnvVar_AppGrpPrefix = "ENTRA_APP_GROUP_PREFIX";
-
+		
 		public string? TenantId { get; set; }
 
         public string? ClientId { get; set; }
