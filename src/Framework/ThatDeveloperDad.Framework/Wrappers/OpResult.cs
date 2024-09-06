@@ -31,6 +31,9 @@ namespace ThatDeveloperDad.Framework.Wrappers
             _errors[errorId] = errorMessage;
         }
 
+        //public bool ShouldRetry { get; set; }
+        //public int RetryCount { get; set; }
+        //public int RetryLimit { get; set; }
     }
 
     /// <summary>
