@@ -1,4 +1,5 @@
 ﻿@using ThatDeveloperDad.Framework.Converters
+@using GameTools.BlazorClient.Middleware
 
 <div class="task-host">
     <header>
@@ -48,7 +49,7 @@
 {
 	<button class="btn btn-primary"
 			@onclick="OnCreateNpcClick">
-		Generate!
+		Roll Those Dice!
 	</button>
 }
     </header>
@@ -67,15 +68,24 @@
         <hr />
     </main>
     <footer>
-        @if (AiButtonIsHandled)
-        {
-            <div class="row">
-                <button class="col-12 btn btn-primary"
-                        @onclick="OnAiButtonClick">
-                    Generate AI Description
-                </button>
-            </div>
-        }
+		<nav>
+			@if(SaveButtonIsHandled)
+			{
+				<button class="btn btn-primary"
+					@onclick="OnSaveButtonClick">
+					Save NPC
+				</button>
+			}
+			<AuthorizeView Policy=@AuthZConstants.pol_PaidUsers>
+				@if (AiButtonIsHandled)
+			{
+				<button class="btn btn-primary"
+						@onclick="OnAiButtonClick">
+					Generate AI Description
+				</button>
+			}
+			</AuthorizeView>
+		</nav>
     </footer>
 </div>
 

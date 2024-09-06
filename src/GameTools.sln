@@ -60,6 +60,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.UI.Components", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.NPCAccess.SqlServer", "ResourceAccess\GameTools.NPCAccess.SqlServer\GameTools.NPCAccess.SqlServer.csproj", "{165991AB-0C59-495E-BA49-FB3BAC290CDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.UserAccess", "ResourceAccess\GameTools.UserAccess\GameTools.UserAccess.csproj", "{217F3D15-0683-474B-AC78-6D951042311B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.UserAccess.MsGraphProvider", "ResourceAccess\GameTools.UserAccess.MsGraphProvider\GameTools.UserAccess.MsGraphProvider.csproj", "{9AEE71D5-FB18-44A9-884A-DEB1E0FC0CA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.MeteredUsageAccess", "ResourceAccess\GameTools.MeteredUsageAccess\GameTools.MeteredUsageAccess.csproj", "{B956A455-7588-4D80-9AC1-DA53AF967507}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.MeteredUsageAccess.SqlServer", "ResourceAccess\GameTools.MeteredUsageAccess.SqlServer\GameTools.MeteredUsageAccess.SqlServer.csproj", "{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +150,22 @@ Global
 		{165991AB-0C59-495E-BA49-FB3BAC290CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{165991AB-0C59-495E-BA49-FB3BAC290CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{165991AB-0C59-495E-BA49-FB3BAC290CDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{217F3D15-0683-474B-AC78-6D951042311B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{217F3D15-0683-474B-AC78-6D951042311B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{217F3D15-0683-474B-AC78-6D951042311B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{217F3D15-0683-474B-AC78-6D951042311B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AEE71D5-FB18-44A9-884A-DEB1E0FC0CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AEE71D5-FB18-44A9-884A-DEB1E0FC0CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AEE71D5-FB18-44A9-884A-DEB1E0FC0CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AEE71D5-FB18-44A9-884A-DEB1E0FC0CA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B956A455-7588-4D80-9AC1-DA53AF967507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B956A455-7588-4D80-9AC1-DA53AF967507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B956A455-7588-4D80-9AC1-DA53AF967507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B956A455-7588-4D80-9AC1-DA53AF967507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +188,10 @@ Global
 		{A88DF681-41FB-42C9-8431-F6E48F833F59} = {66B9FBAA-2968-4D13-8DE5-01A1000872FB}
 		{68896010-A661-4525-B5E9-DFAD5D514818} = {66B9FBAA-2968-4D13-8DE5-01A1000872FB}
 		{165991AB-0C59-495E-BA49-FB3BAC290CDF} = {3609EDE8-0CEE-45B4-9F6A-6AB6B9D0F233}
+		{217F3D15-0683-474B-AC78-6D951042311B} = {3609EDE8-0CEE-45B4-9F6A-6AB6B9D0F233}
+		{9AEE71D5-FB18-44A9-884A-DEB1E0FC0CA0} = {3609EDE8-0CEE-45B4-9F6A-6AB6B9D0F233}
+		{B956A455-7588-4D80-9AC1-DA53AF967507} = {3609EDE8-0CEE-45B4-9F6A-6AB6B9D0F233}
+		{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB} = {3609EDE8-0CEE-45B4-9F6A-6AB6B9D0F233}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6609DEA-D173-4C64-90E7-2D85617E377C}

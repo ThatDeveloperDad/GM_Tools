@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameTools.NPCAccess.SqlServer.Context.SqlModels;
+﻿using GameTools.NPCAccess.SqlServer.Context.SqlModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace GameTools.NPCAccess.SqlServer.Context
 {

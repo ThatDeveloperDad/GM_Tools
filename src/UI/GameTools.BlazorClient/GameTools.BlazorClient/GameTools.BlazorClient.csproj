@@ -20,12 +20,20 @@
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.NPCAccess.SqlServer\GameTools.NPCAccess.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.NPCAccess\GameTools.NPCAccess.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj" />
+    <ProjectReference Include="..\..\..\ResourceAccess\GameTools.UserAccess.MsGraphProvider\GameTools.UserAccess.MsGraphProvider.csproj" />
+    <ProjectReference Include="..\..\..\ResourceAccess\GameTools.UserAccess\GameTools.UserAccess.csproj" />
     <ProjectReference Include="..\..\..\Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj" />
     <ProjectReference Include="..\..\..\ThatDeveloperDad.AIWorkloadManager\ThatDeveloperDad.AIWorkloadManager.csproj" />
     <ProjectReference Include="..\GameTools.BlazorClient.Client\GameTools.BlazorClient.Client.csproj" />
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="8.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.1.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.5" />
   </ItemGroup>
 
 </Project>
