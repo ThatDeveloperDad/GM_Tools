@@ -66,7 +66,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.UserAccess.MsGrap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.MeteredUsageAccess", "ResourceAccess\GameTools.MeteredUsageAccess\GameTools.MeteredUsageAccess.csproj", "{B956A455-7588-4D80-9AC1-DA53AF967507}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.MeteredUsageAccess.SqlServer", "ResourceAccess\GameTools.MeteredusageAccess.SqlServer\GameTools.MeteredUsageAccess.SqlServer.csproj", "{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.MeteredUsageAccess.SqlServer", "ResourceAccess\GameTools.MeteredUsageAccess.SqlServer\GameTools.MeteredUsageAccess.SqlServer.csproj", "{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
