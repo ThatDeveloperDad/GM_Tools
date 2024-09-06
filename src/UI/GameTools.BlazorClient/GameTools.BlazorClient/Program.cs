@@ -137,6 +137,8 @@ namespace GameTools.BlazorClient
         {
             var hostEnv = builder.Environment.EnvironmentName;
 
+            startupLog.LogInformation($"Configuring services for {hostEnv} deployment");
+
             builder.Services.AddHttpClient();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<HttpContextAccessor>();
@@ -147,9 +149,11 @@ namespace GameTools.BlazorClient
             // Do the MS Graph setup
             var graphCfg = cfg.LoadMsGraphConfiguration(hostEnv);
             builder.Services.UseMsGraphUserProvider(graphCfg);
+            startupLog.LogInformation($"MS-Graph Provider added OK.");
 
-			// Set up "Townsfolk" services and dependencies.
-			builder.Services.AddScoped<IRulesetAccess>((sp) =>
+
+            // Set up "Townsfolk" services and dependencies.
+            builder.Services.AddScoped<IRulesetAccess>((sp) =>
 			{
 				IRulesetAccess service =
 					new RulesetProvider()
@@ -171,7 +175,8 @@ namespace GameTools.BlazorClient
                 startupLog.LogError(ex, "Could not attach the SqlProvider.");
                 throw;
             }
-            
+            startupLog.LogInformation($"SqlAccess Provider added OK.");
+
             builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 
             // Set up AI Subsystem and dependencies.
@@ -184,7 +189,8 @@ namespace GameTools.BlazorClient
             {
                 startupLog.LogError(ex, "Could not access the LM Configurations.");
             }
-			
+            startupLog.LogInformation($"Llm Provider added OK.");
+
             builder.Services.AddScoped<ICharacterWorkloads, CharacterWorkloads>();
 
             builder.Services.AddScoped<NpcServiceProxy>();

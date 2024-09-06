@@ -31,14 +31,14 @@ namespace ThatDeveloperDad.LlmAccess
 				string endpoint = lmCfgSection["endpoint"] ?? string.Empty;
 				string apiKey = lmCfgSection["apiKey"] ?? string.Empty;
 				
-				if(hostEnv == "Production")
-				{
-					apiKey = apiKeySource;
-					if(endpoint == string.Empty)
-					{
-                        endpoint = config["AZURE_OPENAI_ENDPOINT"] ?? string.Empty;
-                    }
-                }
+				//if(hostEnv == "Production")
+				//{
+				//	apiKey = apiKeySource;
+				//	if(endpoint == string.Empty)
+				//	{
+    //                    endpoint = config["AZURE_OPENAI_ENDPOINT"] ?? string.Empty;
+    //                }
+    //            }
 
 				var lmCfg= new SemanticKernelConfiguration
 					(
