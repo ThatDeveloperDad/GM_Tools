@@ -5,7 +5,7 @@ using System;
 
 namespace GameTools.NPCAccess.SqlServer
 {
-	public static class DependencyHelper
+	public static class DependencyBuilder
     {
         public static IServiceCollection UseNpcSqlServerAccess(
             this IServiceCollection services,
