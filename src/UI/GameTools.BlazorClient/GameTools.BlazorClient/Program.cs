@@ -61,7 +61,6 @@ namespace GameTools.BlazorClient
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
-            app.UseMiddleware<AppContextMiddleware>();
             app.UseAuthorization();
 			app.MapControllers();
             app.UseAntiforgery();
@@ -151,8 +150,6 @@ namespace GameTools.BlazorClient
             var graphCfg = cfg.LoadMsGraphConfiguration(hostEnv);
             builder.Services.UseMsGraphUserProvider(graphCfg);
             startupLog.LogInformation($"MS-Graph Provider added OK.");
-
-            builder.Services.AddScoped<ContextContainer>();
 
             // Set up "Townsfolk" services and dependencies.
             builder.Services.AddScoped<IRulesetAccess>((sp) =>

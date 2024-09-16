@@ -62,15 +62,7 @@ namespace GameTools.BlazorClient.Middleware
 							.RequestServices
 							.GetRequiredService<IUserAccess>();
 
-                            ContextContainer appCtx = ctx
-                                .HttpContext
-                                .RequestServices
-                                .GetRequiredService<ContextContainer>();
-
-                            GameToolsUser userCtx = new GameToolsUser(Objectidentifier)
-                            {
-                                ScreenName = DisplayName
-                            };
+                            
 
                             List<string>? groups =
 								await userAccess?
@@ -82,7 +74,7 @@ namespace GameTools.BlazorClient.Middleware
 							{
 								var claim = new Claim(ClaimTypes.Role, group);
 								newClaims.Add(claim);
-								userCtx.AddUserRole(group);
+								
 							}
 							if (newClaims.Any())
 							{
@@ -93,7 +85,7 @@ namespace GameTools.BlazorClient.Middleware
 							var appIdentity = new ClaimsIdentity(newClaims);
 
 							ctx.Principal.AddIdentity(appIdentity);
-							appCtx.SetUserContext(userCtx);
+							
                         }
 					}
 				}
