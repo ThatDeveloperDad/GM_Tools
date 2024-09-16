@@ -3,6 +3,7 @@ using GameTools.BlazorClient.Components;
 using GameTools.BlazorClient.Middleware;
 using GameTools.BlazorClient.Services;
 using GameTools.DiceEngine;
+using GameTools.Framework.Contexts;
 using GameTools.NPCAccess.SqlServer;
 using GameTools.Ruleset.DnD5eSRD;
 using GameTools.RulesetAccess;
@@ -29,7 +30,6 @@ namespace GameTools.BlazorClient
             var startupLog = CreateStartupLogger(builder);
             startupLog.LogInformation("Startup Log has been created.  Let's see what's going on.");
 
-            
             builder = SetUpConfiguration(builder, startupLog);
 
             // Add the local, custom services that are use-case relevant
@@ -61,6 +61,7 @@ namespace GameTools.BlazorClient
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
+            app.UseMiddleware<AppContextMiddleware>();
             app.UseAuthorization();
 			app.MapControllers();
             app.UseAntiforgery();
@@ -151,6 +152,7 @@ namespace GameTools.BlazorClient
             builder.Services.UseMsGraphUserProvider(graphCfg);
             startupLog.LogInformation($"MS-Graph Provider added OK.");
 
+            builder.Services.AddScoped<ContextContainer>();
 
             // Set up "Townsfolk" services and dependencies.
             builder.Services.AddScoped<IRulesetAccess>((sp) =>

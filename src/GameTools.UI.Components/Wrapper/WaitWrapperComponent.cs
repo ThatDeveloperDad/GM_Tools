@@ -5,7 +5,7 @@ namespace GameTools.UI.Components.Wrapper
     public class WaitWrapperComponent:ComponentBase
     {
         [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        public RenderFragment? ChildContent { get; set; }
         public bool Loading { get; private set; }
 
         private CancellationTokenSource cancellationTokenSource;

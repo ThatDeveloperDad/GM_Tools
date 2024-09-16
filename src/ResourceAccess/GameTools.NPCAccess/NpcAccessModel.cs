@@ -9,6 +9,7 @@ public class NpcAccessModel
 
     public NpcAccessModel()
     {
+        UserId = string.Empty;
         Species = string.Empty;
         Vocation = string.Empty;
         CharacterDetails = string.Empty;
@@ -16,7 +17,7 @@ public class NpcAccessModel
 
     public int? NpcId { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     public string Species { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using GameTools.UserAccess;
+﻿using GameTools.Framework.Contexts;
+using GameTools.UserAccess;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Linq.Dynamic.Core;
@@ -61,7 +62,17 @@ namespace GameTools.BlazorClient.Middleware
 							.RequestServices
 							.GetRequiredService<IUserAccess>();
 
-							List<string>? groups =
+                            ContextContainer appCtx = ctx
+                                .HttpContext
+                                .RequestServices
+                                .GetRequiredService<ContextContainer>();
+
+                            GameToolsUser userCtx = new GameToolsUser(Objectidentifier)
+                            {
+                                ScreenName = DisplayName
+                            };
+
+                            List<string>? groups =
 								await userAccess?
 								.LoadUserPermissionGroupsAsync(Objectidentifier)
 								?? new List<string>();
@@ -71,6 +82,7 @@ namespace GameTools.BlazorClient.Middleware
 							{
 								var claim = new Claim(ClaimTypes.Role, group);
 								newClaims.Add(claim);
+								userCtx.AddUserRole(group);
 							}
 							if (newClaims.Any())
 							{
@@ -81,7 +93,8 @@ namespace GameTools.BlazorClient.Middleware
 							var appIdentity = new ClaimsIdentity(newClaims);
 
 							ctx.Principal.AddIdentity(appIdentity);
-						}
+							appCtx.SetUserContext(userCtx);
+                        }
 					}
 				}
 			}
