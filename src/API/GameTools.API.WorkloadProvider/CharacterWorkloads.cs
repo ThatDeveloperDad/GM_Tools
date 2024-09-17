@@ -180,8 +180,6 @@ namespace GameTools.API.WorkloadProvider
             string npcJson = string.Empty;
             var npc = _npcManager.GenerateTownsperson();
 
-            
-
             return npc;
         }
 

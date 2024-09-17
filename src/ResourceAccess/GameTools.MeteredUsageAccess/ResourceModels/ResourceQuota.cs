@@ -18,6 +18,8 @@ namespace GameTools.MeteredUsageAccess.ResourceModels
     {
         public ResourceQuota() { }
 
+        public int QuotaId { get; set; }
+
         /// <summary>
         /// Identifies the general kind of resource that has this quota
         /// 

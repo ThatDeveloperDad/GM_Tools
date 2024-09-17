@@ -16,8 +16,4 @@
     <ProjectReference Include="..\GameTools.MeteredUsageAccess\GameTools.MeteredUsageAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Context\SqlModels\" />
-  </ItemGroup>
-
 </Project>
