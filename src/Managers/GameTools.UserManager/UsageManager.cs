@@ -1,9 +1,7 @@
 ﻿using GameTools.MeteredUsageAccess;
-using GameTools.MeteredUsageAccess.ResourceModels;
 using GameTools.UserManager.Contracts;
 using GameTools.UserManager.InternalOperations;
 using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
 using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.UserManager
@@ -20,9 +18,33 @@ namespace GameTools.UserManager
 			_logger = logger;
         }
 
-        public Task<OpResult<QuotaContainer>> ConsumeQuotaAsync(int quotaId, int amountConsumed)
+        public async Task<OpResult<QuotaContainer>> ConsumeQuotaAsync(int quotaId, int amountConsumed)
 		{
-			throw new NotImplementedException();
+			OpResult<QuotaContainer> mgrResult = new OpResult<QuotaContainer>();
+			QuotaContainer? mgrPayload = null;
+
+			try
+			{
+				var accessResult = await  _quotaAccess.ConsumeQuotaAsync(quotaId, amountConsumed);
+				if (accessResult.WasSuccessful && accessResult.Payload != null)
+				{
+					mgrPayload = accessResult.Payload.ToAppModel();
+				}
+				else
+				{
+					accessResult.CopyErrorsTo(ref mgrResult);
+				}
+			}
+			catch(Exception ex)
+			{
+				Guid exId = Guid.NewGuid();
+				string message = $"An error occurred while updating quotaId {quotaId}";
+				mgrResult.AddError(exId, message);
+				_logger?.LogError(ex, exId.ToString());
+			}
+
+			mgrResult.Payload = mgrPayload;
+			return mgrResult;
 		}
 
 		public async Task<OpResult<QuotaContainer>> LoadUserQuotaAsync(string userId)
@@ -33,13 +55,9 @@ namespace GameTools.UserManager
 			try
 			{
 				var accessResult = await _quotaAccess.LoadUserQuotaAsync(userId);
-				if(accessResult !=null 
-					&& accessResult.WasSuccessful
-					&& accessResult.Payload != null)
+				if(accessResult.WasSuccessful && accessResult.Payload != null)
 				{
-					quotaContainer = accessResult
-										.Payload
-										.ToAppModel();
+					quotaContainer = accessResult.Payload.ToAppModel();
 				}
 				else
 				{
@@ -60,9 +78,59 @@ namespace GameTools.UserManager
 			return mgrResult;
 		}
 
-		public Task<OpResult<QuotaContainer>> ReleaseQuotaAsync(int quotaId, int amounReleased)
+		public async Task<OpResult<QuotaContainer>> ReleaseQuotaAsync(int quotaId, int amountReleased)
 		{
-			throw new NotImplementedException();
+			OpResult<QuotaContainer> mgrResult = new OpResult<QuotaContainer>();
+			QuotaContainer? mgrPayload = null;
+
+			try
+			{
+				var accessResult = await _quotaAccess.ReleaseQuotaAsync(quotaId, amountReleased);
+				if(accessResult.WasSuccessful && accessResult.Payload != null)
+				{
+					mgrPayload = accessResult.Payload.ToAppModel();
+				}
+				else
+				{
+					accessResult.CopyErrorsTo(ref mgrResult);
+				}
+			}
+			catch(Exception ex)
+			{
+				Guid exId = Guid.NewGuid();
+				string message = $"An error occurred while Releasing resources on quotaId {quotaId}";
+				mgrResult.AddError(exId, message);
+
+				_logger?.LogError(ex, exId.ToString());
+			}
+
+			mgrResult.Payload = mgrPayload;
+			return mgrResult;
+		}
+
+		public async Task<OpResult> LogTokenConsumption(TokenUsageEntry usageEntry)
+		{
+			OpResult mgrResult = new OpResult();
+
+			try
+			{
+				var accessEntry = usageEntry.ToResourceModel();
+				var accessResult = await _quotaAccess.LogTokenConsumption(accessEntry);
+				if(accessResult.WasSuccessful == false)
+				{
+					accessResult.CopyErrorsTo(ref mgrResult);
+				}
+			}
+			catch(Exception ex)
+			{
+				Guid exId = Guid.NewGuid();
+				string message = $"An error occurred while logging tokens used during {usageEntry.FunctionName} for userId {usageEntry.UserId}";
+				mgrResult.AddError(exId, message);
+
+				_logger?.LogError(ex, exId.ToString());
+			}
+
+			return mgrResult;
 		}
 	}
 }

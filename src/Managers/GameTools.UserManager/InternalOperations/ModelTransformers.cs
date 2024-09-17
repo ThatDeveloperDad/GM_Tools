@@ -35,6 +35,7 @@ namespace GameTools.UserManager.InternalOperations
 			{
 				appModel = new Quota()
 				{
+					QuotaId = storageModel.QuotaId,
 					MeteredResource = storageModel.MeteredResource,
 					Budget = storageModel.Budget,
 					Consumption = storageModel.Consumption
@@ -42,6 +43,21 @@ namespace GameTools.UserManager.InternalOperations
 			}
 
 			return appModel;
+		}
+
+		public static TokenConsumptionEntry ToResourceModel(this TokenUsageEntry appModel)
+		{
+			TokenConsumptionEntry resourceModel = new TokenConsumptionEntry()
+			{
+				UserId = appModel.UserId,
+				FunctionName = appModel.FunctionName,
+				InferenceTimeUtc = appModel.InferenceTimeUtc,
+				modelId = appModel.modelId,
+				PromptTokens = appModel.PromptTokens,
+				CompletionTokens = appModel.CompletionTokens
+			};
+
+			return resourceModel;
 		}
 	}
 }

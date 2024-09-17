@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameTools.MeteredUsageAccess.ResourceModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,5 +40,6 @@ namespace GameTools.UserManager.Contracts
 		/// <returns>The a Task containing Returns the User's Quota object with the updated consumption data.</returns>
 		Task<OpResult<QuotaContainer>> ReleaseQuotaAsync(int quotaId, int amounReleased);
 
+		Task<OpResult> LogTokenConsumption(TokenUsageEntry meterEntry);
 	}
 }

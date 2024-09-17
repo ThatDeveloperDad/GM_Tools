@@ -8,10 +8,18 @@ using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.API.WorkloadProvider
 {
+    /// <summary>
+    /// This manager class allows pass-through reference to the public
+    /// DTOs in the Manager classes, and acts to stitch the behaviors
+    /// provided by those APIs into activities rpesented to the 
+    /// User Interface application.
+    /// </summary>
     public class CharacterWorkloads : ICharacterWorkloads
     {
         private readonly ITownsfolkManager _npcManager;
         private readonly IAiWorkloadManager _aiWorker;
+
+        //TODO:  Give this class a Logger.  Classes love loggers.
 
         public CharacterWorkloads(ITownsfolkManager npcManager,
                                   IAiWorkloadManager aiWorker)

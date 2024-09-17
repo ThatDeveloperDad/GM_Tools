@@ -9,12 +9,14 @@ namespace GameTools.UserManager.Contracts
 {
 	public class Quota
 	{
-		/// <summary>
-		/// Identifies the general kind of resource that has this quota
-		/// 
-		/// i.e.:  Storage or AiTokens
-		/// </summary>
-		public MeteredResourceKind MeteredResource { get; set; }
+
+        public int QuotaId { get; set; }
+        /// <summary>
+        /// Identifies the general kind of resource that has this quota
+        /// 
+        /// i.e.:  Storage or AiTokens
+        /// </summary>
+        public MeteredResourceKind MeteredResource { get; set; }
 
 		/// <summary>
 		/// Provides the specific name of the Resource that has the quota

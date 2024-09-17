@@ -1,4 +1,5 @@
-﻿using GameTools.MeteredUsageAccess.ResourceModels;
+﻿using GameTools.Framework.Concepts;
+using GameTools.MeteredUsageAccess.ResourceModels;
 using GameTools.MeteredUsageAccess.SqlServer.Context.SqlModels;
 using System;
 using System.Collections.Generic;
