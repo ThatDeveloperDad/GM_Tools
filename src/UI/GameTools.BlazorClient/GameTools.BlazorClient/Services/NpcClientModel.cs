@@ -19,6 +19,18 @@ namespace GameTools.BlazorClient.Services
 
         internal Townsperson NpcModel => _npc;
 
+        internal void SetOwner(string ownerId)
+        {
+            if(string.IsNullOrWhiteSpace(_npc.UserId) == false &&  _npc.UserId != ownerId)
+            {
+                // Note:  If we ever allow NPCs to be shared as read-only
+                // but do allow another user to make a "copy" of the NPC,
+                // This is where we'll make that change.  Probably.
+                return;
+            }
+            _npc.SetOwner(ownerId);
+        }
+
         public string Species => _npc.Species;
         public string Gender => _npc.Appearance.Gender;
         public string Pronouns => _npc.Pronouns;

@@ -114,6 +114,7 @@ namespace GameTools.BlazorClient.Services
             // Convert the NpcCLientFIlter into the expected Api Format.
             TownspersonFilter apiFilter = new TownspersonFilter
             {
+                UserId = filter.UserId,
                 Species = filter.Species,
                 Vocation = filter.Vocation,
             };

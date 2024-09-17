@@ -8,6 +8,8 @@ namespace GameTools.NPCAccess
 {
     public record NpcAccessFilter
     {
+        public string? UserId { get; set; }
+
         public string? Species { get; set; }
 
         public string? Vocation { get; set; }

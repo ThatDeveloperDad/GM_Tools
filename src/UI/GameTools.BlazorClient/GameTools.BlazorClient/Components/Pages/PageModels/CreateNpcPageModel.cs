@@ -171,6 +171,15 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		private async Task<NpcClientModel> SaveNpc(NpcClientModel npcModel)
 		{
 			GuardNpcServicesExists();
+
+			// Get the currentUserId.
+			var currentUser = AppContext?.GetCurrentUser(true);
+			if (currentUser == null)
+			{
+				return npcModel;
+			}
+
+			npcModel.SetOwner(currentUser.UserId);
 			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel);
 
 			if(proxyResult.WasSuccessful && proxyResult.Payload !=null)

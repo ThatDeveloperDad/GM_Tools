@@ -46,7 +46,18 @@ namespace GameTools.TownsfolkManager.Contracts
             _id = id;
         }
 
-        public string UserId { get; init; }
+        public string UserId { get; private set; }
+
+        public void SetOwner(string userId)
+        {
+            if(string.IsNullOrWhiteSpace(UserId) == false && UserId != userId)
+            {
+                return;
+            }
+
+            UserId = userId;
+        }
+
         public bool IsPublic { get; init; }
 
         public string GivenName { get; set; }
