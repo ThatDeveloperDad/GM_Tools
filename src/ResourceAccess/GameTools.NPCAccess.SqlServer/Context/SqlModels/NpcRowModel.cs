@@ -13,6 +13,7 @@ namespace GameTools.NPCAccess.SqlServer.Context.SqlModels
     {
         public NpcRowModel()
         {
+            UserId = string.Empty;
             SpeciesName = string.Empty;
             VocationName = string.Empty;
             CharacterDetails = string.Empty;
@@ -20,7 +21,7 @@ namespace GameTools.NPCAccess.SqlServer.Context.SqlModels
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NpcId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string SpeciesName { get; set; }
         public string VocationName { get; set; }
         public string? CharacterName { get; set; }

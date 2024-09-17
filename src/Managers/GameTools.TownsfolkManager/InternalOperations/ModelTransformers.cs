@@ -38,6 +38,7 @@ namespace GameTools.TownsfolkManager.InternalOperations
         {
             var model = new NpcAccessFilter()
             { 
+                UserId = filter.UserId,
                 Species = filter.Species,
                 Vocation = filter.Vocation
             };

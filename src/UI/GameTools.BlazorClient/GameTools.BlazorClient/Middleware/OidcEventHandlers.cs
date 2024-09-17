@@ -1,4 +1,5 @@
-﻿using GameTools.UserAccess;
+﻿using GameTools.Framework.Contexts;
+using GameTools.UserAccess;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Linq.Dynamic.Core;
@@ -61,7 +62,9 @@ namespace GameTools.BlazorClient.Middleware
 							.RequestServices
 							.GetRequiredService<IUserAccess>();
 
-							List<string>? groups =
+                            
+
+                            List<string>? groups =
 								await userAccess?
 								.LoadUserPermissionGroupsAsync(Objectidentifier)
 								?? new List<string>();
@@ -71,6 +74,7 @@ namespace GameTools.BlazorClient.Middleware
 							{
 								var claim = new Claim(ClaimTypes.Role, group);
 								newClaims.Add(claim);
+								
 							}
 							if (newClaims.Any())
 							{
@@ -81,7 +85,8 @@ namespace GameTools.BlazorClient.Middleware
 							var appIdentity = new ClaimsIdentity(newClaims);
 
 							ctx.Principal.AddIdentity(appIdentity);
-						}
+							
+                        }
 					}
 				}
 			}

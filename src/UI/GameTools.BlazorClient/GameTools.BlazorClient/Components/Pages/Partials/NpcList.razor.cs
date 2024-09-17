@@ -1,6 +1,7 @@
 ﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
 using GameTools.BlazorClient.Components.Pages.PageModels;
 using GameTools.BlazorClient.Services;
+using GameTools.Framework.Contexts;
 using Microsoft.AspNetCore.Components;
 using System.Text;
 
@@ -27,7 +28,10 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         [Inject]
         protected NpcServiceProxy? NpcServices { get; set; }
 
-		public NpcList()
+        [CascadingParameter]
+        protected AppStateProvider AppContext { get; set; }
+
+        public NpcList()
 		{
 			FilteredNpcs = Array.Empty<NpcFilterRowModel>();
 			EmptyTableText = "Loading ...";
@@ -104,11 +108,19 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
                 return;
             }
 
+            var user = AppContext.GetCurrentUser();
+
+            if(user == null)
+            {
+                return;
+            }
+
             GuardNpcServicesExist();
 
-          
 
             NpcClientFilter filter = new NpcClientFilter();
+            filter.UserId = user.UserId;
+
             var proxyResult = await NpcServices!.FilterTownsfolk(filter);
             if (proxyResult == null)
             {

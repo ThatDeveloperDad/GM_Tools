@@ -1,5 +1,7 @@
 ﻿using GameTools.API.WorkloadProvider;
 using GameTools.API.WorkloadProvider.AiWorkloads;
+using GameTools.BlazorClient.Middleware;
+using GameTools.Framework.Contexts;
 using GameTools.TownsfolkManager.Contracts;
 using ThatDeveloperDad.Framework.Serialization;
 using ThatDeveloperDad.Framework.Wrappers;
@@ -112,6 +114,7 @@ namespace GameTools.BlazorClient.Services
             // Convert the NpcCLientFIlter into the expected Api Format.
             TownspersonFilter apiFilter = new TownspersonFilter
             {
+                UserId = filter.UserId,
                 Species = filter.Species,
                 Vocation = filter.Vocation,
             };

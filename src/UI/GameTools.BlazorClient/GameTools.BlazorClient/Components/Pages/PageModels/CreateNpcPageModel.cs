@@ -1,6 +1,6 @@
 ﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
 using GameTools.BlazorClient.Services;
-using GameTools.UI.Components.Wrapper;
+using GameTools.Framework.Contexts;
 using Microsoft.AspNetCore.Components;
 using System.Text;
 using ThatDeveloperDad.Framework.Converters;
@@ -35,10 +35,26 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			}
 		}
 
+		protected override async Task OnParametersSetAsync()
+		{
+			await base.OnParametersSetAsync();
+			var user = AppContext?.GetCurrentUser(true);
+
+			if(user != null)
+			{
+				CurrentUser = user;
+			}
+		}
+
 		public PageEventSink NpcEventNotifier { get; set; }
 
         [Inject]
 		protected NpcServiceProxy? NpcServices { get; set; }
+
+		[CascadingParameter]
+		protected AppStateProvider? AppContext { get; set; }
+
+		public GameToolsUser CurrentUser { get; set; }
 
 		public CreateNpcPageStates PageState { get; set; }
 
@@ -155,6 +171,15 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		private async Task<NpcClientModel> SaveNpc(NpcClientModel npcModel)
 		{
 			GuardNpcServicesExists();
+
+			// Get the currentUserId.
+			var currentUser = AppContext?.GetCurrentUser(true);
+			if (currentUser == null)
+			{
+				return npcModel;
+			}
+
+			npcModel.SetOwner(currentUser.UserId);
 			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel);
 
 			if(proxyResult.WasSuccessful && proxyResult.Payload !=null)

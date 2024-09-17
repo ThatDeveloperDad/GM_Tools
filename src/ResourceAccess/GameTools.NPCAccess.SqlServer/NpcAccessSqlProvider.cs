@@ -50,9 +50,16 @@ namespace GameTools.NPCAccess.SqlServer
                 IQueryable<NpcRowModel> query 
                     = Ctx.Npcs
                          .Where(n=> n.DeletedDate.HasValue == false);
-
-                string? speciesFilter = filter.Species;
+                
+                string? userIdFilter = filter.UserId;
+				string? speciesFilter = filter.Species;
                 string? vocationFilter = filter.Vocation;
+                
+                if(string.IsNullOrWhiteSpace(userIdFilter) == false)
+                {
+                    query = query.Where(n => n.UserId.ToUpper() == userIdFilter.ToUpper());
+                }
+
                 if(string.IsNullOrWhiteSpace(speciesFilter) == false)
                 {
                     query = query.Where(n=> n.SpeciesName.ToUpper() == speciesFilter.ToUpper());

@@ -3,6 +3,7 @@ using GameTools.BlazorClient.Components;
 using GameTools.BlazorClient.Middleware;
 using GameTools.BlazorClient.Services;
 using GameTools.DiceEngine;
+using GameTools.Framework.Contexts;
 using GameTools.NPCAccess.SqlServer;
 using GameTools.Ruleset.DnD5eSRD;
 using GameTools.RulesetAccess;
@@ -31,7 +32,6 @@ namespace GameTools.BlazorClient
             var startupLog = CreateStartupLogger(builder);
             startupLog.LogInformation("Startup Log has been created.  Let's see what's going on.");
 
-            
             builder = SetUpConfiguration(builder, startupLog);
 
             // Add the local, custom services that are use-case relevant

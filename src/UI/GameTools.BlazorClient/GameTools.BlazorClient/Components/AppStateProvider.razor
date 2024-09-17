@@ -1,0 +1,81 @@
+﻿@using GameTools.BlazorClient.Middleware
+@using GameTools.Framework.Contexts
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject HttpContextAccessor HttpCtxAccess
+
+@if (appStateLoaded)
+{
+	<CascadingValue Value="this">
+		@ChildContent
+	</CascadingValue>
+}
+else
+{
+	<p>Loading...</p>
+}
+
+@code {
+	private bool appStateLoaded;
+	private const string appContextKey = "appContext";
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	public ContextContainer AppContext { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var browserState = await ProtectedSessionStore.GetAsync<ContextContainer>(appContextKey);
+		if(browserState.Success == false || browserState.Value == null)
+		{
+			// We need to construct and store it.
+			AppContext = new ContextContainer();
+			var userCtx = HttpCtxAccess?.HttpContext?.GetUserContext();
+			if(userCtx != null)
+			{
+				AppContext.SetUserContext(userCtx);
+			}
+			await SaveChangesAsync();
+		}
+		else
+		{
+			AppContext = browserState.Value;
+			var userCtx = AppContext.GetCurrentUser();
+			if(userCtx == null)
+			{
+				userCtx = HttpCtxAccess?.HttpContext?.GetUserContext();
+			}
+			if(userCtx!=null)
+			{
+				AppContext.SetUserContext(userCtx);
+				await SaveChangesAsync();
+			}
+		}
+
+		appStateLoaded = true;
+	}
+
+	public GameToolsUser? GetCurrentUser(bool loadIfNull = false, bool throwIfNotLoaded = true)
+	{
+		GameToolsUser? user = AppContext.GetCurrentUser();
+
+		if(user == null && loadIfNull == true)
+		{
+			user = HttpCtxAccess?.HttpContext?.GetUserContext();
+			if(user == null && throwIfNotLoaded == true)
+			{
+				throw new InvalidOperationException("The user context is required for this operation but cannot be loaded.");
+			}
+
+			AppContext.SetUserContext(user!);
+			SaveChangesAsync().Wait();
+		}
+
+		return user;
+	}
+
+	public async Task SaveChangesAsync()
+	{
+		await ProtectedSessionStore.SetAsync(appContextKey, AppContext);
+	}
+}
