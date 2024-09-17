@@ -31,6 +31,14 @@ namespace ThatDeveloperDad.Framework.Wrappers
             _errors[errorId] = errorMessage;
         }
 
+        public virtual void CopyErrorsTo(ref OpResult target)
+        {
+            foreach(var error in this._errors)
+            {
+                target.AddError(error.Key, error.Value);
+            }
+        }
+
         //public bool ShouldRetry { get; set; }
         //public int RetryCount { get; set; }
         //public int RetryLimit { get; set; }
@@ -54,5 +62,13 @@ namespace ThatDeveloperDad.Framework.Wrappers
         }
 
         public T? Payload { get; set; }
+
+        public virtual void CopyErrorsTo<U>(ref OpResult<U> target)
+        {
+            foreach(var error in Errors)
+            {
+                target.AddError(error.Key, error.Value);
+            }
+        }
     }
 }
