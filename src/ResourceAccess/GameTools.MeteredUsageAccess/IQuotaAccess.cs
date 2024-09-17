@@ -45,5 +45,6 @@ namespace GameTools.MeteredUsageAccess
         /// <returns>The a Task containing Returns the User's Quota object with the updated consumption data.</returns>
         Task<OpResult<UserQuota>> ReleaseQuotaAsync(int quotaId, int amounReleased);
 
+        Task<OpResult> LogTokenConsumption(TokenConsumptionEntry meterEntry);
     }
 }

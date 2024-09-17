@@ -11,12 +11,14 @@ using GameTools.RulesetAccess.Contracts;
 using GameTools.TownsfolkManager;
 using GameTools.TownsfolkManager.Contracts;
 using GameTools.UserAccess.MsGraphProvider;
+using GameTools.MeteredusageAccess.SqlServer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using ThatDeveloperDad.AIWorkloadManager;
 using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.LlmAccess;
+using GameTools.MeteredUsageAccess.SqlServer;
 
 namespace GameTools.BlazorClient
 {
@@ -168,13 +170,15 @@ namespace GameTools.BlazorClient
             try
             {
                 builder.Services.UseNpcSqlServerAccess(builder.Configuration);
+                builder.Services.UseQuotaAccessSqlProvider(builder.Configuration);
+                builder.Services.UseUserSubscriptionSqlProvider(builder.Configuration);
             }
             catch(Exception ex)
             {
-                startupLog.LogError(ex, "Could not attach the SqlProvider.");
+                startupLog.LogError(ex, "Could not attach the SqlProviders.");
                 throw;
             }
-            startupLog.LogInformation($"SqlAccess Provider added OK.");
+            startupLog.LogInformation($"SqlAccess Providers added OK.");
 
             builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 
