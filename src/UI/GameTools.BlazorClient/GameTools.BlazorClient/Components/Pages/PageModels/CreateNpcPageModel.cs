@@ -164,7 +164,13 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			// I won't even remember to do this stuff later until the compiler barks at me.
 			// Think of a more elegant  way for components to hold and resolve their own dependencies.
 			GuardNpcServicesExists();
-			NpcClientModel npcAi = await NpcServices!.GetAiDescription(npcModel);
+
+			var user = AppContext.GetCurrentUser();
+			var userLimits = await AppContext.GetUserLimits();
+
+			npcModel.SetOwner(user.UserId);
+
+			NpcClientModel npcAi = await NpcServices!.GetAiDescription(npcModel, userLimits.NpcAiDescriptions.QuotaId);
 			return npcAi;
 		}
 
@@ -179,8 +185,11 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 				return npcModel;
 			}
 
+			var userLimits = await AppContext.GetUserLimits();
+
+
 			npcModel.SetOwner(currentUser.UserId);
-			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel);
+			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel, userLimits.NpcsInStorage.QuotaId);
 
 			if(proxyResult.WasSuccessful && proxyResult.Payload !=null)
 			{

@@ -7,7 +7,8 @@ namespace GameTools.NPCAccess.SqlServer
 {
 	public static class DependencyBuilder
     {
-        public static IServiceCollection UseNpcSqlServerAccess(
+		//TODO: GitHubIssue #100 - rename this method to comply with the naming pattern that's emerged.
+		public static IServiceCollection UseNpcSqlServerAccess(
             this IServiceCollection services,
             IConfiguration configuration)
         {

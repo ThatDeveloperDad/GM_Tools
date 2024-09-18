@@ -3,6 +3,7 @@ using GameTools.API.WorkloadProvider.AiWorkloads;
 using GameTools.BlazorClient.Middleware;
 using GameTools.Framework.Contexts;
 using GameTools.TownsfolkManager.Contracts;
+using Microsoft.Graph.Models;
 using ThatDeveloperDad.Framework.Serialization;
 using ThatDeveloperDad.Framework.Wrappers;
 
@@ -11,35 +12,19 @@ namespace GameTools.BlazorClient.Services
     public class NpcServiceProxy
     {
         private readonly ICharacterWorkloads _npcApi;
+        private readonly ILogger<NpcServiceProxy>? _logger;
 
-        public NpcServiceProxy(ICharacterWorkloads characterProxy)
+        public NpcServiceProxy(ICharacterWorkloads characterProxy,
+            ILogger<NpcServiceProxy>? logger)
         {
             _npcApi = characterProxy;
+            _logger = logger;
         }
 
         public Dictionary<string, string[]> GetNpcOptions()
         {
             Dictionary<string, string[]> options = _npcApi.GetNpcOptions();
             return options;
-        }
-
-        //TODO:  Delete this, and the old blazor component that uses it.
-        public NpcClientModel GenerateRandomNPC(Dictionary<string, string?>? selectedOptions = null)
-        {
-            Townsperson npc;
-
-            if(selectedOptions == null)
-            {
-                npc = _npcApi.GenerateNPC();
-			}
-            else
-            {
-                npc = _npcApi.GenerateNPC(selectedOptions);
-            }
-            
-            NpcClientModel npcVm = new NpcClientModel(npc);
-
-            return npcVm;
         }
 
         public NpcClientModel GenerateRandomNPC(NpcUserOptions userOptions)
@@ -59,7 +44,7 @@ namespace GameTools.BlazorClient.Services
             return npcVm;
         }
 
-        public async Task<NpcClientModel> GetAiDescription(NpcClientModel npc)
+        public async Task<NpcClientModel> GetAiDescription(NpcClientModel npc, int userAiQuotaId)
         {
             // First thing we need is a serialized view of the NPC ViewModel.
             string vmJson = npc.SerializeForOutput();
@@ -67,7 +52,7 @@ namespace GameTools.BlazorClient.Services
             //string aiDescription = await _characterWorker.DescribeNPC(npc.NpcModel);
             //npc.AddAiDescription(aiDescription);
 
-            GeneratedCharacterProperties genAiAttributes = await _npcApi.GenerateAttributes(vmJson);
+            GeneratedCharacterProperties genAiAttributes = await _npcApi.GenerateAttributes(vmJson, npc.OwnerId, userAiQuotaId);
             // Need to apply the properties to the inner Townsfolk Model.  lol, oops!
             
             //TODO:  This code is CRAP.  Refactor it for maintainability once it works.
@@ -82,18 +67,20 @@ namespace GameTools.BlazorClient.Services
             return updatedVm;
         }
 
-        public async Task<OpResult<NpcClientModel>> SaveNpc(NpcClientModel npc)
+        public async Task<OpResult<NpcClientModel>> SaveNpc(NpcClientModel npc, int userStorageQuotaId)
         {
             OpResult<NpcClientModel> proxyResult = new OpResult<NpcClientModel>();
             
             Townsperson npcData = npc.NpcModel;
-            var apiResult = await _npcApi.SaveNpc(npcData);
+            
+            var apiResult = await _npcApi.SaveNpc(npcData, npc.OwnerId, userStorageQuotaId);
 
             if(apiResult.WasSuccessful)
             {
                 Townsperson? apiPayload = apiResult.Payload;
                 NpcClientModel proxyPayload = new NpcClientModel(apiPayload);
                 proxyResult.Payload = proxyPayload;
+
             }
             else
             {
@@ -193,6 +180,50 @@ namespace GameTools.BlazorClient.Services
                 }
             }
 
+            return proxyResult;
+        }
+
+        internal async Task<OpResult<UserLimitsModel>> LoadUserLimits(string userId)
+        {
+            OpResult<UserLimitsModel> proxyResult = new OpResult<UserLimitsModel>();
+            UserLimitsModel? proxyPayload = null;
+
+            try
+            {
+                var apiResult = await _npcApi.LoadUserQuotas(userId);
+                if(apiResult.WasSuccessful && apiResult.Payload != null)
+                {
+                    var apiPayload = apiResult.Payload;
+                    proxyPayload = new UserLimitsModel()
+                    {
+                        UserId = apiPayload.UserId
+                    };
+                    proxyPayload.NpcsInStorage.SetValues(
+                        apiPayload!.NpcStorage!.QuotaId,
+                        apiPayload.NpcStorage.Budget,
+                        apiPayload.NpcStorage.Consumption);
+
+                    proxyPayload.NpcAiDescriptions.SetValues(
+                        apiPayload!.NpcAiGenerations!.QuotaId,
+                        apiPayload.NpcAiGenerations.Budget,
+                        apiPayload.NpcAiGenerations.Consumption);
+
+                }
+                else
+                {
+                    apiResult.CopyErrorsTo(ref proxyResult);
+                }
+            }
+            catch(Exception ex)
+            {
+                Guid exId = Guid.NewGuid();
+                string message = $"Could not load the Quotas for user {userId}";
+
+                _logger?.LogError(ex, exId.ToString());
+                proxyResult.AddError(exId, message);
+            }
+
+            proxyResult.Payload = proxyPayload;
             return proxyResult;
         }
     }

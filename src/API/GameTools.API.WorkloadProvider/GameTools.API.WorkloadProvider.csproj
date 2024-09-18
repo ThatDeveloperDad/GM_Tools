@@ -9,6 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\ThatDeveloperDad.Framework\ThatDeveloperDad.Framework.csproj" />
     <ProjectReference Include="..\..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
+    <ProjectReference Include="..\..\Managers\GameTools.UserManager\GameTools.UserManager.csproj" />
+    <ProjectReference Include="..\..\ResourceAccess\GameTools.UserAccess\GameTools.UserAccess.csproj" />
     <ProjectReference Include="..\..\ThatDeveloperDad.AIWorkloadManager\ThatDeveloperDad.AIWorkloadManager.csproj" />
   </ItemGroup>
 

@@ -31,6 +31,7 @@ namespace GameTools.BlazorClient.Services
             _npc.SetOwner(ownerId);
         }
 
+        public string OwnerId => _npc.UserId;
         public string Species => _npc.Species;
         public string Gender => _npc.Appearance.Gender;
         public string Pronouns => _npc.Pronouns;

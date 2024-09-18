@@ -19,6 +19,8 @@ using ThatDeveloperDad.AIWorkloadManager;
 using ThatDeveloperDad.AIWorkloadManager.Contracts;
 using ThatDeveloperDad.LlmAccess;
 using GameTools.MeteredUsageAccess.SqlServer;
+using GameTools.UserManager.Contracts;
+using GameTools.UserManager;
 
 namespace GameTools.BlazorClient
 {
@@ -162,13 +164,12 @@ namespace GameTools.BlazorClient
 
 				return service;
 			});
-
 			builder.Services.AddScoped<ICardDeck, DeckSimulator>();
-
 			builder.Services.AddScoped<IDiceBag, DiceBag>();
 
             try
             {
+                //TODO: GitHubIssue #100 - rename this method to comply with the naming pattern that's emerged.
                 builder.Services.UseNpcSqlServerAccess(builder.Configuration);
                 builder.Services.UseQuotaAccessSqlProvider(builder.Configuration);
                 builder.Services.UseUserSubscriptionSqlProvider(builder.Configuration);
@@ -180,7 +181,10 @@ namespace GameTools.BlazorClient
             }
             startupLog.LogInformation($"SqlAccess Providers added OK.");
 
-            builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
+            // Add the UsageMeter component (UsageManager)
+            builder.Services.AddScoped<IUsageMeters, UsageManager>();
+
+			builder.Services.AddScoped<ITownsfolkManager, TownsfolkMgr>();
 
             // Set up AI Subsystem and dependencies.
             try
