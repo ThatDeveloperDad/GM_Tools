@@ -1,0 +1,15 @@
+﻿.quotaContainer{
+    display:flex;
+    flex-direction: row;
+    justify-content:space-around;
+    align-content:center;
+    align-items:center;
+}
+
+span {
+    font-weight: bold;
+    padding: 0.1rem 0.75rem;
+    background-color: lightgray;
+    border-radius: 0.25rem;
+    border:1px solid gray;
+}

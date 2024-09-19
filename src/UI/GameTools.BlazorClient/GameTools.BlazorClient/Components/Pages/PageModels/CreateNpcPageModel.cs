@@ -166,11 +166,11 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			GuardNpcServicesExists();
 
 			var user = AppContext.GetCurrentUser();
-			var userLimits = await AppContext.GetUserLimits();
+			
 
 			npcModel.SetOwner(user.UserId);
 
-			NpcClientModel npcAi = await NpcServices!.GetAiDescription(npcModel, userLimits.NpcAiDescriptions.QuotaId);
+			NpcClientModel npcAi = await NpcServices!.GetAiDescription(npcModel, AppContext);
 			return npcAi;
 		}
 
@@ -189,7 +189,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
 
 			npcModel.SetOwner(currentUser.UserId);
-			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel, userLimits.NpcsInStorage.QuotaId);
+			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel, AppContext);
 
 			if(proxyResult.WasSuccessful && proxyResult.Payload !=null)
 			{

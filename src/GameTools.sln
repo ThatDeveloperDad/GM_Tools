@@ -58,15 +58,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.UI.Components", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.NPCAccess.SqlServer", "ResourceAccess\GameTools.NPCAccess.SqlServer\GameTools.NPCAccess.SqlServer.csproj", "{165991AB-0C59-495E-BA49-FB3BAC290CDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.UserAccess", "ResourceAccess\GameTools.UserAccess\GameTools.UserAccess.csproj", "{217F3D15-0683-474B-AC78-6D951042311B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.UserAccess", "ResourceAccess\GameTools.UserAccess\GameTools.UserAccess.csproj", "{217F3D15-0683-474B-AC78-6D951042311B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.UserAccess.MsGraphProvider", "ResourceAccess\GameTools.UserAccess.MsGraphProvider\GameTools.UserAccess.MsGraphProvider.csproj", "{9AEE71D5-FB18-44A9-884A-DEB1E0FC0CA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.UserAccess.MsGraphProvider", "ResourceAccess\GameTools.UserAccess.MsGraphProvider\GameTools.UserAccess.MsGraphProvider.csproj", "{9AEE71D5-FB18-44A9-884A-DEB1E0FC0CA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.MeteredUsageAccess", "ResourceAccess\GameTools.MeteredUsageAccess\GameTools.MeteredUsageAccess.csproj", "{B956A455-7588-4D80-9AC1-DA53AF967507}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.MeteredUsageAccess", "ResourceAccess\GameTools.MeteredUsageAccess\GameTools.MeteredUsageAccess.csproj", "{B956A455-7588-4D80-9AC1-DA53AF967507}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.MeteredUsageAccess.SqlServer", "ResourceAccess\GameTools.MeteredUsageAccess.SqlServer\GameTools.MeteredUsageAccess.SqlServer.csproj", "{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.MeteredUsageAccess.SqlServer", "ResourceAccess\GameTools.MeteredUsageAccess.SqlServer\GameTools.MeteredUsageAccess.SqlServer.csproj", "{BCDCCFBB-7F3C-4E31-B4CA-54F59C58CDDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.UserManager", "Managers\GameTools.UserManager\GameTools.UserManager.csproj", "{F57CD140-8592-48B2-BD2F-8D6EDA0B97BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.UserManager", "Managers\GameTools.UserManager\GameTools.UserManager.csproj", "{F57CD140-8592-48B2-BD2F-8D6EDA0B97BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

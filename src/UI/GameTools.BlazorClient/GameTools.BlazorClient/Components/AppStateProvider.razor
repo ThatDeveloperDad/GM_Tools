@@ -20,6 +20,9 @@ else
 @code {
 	private bool appStateLoaded;
 	private const string appContextKey = "appContext";
+
+	public event Func<string, Task>? ContextItemChanged;
+
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
@@ -113,10 +116,16 @@ else
 			AppContext.UpdateItem(contextKey, limits);
 		}
 		await SaveChangesAsync();
+		await OnContextItemChanged(contextKey);
 	}
 
 	public async Task SaveChangesAsync()
 	{
 		await ProtectedSessionStore.SetAsync(appContextKey, AppContext);
+	}
+
+	private async Task OnContextItemChanged(string contextKey)
+	{
+		await ContextItemChanged?.Invoke(contextKey);
 	}
 }

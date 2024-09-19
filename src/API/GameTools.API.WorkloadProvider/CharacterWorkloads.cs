@@ -1,4 +1,5 @@
 ﻿using GameTools.API.WorkloadProvider.AiWorkloads;
+using GameTools.API.WorkloadProvider.Models;
 using GameTools.TownsfolkManager.Contracts;
 using GameTools.UserManager.Contracts;
 using Microsoft.Extensions.Logging;
@@ -97,60 +98,81 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="npcJson"></param>
         /// <returns></returns>
-        public async Task<GeneratedCharacterProperties> GenerateAttributes(string npcJson, string userId, int userAiQuotaId)
+        public async Task<OpResult<ResourceResult<GeneratedCharacterProperties>>> GenerateAttributes(string npcJson, string userId, int userAiQuotaId)
         {
-            GeneratedCharacterProperties characterAttributes = new GeneratedCharacterProperties();
+			OpResult<ResourceResult<GeneratedCharacterProperties>> apiResult = new OpResult<ResourceResult<GeneratedCharacterProperties>>();
+            ResourceResult<GeneratedCharacterProperties> apiPayload = new ResourceResult<GeneratedCharacterProperties>();
 
-            // We need to build the Request Object expected by the AI Workload Manager.
-            // We invoke the functions by the names they were registered with.
+            try
+            {
+				GeneratedCharacterProperties characterAttributes = new GeneratedCharacterProperties();
+
+				// We need to build the Request Object expected by the AI Workload Manager.
+				// We invoke the functions by the names they were registered with.
+
+				string functionName = CharGenFunctions.AiFunction_GenerateNPCAttributes;
+
+				// We need to provide a dictionary whose KEYS correspond to the "replacement token" strings
+				// in the prompt template.  The values are what we want injected into the prompt template
+				// in place of those Replacement Tokens.
+				Dictionary<string, object?> functionArgs = new Dictionary<string, object?>();
+				functionArgs.Add("npcJson", npcJson);
+
+				// Finally, we invoke that function on the AI Workload provider and await the result.
+				var aiManagerResult = await _aiWorker.ExecuteFunctionAsync(functionName, functionArgs);
+				string aiJson = string.Empty;
+
+				if (aiManagerResult.WasSuccessful)
+				{
+					var resultPayload = aiManagerResult.Payload;
+
+					aiJson = resultPayload?.AiResponse ?? string.Empty;
+					aiJson = aiJson.StripMarkdown();
+					characterAttributes = ParseFromJson(aiJson);
+
+                    apiPayload.Result = characterAttributes;
+
+					//TODO:  Once we have User stuff, update the user's Usage info
+					// Consider doing this as a disconnected async operation
+					// so we don't have to wait for the DB write to return
+					// the AI response to the user.
+					var aiTokens = resultPayload.Consumption;
+
+					TokenUsageEntry usageEntry = new TokenUsageEntry()
+					{
+						UserId = userId,
+						FunctionName = functionName,
+						modelId = "gpt-4o",
+						InferenceTimeUtc = DateTime.UtcNow,
+						PromptTokens = aiTokens.PromptTokens,
+						CompletionTokens = aiTokens.CompletionTokens
+					};
+
+
+					var quotaUpdateResult = await _usageManager.ConsumeQuotaAsync(userAiQuotaId, 1);
+					await _usageManager.LogTokenConsumption(usageEntry);
+
+                    apiPayload.UpdatedQuotas = quotaUpdateResult.Payload;
+                    if(quotaUpdateResult.WasSuccessful == false)
+                    {
+                        quotaUpdateResult.CopyErrorsTo(ref apiResult);
+                    }
+				}
+				else
+				{
+                    aiManagerResult.CopyErrorsTo(ref apiResult);
+				}
+			}
+            catch(Exception ex)
+            {
+                Guid exId = Guid.NewGuid();
+                string message = $"Could not create the AI generated details for user {userId}";
+                _logger?.LogError(ex, exId.ToString());
+                apiResult.AddError(exId, message);
+            }
             
-            string functionName = CharGenFunctions.AiFunction_GenerateNPCAttributes;
-
-            // We need to provide a dictionary whose KEYS correspond to the "replacement token" strings
-            // in the prompt template.  The values are what we want injected into the prompt template
-            // in place of those Replacement Tokens.
-            Dictionary<string, object?> functionArgs = new Dictionary<string, object?>();
-            functionArgs.Add("npcJson", npcJson);
-
-            // Finally, we invoke that function on the AI Workload provider and await the result.
-            var aiManagerResult = await _aiWorker.ExecuteFunctionAsync(functionName, functionArgs);
-            string aiJson = string.Empty;
-
-            if (aiManagerResult.WasSuccessful)
-            {
-                var resultPayload = aiManagerResult.Payload;
-
-                aiJson = resultPayload?.AiResponse ?? string.Empty;
-                aiJson = aiJson.StripMarkdown();
-                characterAttributes = ParseFromJson(aiJson);
-
-                //TODO:  Once we have User stuff, update the user's Usage info
-                // Consider doing this as a disconnected async operation
-                // so we don't have to wait for the DB write to return
-                // the AI response to the user.
-                var aiTokens = resultPayload.Consumption;
-
-                TokenUsageEntry usageEntry = new TokenUsageEntry()
-                {
-                    UserId = userId,
-                    FunctionName = functionName,
-                    modelId = "gpt-4o",
-                    InferenceTimeUtc = DateTime.UtcNow,
-                    PromptTokens = aiTokens.PromptTokens,
-                    CompletionTokens = aiTokens.CompletionTokens
-                };
-
-                
-                await _usageManager.ConsumeQuotaAsync(userAiQuotaId, 1);
-                await _usageManager.LogTokenConsumption(usageEntry);
-            }
-            else
-            {
-                //TODO:  Add some logging here.
-                aiJson = string.Empty;
-            }
-
-            return characterAttributes;
+            apiResult.Payload = apiPayload;
+            return apiResult;
         }
 
         private GeneratedCharacterProperties ParseFromJson(string json)
@@ -244,19 +266,40 @@ namespace GameTools.API.WorkloadProvider
             return npcJson;
         }
 
-        public async Task<OpResult<Townsperson>> SaveNpc(Townsperson npc, string userId, int userStorageQuotaId)
+        public async Task<OpResult<ResourceResult<Townsperson>>> SaveNpc(Townsperson npc, string userId, int userStorageQuotaId)
         {
-			bool isNewCharacter = (npc.Id == null);
-
-			var managerResult = await _npcManager.SaveTownsperson(npc);
-            if (isNewCharacter)
+            ResourceResult<Townsperson> resourceResult = new ResourceResult<Townsperson>();
+            OpResult<ResourceResult<Townsperson>> apiResult = new OpResult<ResourceResult<Townsperson>>(); ;
+            
+            try
             {
-                var quotaUpdate = await _usageManager.ConsumeQuotaAsync(userStorageQuotaId, 1);
-                //TODO:  Modify this operation's contract to also carry back the updated
-                // user quota information and update the UserLiimits stored in AppContext
+				bool isNewCharacter = (npc.Id == null);
+
+				var managerResult = await _npcManager.SaveTownsperson(npc);
+                if(managerResult.WasSuccessful)
+                {
+                    resourceResult.Result = managerResult.Payload;
+					if (isNewCharacter)
+					{
+						var quotaUpdate = await _usageManager.ConsumeQuotaAsync(userStorageQuotaId, 1);
+                        resourceResult.UpdatedQuotas = quotaUpdate.Payload;
+					}
+				}
+                else
+                {
+                    managerResult.CopyErrorsTo(ref apiResult);
+                }
+			}
+			catch(Exception ex)
+            {
+                Guid exId = Guid.NewGuid();
+                string message = $"There was a problem saving the npc for user {userId}";
+                _logger?.LogError(ex, exId.ToString());
+                apiResult.AddError(exId, message);
             }
 
-            return managerResult;
+            apiResult.Payload = resourceResult;
+            return apiResult;
         }
 
         public async Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownsfolk(TownspersonFilter filter)

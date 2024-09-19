@@ -1,6 +1,8 @@
 ﻿using GameTools.API.WorkloadProvider;
 using GameTools.API.WorkloadProvider.AiWorkloads;
+using GameTools.BlazorClient.Components;
 using GameTools.BlazorClient.Middleware;
+using GameTools.BlazorClient.Services.MappingExtensions;
 using GameTools.Framework.Contexts;
 using GameTools.TownsfolkManager.Contracts;
 using Microsoft.Graph.Models;
@@ -44,32 +46,43 @@ namespace GameTools.BlazorClient.Services
             return npcVm;
         }
 
-        public async Task<NpcClientModel> GetAiDescription(NpcClientModel npc, int userAiQuotaId)
+        public async Task<NpcClientModel> GetAiDescription(NpcClientModel npc, AppStateProvider appCtx)
         {
-            // First thing we need is a serialized view of the NPC ViewModel.
-            string vmJson = npc.SerializeForOutput();
+			var userLimits = await appCtx.GetUserLimits();
+			int userAiQuotaId = userLimits.NpcAiDescriptions.QuotaId;
 
-            //string aiDescription = await _characterWorker.DescribeNPC(npc.NpcModel);
-            //npc.AddAiDescription(aiDescription);
+			// First thing we need is a serialized view of the NPC ViewModel.
+			string vmJson = npc.SerializeForOutput();
+            var apiResult = await _npcApi.GenerateAttributes(vmJson, npc.OwnerId, userAiQuotaId);
 
-            GeneratedCharacterProperties genAiAttributes = await _npcApi.GenerateAttributes(vmJson, npc.OwnerId, userAiQuotaId);
-            // Need to apply the properties to the inner Townsfolk Model.  lol, oops!
-            
-            //TODO:  This code is CRAP.  Refactor it for maintainability once it works.
-            Townsperson updated = npc.NpcModel;
-            updated.FullName.SetAiValue(genAiAttributes.Name.ToString());
-            updated.Appearance.Description.SetAiValue(genAiAttributes.Appearance.ToString());
-            updated.PersonalityDescription.SetAiValue(genAiAttributes.Personality.ToString());
-            updated.Background.Description.SetAiValue(genAiAttributes.Background.ToString());
-            updated.Vocation.Description.SetAiValue(genAiAttributes.CurrentCircumstances.ToString());
+			Townsperson updated = npc.NpcModel;
+			GeneratedCharacterProperties? genAiAttributes = apiResult?.Payload?.Result;
+			if (genAiAttributes != null)
+            {
+				updated.FullName.SetAiValue(genAiAttributes.Name.ToString());
+				updated.Appearance.Description.SetAiValue(genAiAttributes.Appearance.ToString());
+				updated.PersonalityDescription.SetAiValue(genAiAttributes.Personality.ToString());
+				updated.Background.Description.SetAiValue(genAiAttributes.Background.ToString());
+				updated.Vocation.Description.SetAiValue(genAiAttributes.CurrentCircumstances.ToString());
+			}
 
-            NpcClientModel updatedVm = new NpcClientModel(updated);
+            var updatedQuotas = apiResult?.Payload?.UpdatedQuotas;
+            if (updatedQuotas != null)
+            {
+                var uiQuotas = updatedQuotas.ToUiModel();
+                appCtx?.SetUserLimits(uiQuotas);
+            }
+
+			NpcClientModel updatedVm = new NpcClientModel(updated);
             return updatedVm;
         }
 
-        public async Task<OpResult<NpcClientModel>> SaveNpc(NpcClientModel npc, int userStorageQuotaId)
+        public async Task<OpResult<NpcClientModel>> SaveNpc(NpcClientModel npc, AppStateProvider appCtx )
         {
-            OpResult<NpcClientModel> proxyResult = new OpResult<NpcClientModel>();
+            var userQuotas = await appCtx.GetUserLimits();
+            int userStorageQuotaId = userQuotas.NpcsInStorage.QuotaId;
+
+			OpResult<NpcClientModel> proxyResult = new OpResult<NpcClientModel>();
             
             Townsperson npcData = npc.NpcModel;
             
@@ -77,17 +90,21 @@ namespace GameTools.BlazorClient.Services
 
             if(apiResult.WasSuccessful)
             {
-                Townsperson? apiPayload = apiResult.Payload;
+                Townsperson? apiPayload = apiResult?.Payload?.Result;
                 NpcClientModel proxyPayload = new NpcClientModel(apiPayload);
                 proxyResult.Payload = proxyPayload;
 
+                var resultQuotas = apiResult?.Payload?.UpdatedQuotas;
+
+				if (resultQuotas != null)
+                {
+                    var uiLimits = resultQuotas!.ToUiModel();
+                    appCtx?.SetUserLimits(uiLimits);
+                }
             }
             else
             {
-                foreach(var kvp in apiResult.Errors)
-                {
-                    proxyResult.AddError(kvp.Key, kvp.Value);
-                }
+                apiResult.CopyErrorsTo(ref proxyResult);
             }
 
             return proxyResult;
@@ -194,20 +211,7 @@ namespace GameTools.BlazorClient.Services
                 if(apiResult.WasSuccessful && apiResult.Payload != null)
                 {
                     var apiPayload = apiResult.Payload;
-                    proxyPayload = new UserLimitsModel()
-                    {
-                        UserId = apiPayload.UserId
-                    };
-                    proxyPayload.NpcsInStorage.SetValues(
-                        apiPayload!.NpcStorage!.QuotaId,
-                        apiPayload.NpcStorage.Budget,
-                        apiPayload.NpcStorage.Consumption);
-
-                    proxyPayload.NpcAiDescriptions.SetValues(
-                        apiPayload!.NpcAiGenerations!.QuotaId,
-                        apiPayload.NpcAiGenerations.Budget,
-                        apiPayload.NpcAiGenerations.Consumption);
-
+                    proxyPayload = apiPayload.ToUiModel();
                 }
                 else
                 {
