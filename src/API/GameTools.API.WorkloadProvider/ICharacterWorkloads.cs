@@ -1,18 +1,15 @@
 ﻿using GameTools.API.WorkloadProvider.AiWorkloads;
+using GameTools.API.WorkloadProvider.Models;
 using GameTools.TownsfolkManager.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GameTools.UserManager.Contracts;
 using ThatDeveloperDad.Framework.Wrappers;
 
 namespace GameTools.API.WorkloadProvider
 {
-    /// <summary>
-    /// Describes the behaviors provided by a component that supplies Character Generation capabilities.
-    /// </summary>
-    public interface ICharacterWorkloads
+	/// <summary>
+	/// Describes the behaviors provided by a component that supplies Character Generation capabilities.
+	/// </summary>
+	public interface ICharacterWorkloads
     {
         /// <summary>
         /// Retrieves a Dictionary of the different options that can 
@@ -44,8 +41,6 @@ namespace GameTools.API.WorkloadProvider
 
         string GetNpcJson(Townsperson npc);
 
-
-
         /// <summary>
         /// Accepts a JsonString with NPC Attributes and passes that to the LLM Service
         /// to generate a description.
@@ -62,12 +57,14 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="npcJson"></param>
         /// <returns></returns>
-        Task<GeneratedCharacterProperties> GenerateAttributes(string npcJson);
+        Task<OpResult<ResourceResult<GeneratedCharacterProperties>>> GenerateAttributes(string npcJson, string userId, int userAiQuotaId);
 
-        Task<OpResult<Townsperson>> SaveNpc(Townsperson npc); 
+        Task<OpResult<ResourceResult<Townsperson>>> SaveNpc(Townsperson npc, string userId, int userStorageQuotaId); 
 
         Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownsfolk(TownspersonFilter filter);
 
         Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId);
+
+        Task<OpResult<QuotaContainer>> LoadUserQuotas(string userId);
     }
 }

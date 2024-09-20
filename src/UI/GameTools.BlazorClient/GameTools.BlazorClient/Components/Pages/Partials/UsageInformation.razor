@@ -1,0 +1,11 @@
+﻿<div class="quotaContainer">
+	@if(IsReady)
+	{
+		<span>@StorageQuotaString</span>
+		<span>@AiGenQuotaString</span>
+	}
+	else
+	{
+		<p>Loading Usage...</p>
+	}
+</div>

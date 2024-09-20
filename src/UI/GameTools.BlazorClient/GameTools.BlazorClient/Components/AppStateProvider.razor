@@ -1,8 +1,10 @@
 ﻿@using GameTools.BlazorClient.Middleware
+@using GameTools.BlazorClient.Services
 @using GameTools.Framework.Contexts
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject HttpContextAccessor HttpCtxAccess
+@inject NpcServiceProxy serviceProxy
 
 @if (appStateLoaded)
 {
@@ -18,6 +20,9 @@ else
 @code {
 	private bool appStateLoaded;
 	private const string appContextKey = "appContext";
+
+	public event Func<string, Task>? ContextItemChanged;
+
 	[Parameter]
 	public RenderFragment? ChildContent { get; set; }
 
@@ -74,8 +79,53 @@ else
 		return user;
 	}
 
+	public async Task<UserLimitsModel> GetUserLimits()
+	{
+		string contextKey = nameof(UserLimitsModel);
+		var model = AppContext.RetrieveItem(contextKey) as UserLimitsModel;
+		if(model == null)
+		{
+			string userId = GetCurrentUser(true)!.UserId;
+			var proxyResult = await serviceProxy.LoadUserLimits(userId);
+			if(proxyResult.WasSuccessful && proxyResult.Payload != null)
+			{
+				model = proxyResult.Payload;
+				await SetUserLimits(model);
+			}
+			else
+			{
+				string exMessage = proxyResult.AggregateErrors();
+				throw new Exception(exMessage);
+			}
+		}
+
+		return model;
+	}
+
+	public async Task SetUserLimits(UserLimitsModel limits)
+	{
+		string contextKey = nameof(UserLimitsModel);
+		var storedLimits = AppContext.RetrieveItem(contextKey) as UserLimitsModel;
+
+		if(storedLimits == null)
+		{
+			AppContext.AddItem(contextKey, limits);
+		}
+		else
+		{
+			AppContext.UpdateItem(contextKey, limits);
+		}
+		await SaveChangesAsync();
+		await OnContextItemChanged(contextKey);
+	}
+
 	public async Task SaveChangesAsync()
 	{
 		await ProtectedSessionStore.SetAsync(appContextKey, AppContext);
+	}
+
+	private async Task OnContextItemChanged(string contextKey)
+	{
+		await ContextItemChanged?.Invoke(contextKey);
 	}
 }

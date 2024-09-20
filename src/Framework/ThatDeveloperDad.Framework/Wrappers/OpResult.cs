@@ -39,6 +39,17 @@ namespace ThatDeveloperDad.Framework.Wrappers
             }
         }
 
+        public string AggregateErrors()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Errors occurred while processing the activity");
+            foreach(var error in this._errors)
+            {
+                sb.AppendLine(error.Value);
+            }
+            return sb.ToString();
+        }
+
         //public bool ShouldRetry { get; set; }
         //public int RetryCount { get; set; }
         //public int RetryLimit { get; set; }
