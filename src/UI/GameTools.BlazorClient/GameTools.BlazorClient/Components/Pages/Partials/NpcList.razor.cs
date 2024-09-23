@@ -31,7 +31,10 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         [CascadingParameter]
         protected AppStateProvider AppContext { get; set; }
 
-        public NpcList()
+		[CascadingParameter(Name ="LoadingOverlay")]
+		protected ContentLoadingComponent? LoadingOverlay { get; set; }
+
+		public NpcList()
 		{
 			FilteredNpcs = Array.Empty<NpcFilterRowModel>();
 			EmptyTableText = "Loading ...";
@@ -120,8 +123,13 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
             NpcClientFilter filter = new NpcClientFilter();
             filter.UserId = user.UserId;
-
+            
+            await LoadingOverlay?.SetLoadingState(true, "Loading NPC List");
+            await Task.Delay(15000);
             var proxyResult = await NpcServices!.FilterTownsfolk(filter);
+            await LoadingOverlay?.SetLoadingState(false);
+            
+
             if (proxyResult == null)
             {
                 throw new Exception("Something awful happened.");

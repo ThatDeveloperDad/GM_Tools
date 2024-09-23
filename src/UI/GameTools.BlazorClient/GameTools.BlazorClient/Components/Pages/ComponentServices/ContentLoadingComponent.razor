@@ -1,0 +1,38 @@
+﻿@using ThatDeveloperDad.Framework.Converters
+<CascadingValue Value="this" Name="LoadingOverlay">
+	@if(this.IsWorking == true)
+	{
+		<div id="LoadingOverlay">
+			<span>@Caption</span>
+		</div>
+	}
+	@ChildContent
+</CascadingValue>
+
+@code {
+	public bool IsWorking { get; set; }
+
+	public string Caption { get; set; }
+
+	public ContentLoadingComponent()
+	{
+		Caption = "Working...";
+		IsWorking = false;
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		return base.OnInitializedAsync();
+	}
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	public async Task SetLoadingState(bool state, string caption = "Loading...")
+	{
+		IsWorking = state;
+		Caption = caption;
+		await Task.Delay(1);
+		StateHasChanged();
+	}
+}

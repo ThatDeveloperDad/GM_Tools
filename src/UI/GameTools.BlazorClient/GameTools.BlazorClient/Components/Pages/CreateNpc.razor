@@ -2,6 +2,7 @@
 
 @using GameTools.BlazorClient.Components.Pages.Partials;
 @using GameTools.BlazorClient.Components.Pages.PageModels;
+@using GameTools.BlazorClient.Components.Pages.ComponentServices;
 @using GameTools.UI.Components.Wrapper
 
 @using GameTools.BlazorClient.Middleware
@@ -10,43 +11,45 @@
 
 @inherits PageModels.CreateNpcPageModel;
 
-@if (PageState != CreateNpcPageStates.List)
-{
-	<header>
-		<heading>Manage NPCs</heading>
-		<nav>
-			<button class="btn btn-secondary"
-			@onclick="OnShowList_Clicked">
-				Back to List
-			</button>
-		</nav>
-	</header>
-}
-<main>
-	<NpcList NewNpcHandler="OnCreateNewClicked"
-			ViewNpcHandler="OnNpcList_ViewClicked"
-			CurrentPageState="@this.PageState"
-			Visibility="@this.ShowForPageState(CreateNpcPageStates.List)"
-			NpcNotifier="@this.NpcEventNotifier"/>
+<ContentLoadingComponent>
+	@if (PageState != CreateNpcPageStates.List)
+	{
+		<header>
+			<heading>Manage NPCs</heading>
+			<nav>
+				<button class="btn btn-secondary"
+				@onclick="OnShowList_Clicked">
+					Back to List
+				</button>
+			</nav>
+		</header>
+	}
+	<main>
+		<NpcList NewNpcHandler="OnCreateNewClicked"
+				ViewNpcHandler="OnNpcList_ViewClicked"
+				CurrentPageState="@this.PageState"
+				Visibility="@this.ShowForPageState(CreateNpcPageStates.List)"
+				NpcNotifier="@this.NpcEventNotifier"/>
 
-<div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
+	<div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
 
 
-	<ViewNpcAttributes UseMetric="@false"
-					   SelectableOptions="@this.SelectableNpcOptions"
-					   UserOptions="@this.UserOptions"
-					   CurrentNpc="@this.CurrentNpc"
-					   Visibility="@this.ShowForPageState(CreateNpcPageStates.Preview)"
-					   GenerateNpc_Clicked="OnRerollClicked"
-					   GenerateAi_Clicked="OnAiDescriptionRequested"
-					   SaveNpc_Clicked="OnSaveNpc"
-					   NpcNotifier="NpcEventNotifier" />
-</div>
+		<ViewNpcAttributes UseMetric="@false"
+						   SelectableOptions="@this.SelectableNpcOptions"
+						   UserOptions="@this.UserOptions"
+						   CurrentNpc="@this.CurrentNpc"
+						   Visibility="@this.ShowForPageState(CreateNpcPageStates.Preview)"
+						   GenerateNpc_Clicked="OnRerollClicked"
+						   GenerateAi_Clicked="OnAiDescriptionRequested"
+						   SaveNpc_Clicked="OnSaveNpc"
+						   NpcNotifier="NpcEventNotifier" />
+	</div>
 
-	<ViewNpcDetails UseMetric="@false"
-					CurrentNpc="@this.CurrentNpc"
-					Visibility="@this.ShowForPageState(CreateNpcPageStates.Details)"
-					SaveNpc_Clicked="OnSaveNpc"/>
-</main>
+		<ViewNpcDetails UseMetric="@false"
+						CurrentNpc="@this.CurrentNpc"
+						Visibility="@this.ShowForPageState(CreateNpcPageStates.Details)"
+						SaveNpc_Clicked="OnSaveNpc"/>
+	</main>
+</ContentLoadingComponent>
 <footer class="hidden"></footer>
 
