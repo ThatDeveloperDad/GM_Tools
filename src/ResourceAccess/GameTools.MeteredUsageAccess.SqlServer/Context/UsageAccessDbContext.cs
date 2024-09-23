@@ -20,7 +20,11 @@ namespace GameTools.MeteredUsageAccess.SqlServer.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(_cn);
+            optionsBuilder.UseSqlServer(_cn,
+                sqlOptions => sqlOptions.EnableRetryOnFailure(
+                    maxRetryCount:5,
+                    maxRetryDelay:TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd:null));
         }
 
         public DbSet<QuotaTemplateSqlModel> QuotaTemplates { get; set; }
