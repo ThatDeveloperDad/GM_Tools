@@ -1,9 +1,13 @@
 ﻿@using ThatDeveloperDad.Framework.Converters
 <CascadingValue Value="this" Name="LoadingOverlay">
-	@if(this.IsWorking == true)
+	@if(IsWorking == true)
 	{
 		<div id="LoadingOverlay">
-			<span>@Caption</span>
+			<div class="overlay-content">@Caption</div>
+			@* @if(IsLongRunning==true)
+			{
+				
+			} *@
 		</div>
 	}
 	@ChildContent
@@ -13,6 +17,9 @@
 	public bool IsWorking { get; set; }
 
 	public string Caption { get; set; }
+
+	// private Timer? _waitTimer;
+	// public bool IsLongRunning{ get; set; }
 
 	public ContentLoadingComponent()
 	{
@@ -30,6 +37,11 @@
 
 	public async Task SetLoadingState(bool state, string caption = "Loading...")
 	{
+		// if(state=true)
+		// {
+		// 	_waitTimer = new Timer(async () => { IsLongRunning = true; await Task.Delay(1); StateHasChanged(); }
+		// 	, null, 0, 2000);
+		// }
 		IsWorking = state;
 		Caption = caption;
 		await Task.Delay(1);

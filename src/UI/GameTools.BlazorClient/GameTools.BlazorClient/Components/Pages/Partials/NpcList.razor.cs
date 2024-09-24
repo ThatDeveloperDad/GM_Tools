@@ -125,7 +125,6 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             filter.UserId = user.UserId;
             
             await LoadingOverlay?.SetLoadingState(true, "Loading NPC List");
-            await Task.Delay(15000);
             var proxyResult = await NpcServices!.FilterTownsfolk(filter);
             await LoadingOverlay?.SetLoadingState(false);
             
