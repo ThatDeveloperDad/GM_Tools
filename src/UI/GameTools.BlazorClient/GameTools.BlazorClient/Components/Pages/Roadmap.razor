@@ -1,0 +1,12 @@
+﻿@page "/roadmap"
+@using GameTools.BlazorClient.Middleware
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Policy = AuthZConstants.pol_PaidUsers)]
+
+<header>
+	<heading>Feature Roadmap for SECRET PRODUCT!</heading>
+</header>
+<main>
+	<p>I've got a number of features planned for this application.</p>
+	<p>I'll be working on them as I have time and support from you, my users.</p>
+</main>

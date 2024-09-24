@@ -3,11 +3,10 @@
 	@if(IsWorking == true)
 	{
 		<div id="LoadingOverlay">
-			<div class="overlay-content">@Caption</div>
-			@* @if(IsLongRunning==true)
+			@if(IsLongRunning==true)
 			{
-				
-			} *@
+				<div class="overlay-content">@Caption</div>
+			}
 		</div>
 	}
 	@ChildContent
@@ -18,8 +17,8 @@
 
 	public string Caption { get; set; }
 
-	// private Timer? _waitTimer;
-	// public bool IsLongRunning{ get; set; }
+	private Timer? _waitTimer;
+	public bool IsLongRunning{ get; set; }
 
 	public ContentLoadingComponent()
 	{
@@ -37,11 +36,23 @@
 
 	public async Task SetLoadingState(bool state, string caption = "Loading...")
 	{
-		// if(state=true)
-		// {
-		// 	_waitTimer = new Timer(async () => { IsLongRunning = true; await Task.Delay(1); StateHasChanged(); }
-		// 	, null, 0, 2000);
-		// }
+		if(state==true)
+		{
+			_waitTimer = new Timer(async (object? state) =>
+				{
+					IsLongRunning = true;
+					await Task.Delay(1);
+					await this.InvokeAsync(StateHasChanged);
+				}
+			, null, 1000, Timeout.Infinite);
+		}
+		else
+		{
+			_waitTimer = null;
+			IsLongRunning = false;
+			StateHasChanged();
+		}
+		IsLongRunning = false;
 		IsWorking = state;
 		Caption = caption;
 		await Task.Delay(1);

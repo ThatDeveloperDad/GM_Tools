@@ -123,10 +123,10 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
             NpcClientFilter filter = new NpcClientFilter();
             filter.UserId = user.UserId;
-            
-            await LoadingOverlay?.SetLoadingState(true, "Loading NPC List");
+
+            await ShowLoadingMessage("Loading NPCs...");
             var proxyResult = await NpcServices!.FilterTownsfolk(filter);
-            await LoadingOverlay?.SetLoadingState(false);
+            await HideLoadingMessage();
             
 
             if (proxyResult == null)
@@ -160,6 +160,22 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
                     throw new Exception($"Fetching the NPC list failed.  {Environment.NewLine}{sb.ToString()}");
                 }
+            }
+        }
+
+        private async Task ShowLoadingMessage(string text)
+        {
+            if(LoadingOverlay != null)
+            {
+                await LoadingOverlay.SetLoadingState(true, text);
+            }
+        }
+
+        private async Task HideLoadingMessage()
+        {
+            if(LoadingOverlay!=null)
+            {
+                await LoadingOverlay.SetLoadingState(false);
             }
         }
 
