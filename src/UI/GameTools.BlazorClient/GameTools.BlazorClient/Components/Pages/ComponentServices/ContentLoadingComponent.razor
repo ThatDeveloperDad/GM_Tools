@@ -1,0 +1,61 @@
+﻿@using ThatDeveloperDad.Framework.Converters
+<CascadingValue Value="this" Name="LoadingOverlay">
+	@if(IsWorking == true)
+	{
+		<div id="LoadingOverlay">
+			@if(IsLongRunning==true)
+			{
+				<div class="overlay-content">@Caption</div>
+			}
+		</div>
+	}
+	@ChildContent
+</CascadingValue>
+
+@code {
+	public bool IsWorking { get; set; }
+
+	public string Caption { get; set; }
+
+	private Timer? _waitTimer;
+	public bool IsLongRunning{ get; set; }
+
+	public ContentLoadingComponent()
+	{
+		Caption = "Working...";
+		IsWorking = false;
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		return base.OnInitializedAsync();
+	}
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	public async Task SetLoadingState(bool state, string caption = "Loading...")
+	{
+		if(state==true)
+		{
+			_waitTimer = new Timer(async (object? state) =>
+				{
+					IsLongRunning = true;
+					await Task.Delay(1);
+					await this.InvokeAsync(StateHasChanged);
+				}
+			, null, 1000, Timeout.Infinite);
+		}
+		else
+		{
+			_waitTimer = null;
+			IsLongRunning = false;
+			StateHasChanged();
+		}
+		IsLongRunning = false;
+		IsWorking = state;
+		Caption = caption;
+		await Task.Delay(1);
+		StateHasChanged();
+	}
+}

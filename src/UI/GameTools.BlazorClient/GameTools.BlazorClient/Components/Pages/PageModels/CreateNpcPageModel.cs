@@ -20,6 +20,8 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			SelectableNpcOptions = new Dictionary<string, string[]>();
 			SelectedNpcOptions = new Dictionary<string, string?>();
 			UserOptions = new NpcUserOptions();
+
+			
         }
 
         protected override void OnInitialized()
@@ -44,6 +46,8 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			{
 				CurrentUser = user;
 			}
+
+			LoadingOverlay = LoadingOverlay ?? new ContentLoadingComponent();
 		}
 
 		public PageEventSink NpcEventNotifier { get; set; }
@@ -53,6 +57,9 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
 		[CascadingParameter]
 		protected AppStateProvider? AppContext { get; set; }
+
+		[CascadingParameter(Name = "LoadingOverlay")]
+		protected ContentLoadingComponent? LoadingOverlay { get; set; }
 
 		public GameToolsUser CurrentUser { get; set; }
 
@@ -84,7 +91,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		{
             PageState = CreateNpcPageStates.Details;
 			StateHasChanged();
-            CurrentNpc = await GetAiDescription(npcModel);
+            CurrentNpc = await GetAiDescription(npcModel);			
 			StateHasChanged();
 		}
 

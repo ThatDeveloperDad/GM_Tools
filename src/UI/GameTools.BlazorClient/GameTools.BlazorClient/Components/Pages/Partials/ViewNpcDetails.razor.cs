@@ -51,9 +51,14 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
         public bool IsSaveButtonVisible => SaveNpc_Clicked != null;
 
-        public void OnSaveNpcClicked()
+		[CascadingParameter(Name = "LoadingOverlay")]
+		protected ContentLoadingComponent? LoadingOverlay { get; set; }
+
+		public async Task OnSaveNpcClicked()
         {
-            SaveNpc_Clicked?.Invoke(CurrentNpc);
+            await LoadingOverlay.SetLoadingState(true, "Giving the NPC a home.");
+            await SaveNpc_Clicked?.Invoke(CurrentNpc);
+            await LoadingOverlay.SetLoadingState(false);
         }
     }
 }

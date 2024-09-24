@@ -54,7 +54,10 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 			SetOptionPanelVisibility(false);
 		}
 
-        public string? SelectedSpecies
+		[CascadingParameter(Name = "LoadingOverlay")]
+		protected ContentLoadingComponent? LoadingOverlay { get; set; }
+
+		public string? SelectedSpecies
         {
             get
             {
@@ -127,17 +130,21 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
 		public bool AiButtonIsHandled => GenerateAi_Clicked != null;
 
-        public void OnAiButtonClick()
+        public async Task OnAiButtonClick()
         {
-            GenerateAi_Clicked?.Invoke(CurrentNpc);
-        }
+            await LoadingOverlay.SetLoadingState(true, "Thinking...");
+            await GenerateAi_Clicked?.Invoke(CurrentNpc);
+            await LoadingOverlay.SetLoadingState(false);
+		}
 
         public bool SaveButtonIsHandled => SaveNpc_Clicked != null;
 
-        public void OnSaveButtonClick()
+        public async void OnSaveButtonClick()
         {
+            await LoadingOverlay.SetLoadingState(true, "Saving...");
             SaveNpc_Clicked?.Invoke(CurrentNpc);
-        }
+			await LoadingOverlay.SetLoadingState(false);
+		}
 
         public void UpdateClientModel(NpcClientModel model)
         {
