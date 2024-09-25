@@ -3,7 +3,6 @@
 @using GameTools.BlazorClient.Components.Pages.Partials;
 @using GameTools.BlazorClient.Components.Pages.PageModels;
 @using GameTools.BlazorClient.Components.Pages.ComponentServices;
-@using GameTools.UI.Components.Wrapper
 
 @using GameTools.BlazorClient.Middleware
 @using Microsoft.AspNetCore.Authorization
@@ -31,9 +30,6 @@
 				Visibility="@this.ShowForPageState(CreateNpcPageStates.List)"
 				NpcNotifier="@this.NpcEventNotifier"/>
 
-	<div class="@this.ShowForPageState(CreateNpcPageStates.Preview)">
-
-
 		<ViewNpcAttributes UseMetric="@false"
 						   SelectableOptions="@this.SelectableNpcOptions"
 						   UserOptions="@this.UserOptions"
@@ -43,7 +39,6 @@
 						   GenerateAi_Clicked="OnAiDescriptionRequested"
 						   SaveNpc_Clicked="OnSaveNpc"
 						   NpcNotifier="NpcEventNotifier" />
-	</div>
 
 		<ViewNpcDetails UseMetric="@false"
 						CurrentNpc="@this.CurrentNpc"

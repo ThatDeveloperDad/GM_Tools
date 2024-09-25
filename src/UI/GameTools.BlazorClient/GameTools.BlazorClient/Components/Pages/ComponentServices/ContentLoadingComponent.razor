@@ -5,7 +5,10 @@
 		<div id="LoadingOverlay">
 			@if(IsLongRunning==true)
 			{
-				<div class="overlay-content">@Caption</div>
+				<div class="overlay-content">
+					<div id="BlinkyKitty"></div>
+					<h3 class="pulse">@Caption</h3>
+				</div>
 			}
 		</div>
 	}

@@ -89,9 +89,10 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
 		public async Task OnAiDescriptionRequested(NpcClientModel npcModel) 
 		{
-            PageState = CreateNpcPageStates.Details;
-			StateHasChanged();
-            CurrentNpc = await GetAiDescription(npcModel);			
+            
+			//StateHasChanged();
+            CurrentNpc = await GetAiDescription(npcModel);
+			PageState = CreateNpcPageStates.Details;
 			StateHasChanged();
 		}
 
