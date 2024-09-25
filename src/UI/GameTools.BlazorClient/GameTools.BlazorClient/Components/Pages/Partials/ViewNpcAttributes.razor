@@ -5,8 +5,8 @@
     <header>
         <heading>
             
-                <h3 class="col-9">Select Npc Options</h3>
-                <button class="col-3" @onclick="ToggleOptionPanel">@ToggleText</button>
+                <span>Select Npc Options</span>
+                <button class="btn btn-secondary" @onclick="ToggleOptionPanel">@ToggleText</button>
         </heading>
         <div class=" @ShowOptionsPanel.AsString("options-panel", "hidden")">
 	
@@ -45,25 +45,25 @@
 			</div>
 		</div>
 
-@if(this.IsRerollVisible)
-{
-	<button class="btn btn-primary"
-			@onclick="OnCreateNpcClick">
-		Roll Those Dice!
-	</button>
-}
+		@if(this.IsRerollVisible)
+		{
+			<button class="btn btn-primary"
+					@onclick="OnCreateNpcClick">
+				Roll Those Dice!
+			</button>
+		}
     </header>
     <main>
-        <h3>Species: @Species</h3>
+        <heading>Species: @Species</heading>
         <p>Gender:  @Gender (@Pronouns)</p>
         <p>Age: @Age</p>
         <p>Height: @Height  Weight: @Weight</p>
         <hr />
-        <h3>Appearance</h3>
+        <heading>Appearance</heading>
         <p>@Appearance</p>
-        <h3>Profession</h3>
+        <heading>Profession</heading>
         <p>@Profession</p>
-        <h3>History</h3>
+        <heading>History</heading>
         <p>@History</p>
         <hr />
     </main>

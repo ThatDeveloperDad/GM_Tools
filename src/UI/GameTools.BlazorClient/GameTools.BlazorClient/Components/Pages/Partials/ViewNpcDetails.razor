@@ -4,14 +4,14 @@
         {
             <heading>Name:  @NpcName</heading>
         }
-        <h4>Species: @Species</h4>
+        <heading>Species: @Species</heading>
     </header>
     <main>
         <p>Gender:  @Gender (@Pronouns)</p>
         <p>Age: @Age</p>
         <p>Height: @Height  Weight: @Weight</p>
         <hr />
-        <h4>Appearance</h4>
+        <heading>Appearance</heading>
         @if (DetailedAppearance != string.Empty)
         {
             <p>@DetailedAppearance</p>
@@ -24,11 +24,11 @@
 
         @if (PersonalityDescription != string.Empty)
         {
-            <h4>Personality</h4>
+            <heading>Personality</heading>
             <p>@PersonalityDescription</p>
         }
 
-        <h4>Profession</h4>
+        <heading>Profession</heading>
         @if (DetailedProfession != string.Empty)
         {
             <p>@DetailedProfession</p>
@@ -38,7 +38,7 @@
             <p>@Profession</p>
         }
         <hr />
-        <h4>Background</h4>
+        <heading>Background</heading>
         @if (DetailedHistory != string.Empty)
         {
             <p>@DetailedHistory</p>

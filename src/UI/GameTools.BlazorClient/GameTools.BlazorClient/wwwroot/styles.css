@@ -1,4 +1,6 @@
-﻿:root{
+﻿@import "animations.css";
+
+:root{
     --app-height: 100dvh;
     --app-width: 100dwh;
 }
@@ -67,6 +69,13 @@ body > footer {
 .feature-host  main{
     flex:1;
     overflow: auto;
+}
+
+main .centered-content{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 }
 
 .feature-host  footer {
