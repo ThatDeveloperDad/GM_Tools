@@ -402,3 +402,4 @@ FodyWeavers.xsd
 *.sln.iml
 src/.DS_Store
 /src/UI/GameTools.BlazorClient/GameTools.BlazorClient/appsettings.Development.json
+doc/images/.$TownsfolkGen_StaticArch.drawio.bkp
