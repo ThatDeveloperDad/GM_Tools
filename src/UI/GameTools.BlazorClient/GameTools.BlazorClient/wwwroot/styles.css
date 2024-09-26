@@ -1,13 +1,8 @@
-﻿@import "animations.css";
-
-:root{
-    --app-height: 100dvh;
-    --app-width: 100dwh;
-}
-
-html{
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
+﻿@import "baseVars.css";
+@import "boxes.css";
+@import "colors.css";
+@import "typography.css";
+@import "animations.css";
 
 body{
     padding:0;
@@ -33,10 +28,10 @@ body > footer {
 
 .app-host > header {
     margin:0;
-        padding:.75em;
-        display: flex;
-        flex-direction:column;
-        justify-items: center;
+    padding:.75rem;
+    display: flex;
+    flex-direction:column;
+    justify-items: center;
 }
 
 .app-host > main {

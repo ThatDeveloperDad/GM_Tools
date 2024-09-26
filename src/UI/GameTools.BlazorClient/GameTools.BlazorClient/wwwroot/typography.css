@@ -1,0 +1,26 @@
+﻿@import "baseVars.css";
+
+html{
+    font-family: var(--font-set);
+    font-size: var(--font-base-size);
+    font-weight: var(--font-weight-base);
+}
+
+.feature-host heading {
+    font-size:1.5rem;
+    font-weight: var(--font-weight-heavy);
+}
+
+.task-host heading {
+    font-size:1.25rem;
+    font-weight: var(--font-weight-bold);
+}
+
+.task-host main heading {
+    font-size:1.1rem;
+    font-weight: var(--font-weight-emphasized);
+}
+
+a{
+    text-decoration:none;
+}

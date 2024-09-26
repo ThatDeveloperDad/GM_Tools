@@ -1,0 +1,46 @@
+﻿/*
+    baseVars defines values that are used throughout the 
+    application's type system.
+
+    We will set variables for:
+    App Sizing within the browser window.
+    Base color palettes
+    Base level typography settings
+
+    StyleSheet files that inherit or import these values
+    CAN alter them into new variables to create variations
+    of these basic values.
+*/
+
+
+:root{
+    /* 
+        Set the base sizing values used to place the app 
+        elements within the browser window.
+    */
+    --app-height: 100dvh;
+    --app-width: 100dvw;
+
+
+    /* Define the font families, base size, and weight variables */
+    --font-set: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-set-2: Georgia, 'Times New Roman', Times, serif;
+
+    /* 
+        I really wanted to use 12, so that I'd have even 
+        thirds, halves, and quarters, but then I'd have to
+        use something other than 1rem for standard text, and 
+        adjust from there.
+
+        Adding the burden of remembering to account for that
+        throughout wasn't worth the flexibility to me.
+    */
+    --font-base-size: 16px;
+ 
+    --font-weight-light: 200;
+    --font-weight-base: 400;
+    --font-weight-emphasized: 450;
+    --font-weight-bold: 700;
+    --font-weight-heavy: 900;
+
+}
