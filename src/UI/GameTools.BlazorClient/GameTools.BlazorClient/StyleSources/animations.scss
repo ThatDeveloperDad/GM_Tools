@@ -1,0 +1,86 @@
+#SleepyKitty {
+    width: 400px;
+    height: 255px;
+    background-image: url("images/sleepyKitty.svg");
+    background-size: 200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    min-height: 255px;
+    position: relative; /* Add this to position the pseudo-element */
+    overflow: hidden;
+}
+
+#SleepyKitty::before {
+    content: "z";
+    position: absolute;
+    bottom: 60%; 
+    left: 30%; 
+    font-size: 24px;
+    color: #333;
+    opacity: 0;
+    text-shadow: 
+        -.5em -.5em 0 #aaa,
+        -1em 1em 0 #aaa;
+    animation: float-fade-sway 3s ease-in-out infinite;
+    pointer-events: none; 
+    z-index: 1; 
+}
+
+.pulse{
+    animation: pulse-opacity 3s ease-in-out infinite;
+}
+
+@keyframes pulse-opacity{
+        0% { opacity: 0.1; }
+    50% { opacity: 1; }
+    100% { opacity: 0.1; }
+}
+
+@keyframes float-fade-sway {
+    0% {
+        bottom: 60%;
+        left: 30%;
+        opacity: 0;
+    }
+    20% {
+        opacity: .5;
+        left: 28%;
+    }
+    40% {
+        opacity: 1;
+        left: 32%;
+    }
+    60% {
+        left: 28%;
+    }
+    80% {
+        left: 32%;
+        opacity: .5;
+    }
+    100% {
+        bottom: 80%;
+        left: 30%;
+        opacity: 0;
+    }
+}
+
+#BlinkyKitty {
+    width: 400px;
+    height: 255px;
+    background-image: url("images/kitty.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: blink-animation 5s steps(1, end) infinite;
+}
+
+@keyframes blink-animation {
+    0%, 10%, 12%, 86%, 90%, 94%, 98%, 100% {
+        background-image: url("images/kitty.svg");
+    }
+    11%, 88%, 96% {
+        background-image: url("images/kittyblink.svg");
+    }
+}
+
