@@ -70,6 +70,10 @@ namespace GameTools.NPCAccess.SqlServer
                     query = query.Where(n=> n.VocationName.ToUpper() == vocationFilter.ToUpper());
                 }
 
+                // apply a default sort to bring the most recently created ones to the top.
+                query = query.OrderByDescending(c => c.CreatedDate);
+
+
                 //var rowModels = query.ToList();
 
                 var rowModels = await query.ToListAsync()

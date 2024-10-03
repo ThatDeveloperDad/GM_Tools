@@ -1,4 +1,76 @@
 ﻿@import "baseVars.css";
 
-body {
+:root{
+    /* 
+        Here's where we'll define the different color roles, and derive those from 
+        the base colors defined in the baseVars file.
+    */
+    
+    --layer-1: rgba(from var(--color-white) r g b / var(--transparent));
+    --layer-lighten: rgba(255, 255, 255, .25);
+    --layer-lighten-more: rgba(255, 255, 255, .5);
+
+    --layer-darken: rgba(from var(--color-black) r g b / .1);
+    --outline-color:  rgba(from var(--color-black) r g b / .25);
+}
+
+body{
+    color: var(--color-black);
+}
+
+
+hr{
+    border-color: var(--outline-color);
+}
+
+.feature-host {
+    background: 
+        linear-gradient(180deg, rgba(15, 90, 240, 1) 0%, 
+                                rgba(15, 90, 240, .25) 15%, 
+                                rgba(255, 255, 255, 0) 100%),
+        url(images/bg_grid.svg) repeat;
+    color: var(--color-black);
+}
+
+.feature-host header{
+    background-color: var(--layer-lighten)
+}
+
+.feature-host main{
+    background-color: var(--layer-lighten)
+}
+
+.task-host{
+    background-color: var(--layer-lighten);
+    backdrop-filter:blur(2px);
+    color: var(--color-black);
+}
+
+.task-host header{
+    background-color: var(--layer-darken);
+    border-bottom-color: var(--outline-color);
+}
+
+.task-host footer{
+    background-color: var(--layer-darken);
+}
+
+button {
+    background-color: var(--color-brand-main);
+    color: var(--color-white);
+    border: 1px solid var(--color-white);
+}
+
+@media only screen and (min-width: 600px) {
+    .feature-host {
+        background: 
+        linear-gradient(90deg, rgba(15, 90, 240, 1) 0%, 
+                                rgba(15, 90, 240, .1) 15%, 
+                                rgba(255, 255, 255, 0) 100%),
+        url(images/bg_grid.svg) repeat;
+    }
+
+    body > footer {
+        background-color: var(--color-brand-main);
+    }
 }

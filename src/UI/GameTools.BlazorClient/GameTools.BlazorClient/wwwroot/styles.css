@@ -1,7 +1,7 @@
 ﻿@import "baseVars.css";
-@import "boxes.css";
 @import "colors.css";
 @import "typography.css";
+@import "icons.css";
 @import "animations.css";
 
 body{
@@ -44,26 +44,32 @@ body > footer {
     flex-direction:column;
     justify-content:flex-start;
     height:100%;
-    padding: .25rem;
+    padding: .5rem;
     position:relative;
-    overflow:hidden;
 }
 
 .feature-host  header{
     flex: 0 0 auto;
     margin:0;
     position:sticky;
-    border-bottom: solid 1px black;
+    border-bottom: solid 1px var(--outline-color);
+
+    border-radius: .5rem;
 
     display:flex;
     flex-direction:row;
     justify-content:space-between;
     
+    padding: 0 .5rem;
 }
 
 .feature-host  main{
     flex:1;
     overflow: hidden;
+
+    border-radius: .5rem;
+
+    padding: .25rem .5rem;
 }
 
 main .centered-content{
@@ -75,29 +81,40 @@ main .centered-content{
 
 .feature-host  footer {
     flex:0 0 auto;
+    
     margin-top:auto;
-    border-top: solid 1px black;
+    border-top: solid 1px var(--outline-color);
 }
 
 .task-host {
     display:flex;
     flex-direction:column;
     height:100%;
-    padding: .25rem .5rem;
     overflow:hidden;
     position:relative;
+
+    padding: .5rem .5rem;
+    border: 2px solid var(--outline-color);
+    border-radius: .75rem;
 }
 
 .task-host > header {
     flex:0 0 auto;
     margin:0;
-    border-bottom:solid 1px black;
+    padding:0.5rem;
+    border-top-left-radius:.5rem;
+    border-top-right-radius:.5rem;
+    border:solid 1px var(--outline-color);
 }
 
 .task-host > main{
     flex:1;
     overflow:auto;
+
+    padding:0.25rem;
     height:100%;
+    border-left:solid 1px var(--outline-color);
+    border-right:solid 1px var(--outline-color);
 }
 
 .task-host > footer{
@@ -105,6 +122,7 @@ main .centered-content{
     margin-top:auto;
     border-top:solid 1px black;
     padding: .5rem 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .task-host > footer nav {
@@ -122,16 +140,52 @@ main .centered-content{
 }
 
 .hidden {
-    /*height: 0;
-    visibility: hidden;*/
     display:none;
+}
+
+.form-group {
+    display:flex;
+    flex-direction: column;
+
+    font-size: .9rem;
+}
+
+.form-label {
+    
+    font-weight: var(--font-weight-bold);
+}
+
+.form-select {
+    margin:.25rem;
+    border-radius: .25rem;
+    /*font-size: .9rem;*/
+    padding: .25rem;
+}
+
+.form-control {
+    align-self: flex-start;
+}
+
+radio-button-list {
+    display:flex;
+    flex-direction: row;
+    /*font-size:.9rem;*/
+}
+
+button {
+    font-size: 1rem;
+    padding: .25rem .5rem;
+    border-radius: .25rem;
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    align-items:center;
 }
 
 @media only screen and (min-width: 600px) {
         body > footer {
             display:unset;
             margin-top:auto;
-            border-top: solid 1px black;
         }
 
         .app-host{

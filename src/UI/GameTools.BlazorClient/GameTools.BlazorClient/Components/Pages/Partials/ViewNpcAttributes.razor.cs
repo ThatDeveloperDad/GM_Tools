@@ -93,7 +93,17 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             }
         }
 
-        public bool? IsRetired {  get; set; }
+        public bool? IsRetired 
+        {  
+            get
+            {
+                return UserOptions.IsRetired;
+            }
+            set
+            {
+                UserOptions.IsRetired = value;
+            }
+        }
 
         public string Species => CurrentNpc.Species;
         public string Gender => CurrentNpc.Gender;

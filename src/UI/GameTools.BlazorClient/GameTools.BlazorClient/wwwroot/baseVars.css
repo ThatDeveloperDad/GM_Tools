@@ -43,4 +43,19 @@
     --font-weight-bold: 700;
     --font-weight-heavy: 900;
 
+    /* Color definitions */
+    --opaque: 1;
+    --translucent-75: 0.75;
+    --translucent-50: 0.50;
+    --translucent-25: 0.25;
+    --transparent: 0;
+
+    --color-white: rgb(255, 255, 255);
+    --color-black: rgb(0,0,0);
+    --color-danger: rgb(200, 0, 0);
+    --color-warning: rgb(200, 200, 0);
+    --color-success: rgb(0, 200, 0);
+    --color-info: rgb(0,0,200);
+    
+    --color-brand-main: rgb(15, 90, 240);
 }
