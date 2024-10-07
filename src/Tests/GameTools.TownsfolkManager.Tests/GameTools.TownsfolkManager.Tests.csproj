@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
     <ProjectReference Include="..\..\ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj" />
     <ProjectReference Include="..\..\Rulesets\GameTools.Ruleset.Definitions\GameTools.Ruleset.Definitions.csproj" />
+    <ProjectReference Include="..\..\Rulesets\GameTools.RuleSet.DnD5eSRD\GameTools.Ruleset.DnD5eSRD.csproj" />
   </ItemGroup>
 
 </Project>

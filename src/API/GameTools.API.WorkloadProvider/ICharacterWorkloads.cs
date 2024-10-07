@@ -36,8 +36,8 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="selectedAttributes"></param>
         /// <returns></returns>
-        [Obsolete("This will be going away.  Change over to use TownspersonUserOptions instead.")]
-        Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes);
+        //[Obsolete("This will be going away.  Change over to use TownspersonUserOptions instead.")]
+        //Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes);
 
         string GetNpcJson(Townsperson npc);
 

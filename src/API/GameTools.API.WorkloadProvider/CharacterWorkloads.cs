@@ -247,12 +247,12 @@ namespace GameTools.API.WorkloadProvider
         /// </summary>
         /// <param name="selectedAttributes"></param>
         /// <returns></returns>
-        public Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes)
-        {
-            var npc = _npcManager.GenerateTownspersonFromOptions(selectedAttributes);
+        //public Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes)
+        //{
+        //    var npc = _npcManager.GenerateTownspersonFromOptions(selectedAttributes);
 
-            return npc;
-        }
+        //    return npc;
+        //}
 
         public Townsperson GenerateNPC(TownsfolkUserOptions options)
         {

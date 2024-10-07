@@ -13,6 +13,7 @@ namespace GameTools.TownsfolkManager.Contracts
 
         public Townsperson()
         {
+            UserId = string.Empty;
             GivenName = string.Empty;
             FamilyName = string.Empty;
             Pronouns = string.Empty;

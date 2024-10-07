@@ -16,10 +16,13 @@ namespace GameTools.TownsfolkManager.Contracts
         /// </summary>
         /// <returns></returns>
         Townsperson GenerateTownsperson();
-
-        [Obsolete("This version of the method will be going away soon.  Change over to the TownspersonUserOptions parameter instead.")]
-        Townsperson GenerateTownspersonFromOptions(Dictionary<string, string?> selectedAttributes);
-
+        
+        /// <summary>
+        /// Creates a new Townsperson, using any options supplied from the end user,
+        /// and choosing randomly for those options that are not supplied.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         Townsperson GenerateTownspersonFromOptions(TownsfolkUserOptions options);
 
         /// <summary>

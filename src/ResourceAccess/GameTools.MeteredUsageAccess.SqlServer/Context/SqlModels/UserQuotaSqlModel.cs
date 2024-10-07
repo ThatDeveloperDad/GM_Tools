@@ -11,6 +11,12 @@ namespace GameTools.MeteredUsageAccess.SqlServer.Context.SqlModels
     [Table("UserQuotas", Schema="usage")]
     internal class UserQuotaSqlModel
     {
+        public UserQuotaSqlModel()
+        {
+            UserId = string.Empty;
+            CreatedDateUtc = DateTime.UtcNow;
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
