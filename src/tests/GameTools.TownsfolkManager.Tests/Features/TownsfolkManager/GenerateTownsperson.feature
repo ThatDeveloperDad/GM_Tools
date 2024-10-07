@@ -16,11 +16,28 @@ Scenario: UserProvidesNoSelectedAttributes
 	And the return value will have a Background
 
 @happy-path
-Scenario: UserProvidesSomeSelectedAttributes
+Scenario Outline: RandomNpcsWithUserSelections
 	Given The TownsfolkManager is Ready to Generate NPCs
-	When the user Requests an Npc with Elf as the species
+	When the user supplies attributes with the NPC request
+	And the requested Species is <species>
+	And the requested Background is <background>
+	And the requested Vocation is <vocation>
+	And the options are sent to the TownsfolkManager
 	Then The GenerateTownsperson Method will return a non-null value
 	And the return value will be a Townsperson instance
-	And the return value Species will be Elf
-	And the return value will have a Vocation
-	And the return value will have a Background
+	And the Townsperson will have their Species set to <species>
+	And the Townsperson will have their Background set to <background>
+	And the Townsperson will have their Vocation set to <vocation>
+
+	Examples: 
+	| species    | background | vocation |
+	| "<null>"   | "<null>"   | "<null>"  |
+	| "Human"   | "<null>"   | "<null>"  |
+	| "<null>"   | "Guild Artisan"   | "<null>"  |
+	| "<null>"   | "<null>"   | "Shop Keeper"  |
+	| "Elf"   | "Noble"   | "<null>"  |
+	| "Dwarf"   | "<null>"   | "Leatherworker"  |
+	| "<null>"   | "Soldier"   | "Jeweler"  |
+	| "Halfling"   | "Urchin"   | "Thief"  |
+	
+
