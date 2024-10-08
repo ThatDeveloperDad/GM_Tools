@@ -20,7 +20,7 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 				AppContext.ContextItemChanged += OnContextItemChangedAsync;
 			}
 
-			if(AppContext.GetUserLimits() == null)
+			if(AppContext?.GetUserLimits() == null && AppContext != null)
 			{
 				_userLimitsModel = await AppContext.GetUserLimits();
 				StateHasChanged();

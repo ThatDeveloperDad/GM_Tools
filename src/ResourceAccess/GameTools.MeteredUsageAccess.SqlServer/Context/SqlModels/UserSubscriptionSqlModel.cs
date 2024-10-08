@@ -11,6 +11,10 @@ namespace GameTools.MeteredUsageAccess.SqlServer.Context.SqlModels
     [Table("UserSubscriptions", Schema="usage")]
     internal class UserSubscriptionSqlModel
     {
+        public UserSubscriptionSqlModel()
+        {
+            UserId = string.Empty;
+        }
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 

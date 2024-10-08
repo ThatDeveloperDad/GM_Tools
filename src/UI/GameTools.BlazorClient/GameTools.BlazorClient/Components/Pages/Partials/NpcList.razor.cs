@@ -16,6 +16,7 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public Func<int, Task> ViewNpcHandler { get; set; }
 
         private CreateNpcPageStates _currentPageState;
+
         [Parameter]
         public CreateNpcPageStates CurrentPageState { get; set; }
 
@@ -95,7 +96,9 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
         private async Task HandlePageStateChanged(PageStateChangedEvent notification)
         {
-            if(notification.NewValue == CreateNpcPageStates.List)
+            _currentPageState = notification.NewValue;
+
+            if(_currentPageState == CreateNpcPageStates.List)
             {
                 await ExecuteFilter();
                 StateHasChanged();

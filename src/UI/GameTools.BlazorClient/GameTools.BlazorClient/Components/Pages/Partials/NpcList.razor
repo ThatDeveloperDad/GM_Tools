@@ -2,11 +2,10 @@
 
 <div class="task-host @this.Visibility">
 <header>
-	<heading>Townsfolk Index</heading>
-	<button class="btn btn-primary @ShowCreateButton.AsString("shown", "hidden")" 
-			style="margin-bottom: 2px;"
+	<heading>Non-Player Characters</heading>
+	<button class="@ShowCreateButton.AsString("shown", "hidden")" 
 			@onclick="OnNewNpcClicked">
-		Create
+			<span class="icon icon-potion-light"></span><span>New NPC</span>
 	</button>
 </header>
 <main>
@@ -21,8 +20,10 @@
 					<span class="npc-list-detail">@npc.Species @npc.Vocation</span>
 				</div>
 				<div class="npc-list-item-actions">
-					<button class="btn btn-secondary @(ShowViewNpcButton.AsString("shown", "hidden"))"
-							@onclick="() => OnViewNpcClicked(npc.NpcId)">View</button>
+					<button class="@(ShowViewNpcButton.AsString("shown", "hidden"))"
+							@onclick="() => OnViewNpcClicked(npc.NpcId)">
+						<span class="icon icon-crystalball-light"></span><span>View</span>
+					</button>
 				</div>
 			</div>
 		}

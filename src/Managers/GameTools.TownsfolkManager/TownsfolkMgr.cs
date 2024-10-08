@@ -7,9 +7,6 @@ using GameTools.TownsfolkManager.Contracts;
 using GameTools.TownsfolkManager.InternalOperations;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using ThatDeveloperDad.Framework.Serialization;
 using ThatDeveloperDad.Framework.Wrappers;
@@ -17,7 +14,7 @@ using ThatDeveloperDad.Framework.Wrappers;
 namespace GameTools.TownsfolkManager
 {
 
-    public class TownsfolkMgr : ITownsfolkManager
+	public class TownsfolkMgr : ITownsfolkManager
     {
         
         private readonly IRulesetAccess _rulesAccess;
@@ -47,20 +44,12 @@ namespace GameTools.TownsfolkManager
         public Townsperson GenerateTownsperson()
         {
             Townsperson npc = new Townsperson();
-
-            
-
-            var selectedOptions = new Dictionary<string, string?>();
-            foreach (var entry in GetNpcOptions())
-            {
-                selectedOptions.Add(entry.Key, null);
-            }
+			TownsfolkUserOptions options = new TownsfolkUserOptions();
 
             // Select the Species and add the available details.
             var speciesChoices = CharacterRules.SpeciesRules.List();
             var selectedSpecies = _shuffler.PickOne(speciesChoices);
-            selectedOptions[nameof(Townsperson.Species)] = selectedSpecies;
-
+            options.Species = selectedSpecies;
             // Name, Subspecies, and Appearance all derive from the Species.
 
             // Species
@@ -74,8 +63,8 @@ namespace GameTools.TownsfolkManager
             // Select the Profession and add its details.
             var professionChoices = CharacterRules.VocationRules.List();
             var npcProfession = _shuffler.PickOne(professionChoices);
-            selectedOptions[nameof(Townsperson.Vocation)] = npcProfession;
-            
+            options.Vocation = npcProfession;
+
             // Does not follow from Species. May follow from Background. Probably not.
             //      Profession Name
             //      Titles
@@ -85,15 +74,13 @@ namespace GameTools.TownsfolkManager
             // Select the Background and add the available details.
             var backgroundChoices = CharacterRules.BackgroundRules.List();
             var npcBackground = _shuffler.PickOne(backgroundChoices);
-            selectedOptions[nameof(Townsperson.Background)] = npcBackground;
-
+            options.Background = npcBackground;
             //      Personality (Seeds)
             //      Skills / Proficiencies
 
             // Personality      (We're going to roll for KEYWORD attributes.)
 
-            npc = GenerateTownspersonFromOptions(selectedOptions);
-
+            npc = GenerateTownspersonFromOptions(options);
             return npc;
         }
 
@@ -145,78 +132,6 @@ namespace GameTools.TownsfolkManager
                 throw new Exception($"Could not apply profession tempalte for {selectedVocation}");
             }
             npc = npc.ApplyVocation(jobTplt, _shuffler, _diceBag);
-
-            return npc;
-        }
-
-        [Obsolete("This version is going away.  Use the TownsfolkUserOptions instead.")]
-        public Townsperson GenerateTownspersonFromOptions(Dictionary<string, string?> selectedAttributes)
-        {
-            Townsperson npc = new Townsperson();
-
-            // Select the Species and add the available details.
-            string selectedSpecies;
-            if (selectedAttributes[nameof(Townsperson.Species)] != null)
-            {
-                selectedSpecies = selectedAttributes[nameof(Townsperson.Species)]!;
-            }
-            else
-            {
-                var speciesChoices = CharacterRules.SpeciesRules.List();
-                selectedSpecies = _shuffler.PickOne(speciesChoices);
-            }
-            SpeciesTemplate? speciesTemplate = CharacterRules.SpeciesRules.Load(selectedSpecies);
-            if (speciesTemplate != null)
-            {
-                npc.ApplySpecies(speciesTemplate, _shuffler, _diceBag);
-            }
-            else
-            {
-                throw new Exception("Something very dumb happened.");
-            }
-
-            //Vocations
-            string selectedVocation;
-            if (selectedAttributes[nameof(Townsperson.Vocation)] != null)
-            {
-                selectedVocation = selectedAttributes[nameof(Townsperson.Vocation)]!;
-            }
-            else
-            {
-                // Select the Profession and add its details.
-                var professionChoices = CharacterRules.VocationRules.List();
-                selectedVocation = _shuffler.PickOne(professionChoices);
-            }
-            VocationTemplate? vocation = CharacterRules.VocationRules.Load(selectedVocation);
-            if (vocation != null)
-            {
-                npc.ApplyVocation(vocation, _shuffler, _diceBag);
-            }
-            else
-            {
-                throw new Exception("Something else stupid happened.");
-            }
-
-            string selectedBackground;
-            if (selectedAttributes[nameof(Townsperson.Background)] != null)
-            {
-                selectedBackground = selectedAttributes[nameof(Townsperson.Background)]!;
-            }
-            else
-            {
-                // Select the Background and add the available details.
-                var backgroundChoices = CharacterRules.BackgroundRules.List();
-                selectedBackground = _shuffler.PickOne(backgroundChoices);
-            }
-            BackgroundTemplate? background = CharacterRules.BackgroundRules.Load(selectedBackground);
-            if(background != null)
-            {
-                npc.ApplyBackground(background, _shuffler, _diceBag);
-            }
-            else
-            {
-                throw new Exception("A different bad thing happened.");
-            }
 
             return npc;
         }

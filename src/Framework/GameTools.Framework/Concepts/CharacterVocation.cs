@@ -9,6 +9,7 @@ public sealed class CharacterVocation
 
     public CharacterVocation()
     {
+        _name = string.Empty;
         _skills = new List<string>();
         Name = string.Empty;
         Description = new GeneratedProperty();

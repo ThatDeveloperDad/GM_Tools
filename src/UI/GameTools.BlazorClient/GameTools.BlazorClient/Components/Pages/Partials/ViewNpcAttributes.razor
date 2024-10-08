@@ -5,26 +5,40 @@
     <header>
         <heading>
             
-                <span>Select Npc Options</span>
+                <span>Create new NPC</span>
                 <button class="btn btn-secondary" @onclick="ToggleOptionPanel">@ToggleText</button>
         </heading>
         <div class=" @ShowOptionsPanel.AsString("options-panel", "hidden")">
-	
 			<div class="form-group">
-				<label class="form-label">Species</label>
-				<select @bind="@SelectedSpecies" class="form-select">
-					<option value="">random</option>
-					@foreach (var choice in SelectableOptions["Species"])
+				<label class="form-label">Profession</label>
+				<select @bind="@SelectedVocation" class="form-select">
+					<option value="">Roll !!</option>
+					@foreach (var choice in SelectableOptions["Vocation"])
 					{
 						<option value="@choice">@choice</option>
 					}
 				</select>
+				<label class="form-label">Are they retired?</label>
+				<div class="radio-button-list">
+					<input type="radio" 
+						   id="IsRetired"
+						   checked="@(IsRetired == false)"
+						   @onchange="@(() => IsRetired = false)" /><label>No</label>
+					<input type="radio"
+						   id="IsRetired"
+						   checked="@(IsRetired == true)"
+						   @onchange="@(() => IsRetired = true)" /><label>Yes</label>
+					<input type="radio"
+						   id="IsRetired"
+						   checked="@(IsRetired == null)"
+						   @onchange="@(() => IsRetired = null)" /><label>Roll !!</label>
+				</div>
 			</div>
-		
+
 			<div class="form-group">
 				<label class="form-label">Background</label>
 				<select @bind="@SelectedBackground" class="form-select">
-					<option value="">random</option>
+					<option value="">Roll !!</option>
 					@foreach (var choice in SelectableOptions["Background"])
 					{
 						<option value="@choice">@choice</option>
@@ -33,23 +47,23 @@
 			</div>
 
 			<div class="form-group">
-				<label class ="form-label">Profession</label>
-				<select @bind="@SelectedVocation" class="form-select">
-					<option value="">random</option>
-					@foreach (var choice in SelectableOptions["Vocation"])
+				<label class="form-label">Species</label>
+				<select @bind="@SelectedSpecies" class="form-select">
+					<option value="">Roll !!</option>
+					@foreach (var choice in SelectableOptions["Species"])
 					{
 						<option value="@choice">@choice</option>
 					}
 				</select>
-				<label class="form-label">Retired?</label><input type="checkbox" @bind="@IsRetired" style="form-control"/>
 			</div>
 		</div>
 
 		@if(this.IsRerollVisible)
 		{
-			<button class="btn btn-primary"
-					@onclick="OnCreateNpcClick">
-				Roll Those Dice!
+			<button @onclick="OnCreateNpcClick">
+				<span class="icon icon-d20-light"></span>
+				<span>Roll Those Dice!</span>
+				<span class="icon icon-d20-light"></span>
 			</button>
 		}
     </header>
@@ -71,17 +85,15 @@
 		<nav>
 			@if(SaveButtonIsHandled)
 			{
-				<button class="btn btn-primary"
-					@onclick="OnSaveButtonClick">
-					Save NPC
+				<button @onclick="OnSaveButtonClick">
+					<span class="icon icon-scroll-light"></span><span>Save NPC</span>
 				</button>
 			}
 			<AuthorizeView Policy=@AuthZConstants.pol_PaidUsers>
 				@if (AiButtonIsHandled)
 			{
-				<button class="btn btn-primary"
-						@onclick="OnAiButtonClick">
-					Generate AI Description
+				<button @onclick="OnAiButtonClick">
+						<span class="icon icon-think-light"></span><span>Generate AI Description</span>
 				</button>
 			}
 			</AuthorizeView>

@@ -11,6 +11,13 @@ namespace GameTools.MeteredUsageAccess.SqlServer.Context.SqlModels
     [Table("QuotaTemplates", Schema="usage")]
     internal class QuotaTemplateSqlModel
     {
+        public QuotaTemplateSqlModel()
+        {
+            ResourceKind = string.Empty;
+            ResourceCategory = string.Empty;
+            CreatedDateUtc = DateTime.UtcNow;
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 

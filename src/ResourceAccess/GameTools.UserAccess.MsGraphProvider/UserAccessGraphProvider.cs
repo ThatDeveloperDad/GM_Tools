@@ -2,6 +2,7 @@
 using Azure.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 using System.Collections.Generic;
 using System.Linq;
 namespace GameTools.UserAccess.MsGraphProvider
@@ -11,7 +12,6 @@ namespace GameTools.UserAccess.MsGraphProvider
 		private readonly GraphConfiguration _config;
         private readonly ILogger? _logger;
         private readonly ClientSecretCredential? _secretCred;
-        private readonly GraphServiceClient _graphProxy;
 
         public UserAccessGraphProvider(GraphConfiguration config,
             ILogger<UserAccessGraphProvider>? logger = null)
@@ -56,14 +56,17 @@ namespace GameTools.UserAccess.MsGraphProvider
 				var user = await proxy.Users[userId].GetAsync();
 				if (user != null)
 				{
-					var userGroups = await proxy.Users[userId]
+					var graphCallResult = await proxy.Users[userId]
 						.MemberOf
 						.GetAsync();
+                    
+                    List<DirectoryObject> graphGroups = new List<DirectoryObject>();
+                    graphGroups.AddRange(graphCallResult?.Value ?? Enumerable.Empty<DirectoryObject>());
 
                     var memberGroupNames = new List<string>();
-                    foreach(var group in userGroups.Value)
+                    foreach(var group in graphGroups)
                     {
-                        Microsoft.Graph.Models.Group? grp = group as Microsoft.Graph.Models.Group;
+                        Group? grp = group as Group;
                         if(grp?.DisplayName != null)
                         {
                             memberGroupNames.Add(grp.DisplayName);

@@ -122,9 +122,9 @@ namespace GameTools.API.WorkloadProvider
 				var aiManagerResult = await _aiWorker.ExecuteFunctionAsync(functionName, functionArgs);
 				string aiJson = string.Empty;
 
-				if (aiManagerResult.WasSuccessful)
+				if (aiManagerResult.WasSuccessful && aiManagerResult.Payload != null)
 				{
-					var resultPayload = aiManagerResult.Payload;
+					AiFunctionResult resultPayload = aiManagerResult.Payload;
 
 					aiJson = resultPayload?.AiResponse ?? string.Empty;
 					aiJson = aiJson.StripMarkdown();
@@ -132,11 +132,10 @@ namespace GameTools.API.WorkloadProvider
 
                     apiPayload.Result = characterAttributes;
 
-					//TODO:  Once we have User stuff, update the user's Usage info
-					// Consider doing this as a disconnected async operation
+					//TODO: Consider doing this as a disconnected async operation
 					// so we don't have to wait for the DB write to return
 					// the AI response to the user.
-					var aiTokens = resultPayload.Consumption;
+					var aiTokens = resultPayload!.Consumption;
 
 					TokenUsageEntry usageEntry = new TokenUsageEntry()
 					{
@@ -144,8 +143,8 @@ namespace GameTools.API.WorkloadProvider
 						FunctionName = functionName,
 						modelId = "gpt-4o",
 						InferenceTimeUtc = DateTime.UtcNow,
-						PromptTokens = aiTokens.PromptTokens,
-						CompletionTokens = aiTokens.CompletionTokens
+						PromptTokens = aiTokens?.PromptTokens ?? 0,
+						CompletionTokens = aiTokens?.CompletionTokens ?? 0
 					};
 
 
@@ -161,6 +160,14 @@ namespace GameTools.API.WorkloadProvider
 				else
 				{
                     aiManagerResult.CopyErrorsTo(ref apiResult);
+
+                    if (aiManagerResult.Payload == null)
+                    {
+                        Guid errorId = Guid.NewGuid();
+                        string errorMessage = $"The invocation of {functionName} returned a null result. Other errors may have occurred.";
+
+                        apiResult.AddError(errorId, errorMessage);
+                    }
 				}
 			}
             catch(Exception ex)
@@ -181,6 +188,11 @@ namespace GameTools.API.WorkloadProvider
             // Read the Json into a new Json Document, then interrogate its parts for the 
             // values to assign to the GenProps.
             
+            if(string.IsNullOrWhiteSpace(json))
+            {
+                return genProps;
+            }
+
             using (var doc = JsonDocument.Parse(json))
             {
                 if(doc == null)
@@ -232,25 +244,10 @@ namespace GameTools.API.WorkloadProvider
         /// Randomly generates an NPC from the available options provided by
         /// the configured RuleSet.
         /// </summary>
-        /// <param name="includeAI"></param>
         /// <returns></returns>
         public Townsperson GenerateNPC()
         {
-            string npcJson = string.Empty;
             var npc = _npcManager.GenerateTownsperson();
-
-            return npc;
-        }
-
-        /// <summary>
-        /// This overload exists only for the console application.
-        /// </summary>
-        /// <param name="selectedAttributes"></param>
-        /// <returns></returns>
-        public Townsperson GenerateNPC(Dictionary<string, string?> selectedAttributes)
-        {
-            var npc = _npcManager.GenerateTownspersonFromOptions(selectedAttributes);
-
             return npc;
         }
 

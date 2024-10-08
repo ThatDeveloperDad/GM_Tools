@@ -1,6 +1,6 @@
 ﻿.npc-list {
-    padding-top: .5em;
-    border-top: solid 1px black;
+    /*padding-top: .5em;
+    border-top: solid 1px black;*/
     padding-bottom: .25em;
     margin-bottom: .75em;
     display:flex;
@@ -8,12 +8,12 @@
 }
 
 .npc-list .npc-list-item:nth-child(odd) {
-    background-color: #ECECEC;
+    background-color: rgba(0, 0, 0, .1);
 }
 
 .npc-list-item {
     border: solid 1px #ACACAC;
-    border-radius: .25em;
+    border-radius: .5em;
     margin-bottom: .15em;
     padding: .5em;
     display:flex;

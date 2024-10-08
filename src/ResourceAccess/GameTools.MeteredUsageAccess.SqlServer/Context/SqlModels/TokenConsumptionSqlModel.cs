@@ -11,6 +11,14 @@ namespace GameTools.MeteredUsageAccess.SqlServer.Context.SqlModels
     [Table("TokenConsumption", Schema="usage")]
     internal class TokenConsumptionSqlModel
     {
+        public TokenConsumptionSqlModel()
+        {
+            UserId = string.Empty;
+            InferenceTimeUtc = DateTime.UtcNow;
+            FunctionName = string.Empty;
+            modelId = string.Empty;
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 

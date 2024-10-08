@@ -1,21 +1,17 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">The DM's Familiar</a>
-    </div>
+    <a class="navbar-brand" href=""><span class="icon icon-cat-light"></span>The DM's Familiar</a>  
 </div>
-
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<input type="checkbox" id="NavMenuToggle" title="Navigation menu" class="navbar-toggler" />
+<div class="nav-scrollable">
     <nav class="flex-column-split">
         <div class="nav-section nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <span class="bi icon-tower-light" aria-hidden="true"></span> Home
             </NavLink>
             <!-- Policy Protected Menu Items -->
             <AuthorizeView>
                 <NavLink class="nav-link" href="create-npc">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> NPCs
+                    <span class="bi icon-people-light" aria-hidden="true"></span> NPCs
                 </NavLink>
             </AuthorizeView>
             <!-- End Policy-protected menu items -->
@@ -28,17 +24,17 @@
                 <Authorized>
                     <span class="nav-section-label">Hello @context.User.Identity?.Name!<br /></span>
                     <NavLink class="nav-link" href="roadmap">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Roadmap
+                        <span class="bi icon-roadmap-light" aria-hidden="true"></span> Roadmap
                     </NavLink>
 
                     <NavLink class="nav-link" href="/MicrosoftIdentity/Account/SignOut">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Sign out
+                        <span class="bi icon-signout-light" aria-hidden="true"></span> Sign out
                     </NavLink>
                     @* <a href="MicrosoftIdentity/Account/SignOut">Log out</a> *@
                 </Authorized>
                 <NotAuthorized>
                     <NavLink class="nav-link" href="/MicrosoftIdentity/Account/SignIn">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Sign in
+                        <span class="bi icon-signin-light" aria-hidden="true"></span> Sign in
                     </NavLink>
                     @* <a href="/MicrosoftIdentity/Account/SignIn">Sign in</a> *@
                 </NotAuthorized>
