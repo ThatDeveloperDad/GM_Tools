@@ -18,8 +18,15 @@ namespace GameTools.API.WorkloadProvider.Models
 	/// <typeparam name="T"></typeparam>
 	public class ResourceResult<T> where T : class
 	{
+		/// <summary>
+		/// Carries the most recently updated Quotas for the user that requested
+		/// the operation for which this is a result.
+		/// </summary>
 		public QuotaContainer? UpdatedQuotas { get; set; }
 
+		/// <summary>
+		/// Carries the result of the operation.
+		/// </summary>
 		public T? Result { get; set; }
 	}
 }
