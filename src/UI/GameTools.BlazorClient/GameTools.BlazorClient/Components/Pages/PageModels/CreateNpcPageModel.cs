@@ -2,13 +2,17 @@
 using GameTools.BlazorClient.Services;
 using GameTools.Framework.Contexts;
 using Microsoft.AspNetCore.Components;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using ThatDeveloperDad.Framework.Converters;
 using ThatDeveloperDad.Framework.Wrappers;
 namespace GameTools.BlazorClient.Components.Pages.PageModels
 {
 	public class CreateNpcPageModel:ComponentBase
 	{
+		[Inject]
+		public ILogger<CreateNpcPageModel>? Logger { get; set; }
 
         public CreateNpcPageModel():base()
         {
@@ -61,7 +65,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		[CascadingParameter(Name = "LoadingOverlay")]
 		protected ContentLoadingComponent? LoadingOverlay { get; set; }
 
-		public GameToolsUser CurrentUser { get; set; }
+		public GameToolsUser? CurrentUser { get; set; }
 
 		public CreateNpcPageStates PageState { get; set; }
 
@@ -172,11 +176,11 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			// I won't even remember to do this stuff later until the compiler barks at me.
 			// Think of a more elegant  way for components to hold and resolve their own dependencies.
 			GuardNpcServicesExists();
+			GuardUserExists();
 
-			var user = AppContext.GetCurrentUser();
-			
+			var user = AppContext!.GetCurrentUser(true);
 
-			npcModel.SetOwner(user.UserId);
+			npcModel.SetOwner(user!.UserId);
 
 			NpcClientModel npcAi = await NpcServices!.GetAiDescription(npcModel, AppContext);
 			return npcAi;
@@ -185,18 +189,14 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		private async Task<NpcClientModel> SaveNpc(NpcClientModel npcModel)
 		{
 			GuardNpcServicesExists();
+			GuardUserExists();
 
 			// Get the currentUserId.
-			var currentUser = AppContext?.GetCurrentUser(true);
-			if (currentUser == null)
-			{
-				return npcModel;
-			}
-
+			var currentUser = AppContext!.GetCurrentUser(true);
 			var userLimits = await AppContext.GetUserLimits();
 
 
-			npcModel.SetOwner(currentUser.UserId);
+			npcModel.SetOwner(currentUser!.UserId);
 			OpResult<NpcClientModel> proxyResult = await NpcServices!.SaveNpc(npcModel, AppContext);
 
 			if(proxyResult.WasSuccessful && proxyResult.Payload !=null)
@@ -207,7 +207,6 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			{
 				//TODO:  FIgure out how Blazor handles errors once they reach the UI.
 				//Also TODO:  Figure out how to get the appsettings.Developer.json pulled in.
-				//Also also TODO: Fix the tests I broke by changing the TOwnspersonMgr ctor
 				string error = proxyResult.Errors.FirstOrDefault().Value;
 				throw new Exception(error);
 			}
@@ -249,14 +248,70 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 			}
 		}
 
-		private void GuardNpcServicesExists()
+		private void GuardNpcServicesExists(
+			[CallerMemberName] string callerMethod = "",
+			[CallerFilePath] string callerFile = "",
+			[CallerLineNumber] int callerLineNum = 0)
 		{
 			if(NpcServices == null)
 			{
-				//TODO:  add logging.  Generate a Guid to identify the exception incident and attach that to the log
-				// event, and the error message.
-				throw new InvalidOperationException("Cannot complete the request due to an internal error.");
+				Guid errorId = Guid.NewGuid();
+				string message = $"Cannot perform the requested operation.  NpcServices is null.  ErrorId: {errorId}";
+
+				LogError(callerMethod, callerFile, callerLineNum, errorId, message);
+
+				throw new InvalidOperationException(message);
 			}
+		}
+
+		private void GuardAppContextExists(
+			[CallerMemberName] string callerMethod = "",
+			[CallerFilePath] string callerFile = "",
+			[CallerLineNumber] int callerLineNum = 0)
+		{
+			if(AppContext == null)
+			{
+				Guid errorId = Guid.NewGuid();
+				string message = $"Cannot perform the requested task while the Application Context is not initialized.  ErrorId: {errorId}";
+
+				LogError(callerMethod, callerFile, callerLineNum, errorId, message);
+
+				throw new InvalidOperationException(message);
+			}
+		}
+
+		private void GuardUserExists(
+			[CallerMemberName] string callerMethod = "",
+			[CallerFilePath] string callerFile = "",
+			[CallerLineNumber] int callerLineNum = 0)
+		{
+			GuardAppContextExists();
+			var user = AppContext!.GetCurrentUser(true);
+			if(user == null)
+			{
+				Guid errorId = Guid.NewGuid();
+				string message = $"Cannot perform the requested task while the CurrentUser is unknown.  ErrorId: {errorId}";
+
+				LogError(callerMethod, callerFile, callerLineNum, errorId, message);
+
+				throw new InvalidOperationException(message);
+			}
+		}
+
+		private void LogError(string callerMethod, string callerFile, int callerLineNum, Guid errorId, string message)
+		{
+			var logEntry = new
+			{
+				ErrorId = errorId.ToString(),
+				Message = message,
+				CallerMethod = callerMethod,
+				CallerFile = callerFile,
+				CallerLineNum = callerLineNum,
+				ErrorTime = DateTime.UtcNow.ToString()
+			};
+
+			string logEntryJson = JsonSerializer.Serialize(logEntry);
+			Logger?.LogError(logEntryJson);
 		}
 	}
 }

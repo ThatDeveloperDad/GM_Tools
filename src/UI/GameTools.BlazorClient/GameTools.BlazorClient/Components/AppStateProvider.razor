@@ -28,6 +28,11 @@ else
 
 	public ContextContainer AppContext { get; set; }
 
+	public AppStateProvider()
+	{
+		AppContext = new ContextContainer();
+	}
+
 	protected override async Task OnInitializedAsync()
 	{
 		var browserState = await ProtectedSessionStore.GetAsync<ContextContainer>(appContextKey);
@@ -126,6 +131,9 @@ else
 
 	private async Task OnContextItemChanged(string contextKey)
 	{
-		await ContextItemChanged?.Invoke(contextKey);
+		if(ContextItemChanged != null)
+		{
+			await ContextItemChanged.Invoke(contextKey);
+		}
 	}
 }
