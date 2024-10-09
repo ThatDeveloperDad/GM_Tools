@@ -38,7 +38,7 @@ namespace GameTools.TownsfolkManager.Tests.Features.TownsfolkManager
         
         public static async System.Threading.Tasks.Task FeatureSetupAsync()
         {
-            testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(null, global::Reqnroll.xUnit.ReqnrollPlugin.XUnitParallelWorkerTracker.Instance.GetWorkerId());
+            testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly();
             global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/TownsfolkManager", "GetNPCOptions", "Loads and returns the selectable character options from the \r\nRulesetAccess compo" +
                     "nent.", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
             await testRunner.OnFeatureStartAsync(featureInfo);
@@ -46,10 +46,9 @@ namespace GameTools.TownsfolkManager.Tests.Features.TownsfolkManager
         
         public static async System.Threading.Tasks.Task FeatureTearDownAsync()
         {
-            string testWorkerId = testRunner.TestWorkerId;
             await testRunner.OnFeatureEndAsync();
+            global::Reqnroll.TestRunnerManager.ReleaseTestRunner(testRunner);
             testRunner = null;
-            global::Reqnroll.xUnit.ReqnrollPlugin.XUnitParallelWorkerTracker.Instance.ReleaseWorker(testWorkerId);
         }
         
         public async System.Threading.Tasks.Task TestInitializeAsync()

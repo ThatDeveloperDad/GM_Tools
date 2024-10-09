@@ -17,8 +17,8 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
     public class GetNPCOptionsStepDefinitions
     {
 
-        private ITownsfolkManager _testClass;
-        private Dictionary<string, string[]?>? _npcOptions;
+        private ITownsfolkManager? _testClass;
+        private Dictionary<string, string[]>? _npcOptions;
         private ICardDeck _mockShuffler = new Mock<ICardDeck>().Object;
         private IDiceBag _mockDiceBag = new Mock<IDiceBag>().Object;
         private INpcAccess _mockNpcAccess = new Mock<INpcAccess>().Object;
@@ -52,7 +52,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
         [When("I call GetNpcOptions")]
         public void WhenICallGetNpcOptions()
         {
-            _npcOptions = _testClass.GetNpcOptions();
+            _npcOptions = _testClass?.GetNpcOptions();
         }
 
         [Then("I should receive a containing valid options for species, background, and vocation")]
@@ -67,7 +67,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
             int? vocationCount = vocationList?.Length;
 
             string[]? backgroundList = null;
-            _npcOptions.TryGetValue("Background", out  backgroundList);
+            _npcOptions?.TryGetValue("Background", out  backgroundList);
             int? backgroundCount = backgroundList?.Length;
 
             Assert.NotNull(speciesCount);
@@ -95,7 +95,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
         [Then("GetNpcOptions throws An InvalidOperationException.")]
         public void ThenGetNpcOptionsThowsAnInvalidOperationException_()
         {
-            Assert.Throws<InvalidOperationException>(() => _testClass.GetNpcOptions());
+            Assert.Throws<InvalidOperationException>(() => _testClass?.GetNpcOptions());
         }
 
         [Given("Ruleset Access is configured but the Ruleset is missing required template collections.")]
@@ -123,7 +123,7 @@ namespace GameTools.TownsfolkManager.Tests.StepDefinitions
             int? vocationCount = vocationList?.Length;
 
             string[]? backgroundList = null;
-            _npcOptions.TryGetValue("Background", out backgroundList);
+            _npcOptions?.TryGetValue("Background", out backgroundList);
             int? backgroundCount = backgroundList?.Length;
 
             Assert.NotNull(speciesCount);

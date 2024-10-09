@@ -1,6 +1,7 @@
 ﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
 using GameTools.BlazorClient.Services;
 using Microsoft.AspNetCore.Components;
+using ThatDeveloperDad.Framework.Converters;
 
 namespace GameTools.BlazorClient.Components.Pages.Partials
 {
@@ -25,6 +26,7 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         public ViewNpcDetails()
         {
             CurrentNpc = CurrentNpc ?? new NpcClientModel();
+            Visibility = false.AsVisibility();
         }
 
         public string NpcName => CurrentNpc.NpcName;
@@ -56,9 +58,21 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
 		public async Task OnSaveNpcClicked()
         {
-            await LoadingOverlay.SetLoadingState(true, "Giving the NPC a home.");
-            await SaveNpc_Clicked?.Invoke(CurrentNpc);
-            await LoadingOverlay.SetLoadingState(false);
+            if (LoadingOverlay != null)
+            {
+                await LoadingOverlay
+                        .SetLoadingState(true, "Giving the NPC a home.");
+            }
+
+            if (SaveNpc_Clicked != null)
+            {
+                await SaveNpc_Clicked.Invoke(CurrentNpc);
+            }
+
+            if (LoadingOverlay != null)
+            {
+                await LoadingOverlay.SetLoadingState(false);
+            }
         }
     }
 }

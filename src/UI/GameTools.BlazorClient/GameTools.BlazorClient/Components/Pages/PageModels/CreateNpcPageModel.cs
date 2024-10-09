@@ -139,12 +139,13 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
         public string ShowForPageState(CreateNpcPageStates requiredState)
 		{
-			return (requiredState == PageState).AsString("shown", "hidden");
+			return (requiredState == PageState).AsVisibility();
 		}
 
+		[Obsolete("This method is marked for deletion.")]
 		public string HideWhenPageState(CreateNpcPageStates requiredState)
 		{
-			return (requiredState != PageState).AsString("shown", "hidden");
+			return (requiredState != PageState).AsVisibility();
 		}
 
 		private void RegisterNpcEventHandlers()
