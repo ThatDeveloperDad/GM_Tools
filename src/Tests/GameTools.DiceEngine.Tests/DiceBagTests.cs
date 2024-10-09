@@ -257,7 +257,14 @@ public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
     [Theory]
     [ClassData(typeof(DiceBagNoModifierTestData))]
     public void DiceBagTests_ModifiedRolls_HaveOneExtraMathRock
+        // These pragma warnings were added after much thought.
+        // To stand up a whole new ClassData type to be able to remove an
+        // unused parameter seemed silly and needless.
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable xUnit1026 // Theory methods should use all of their parameters
         (int numberOfDice, MathRockKind rockKind, int numberOfRuns)
+#pragma warning restore xUnit1026 // Theory methods should use all of their parameters
+#pragma warning restore IDE0060 // Remove unused parameter
     {
         // We're ignoring the numberOfRuns here, because we don't
         // care about the RESULTS of the dice being rolled,
@@ -287,7 +294,11 @@ public void DiceBag_WhenResultModifierIsNotZero_ItAltersTheResult
     [Theory]
     [ClassData(typeof(DiceBagNoModifierTestData))]
     public void DiceBagTest_ModifiedRoll_ResultIsInCorrectRange
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable xUnit1026 // Theory methods should use all of their parameters
         (int numberOfDice, MathRockKind rockKind, int numberOfRuns)
+#pragma warning restore xUnit1026 // Theory methods should use all of their parameters
+#pragma warning restore IDE0060 // Remove unused parameter
     {
         // Ignoring numberOfRuns here too.
 

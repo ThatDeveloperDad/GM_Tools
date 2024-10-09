@@ -90,7 +90,17 @@ namespace GameTools.BlazorClient.Services
 
             if(apiResult.WasSuccessful)
             {
-                Townsperson? apiPayload = apiResult?.Payload?.Result;
+				if (apiResult?.Payload?.Result == null)
+				{
+                    Guid errorId = Guid.NewGuid();
+                    string nullNpcMsg = "The Save NPC operation did not return the latest version of this NPC.";
+                    proxyResult.AddError(errorId, nullNpcMsg);
+
+                    return proxyResult;
+				}
+				
+                Townsperson apiPayload = apiResult.Payload.Result;
+                
                 NpcClientModel proxyPayload = new NpcClientModel(apiPayload);
                 proxyResult.Payload = proxyPayload;
 

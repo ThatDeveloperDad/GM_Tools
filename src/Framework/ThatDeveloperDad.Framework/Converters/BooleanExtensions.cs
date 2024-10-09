@@ -8,12 +8,18 @@ namespace ThatDeveloperDad.Framework.Converters
 {
 	public static class BooleanExtensions
 	{
+		public const string False = "false";
+		public const string True = "true";
+		public const string ShowItem = "shown";
+		public const string HideItem = "hidden";
+
+
 		public static string AsString(this bool value)
 		{
-			string ret = "false";
+			string ret = False;
 			if (value) 
 			{ 
-				ret = "true"; 
+				ret = True; 
 			}
 
 			return ret;
@@ -26,6 +32,17 @@ namespace ThatDeveloperDad.Framework.Converters
 			{
 				ret = trueValue;
 			}
+			return ret;
+		}
+
+		public static string AsVisibility(this bool value)
+		{
+			string ret = HideItem;
+			if(value == true)
+			{
+				ret = ShowItem;
+			}
+
 			return ret;
 		}
 	}

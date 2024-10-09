@@ -1,12 +1,16 @@
 ﻿using GameTools.BlazorClient.Components.Pages.ComponentServices;
 using GameTools.BlazorClient.Services;
 using Microsoft.AspNetCore.Components;
+using ThatDeveloperDad.Framework.Converters;
 
 namespace GameTools.BlazorClient.Components.Pages.Partials
 {
 	public partial class ViewNpcAttributes
     {
-        [Parameter]
+		private const string OptionsButtonText_Show = "Show";
+		private const string OptionsButtonText_Hide = "Hide";
+
+		[Parameter]
         public Func<NpcClientModel, Task>? GenerateAi_Clicked { get; set; }
 
         [Parameter]
@@ -46,6 +50,8 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             UseMetric = false;
 			SelectableOptions = SelectableOptions ?? new Dictionary<string, string[]>();
 			UserOptions = UserOptions ?? new NpcUserOptions();
+            Visibility = false.AsVisibility();
+            ToggleText = OptionsButtonText_Show;        
 		}
 
 		protected override void OnInitialized()
@@ -128,7 +134,10 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
 		private void SetOptionPanelVisibility(bool shouldShow)
 		{
-			ToggleText = (shouldShow) ? "Hide" : "Show";
+			ToggleText = shouldShow
+                            .AsString(
+                                OptionsButtonText_Hide,
+								OptionsButtonText_Show);
 			ShowOptionsPanel = shouldShow;
 		}
 
@@ -142,18 +151,45 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
         public async Task OnAiButtonClick()
         {
-            await LoadingOverlay.SetLoadingState(true, "Thinking...");
-            await GenerateAi_Clicked?.Invoke(CurrentNpc);
-            await LoadingOverlay.SetLoadingState(false);
+            if (LoadingOverlay != null)
+            {
+                await LoadingOverlay.SetLoadingState(true, "Thinking...");
+            }
+
+            if (GenerateAi_Clicked != null)
+            {
+                await GenerateAi_Clicked.Invoke(CurrentNpc);
+            }
+
+            if (LoadingOverlay != null)
+            {
+                await LoadingOverlay.SetLoadingState(false);
+            }
 		}
 
         public bool SaveButtonIsHandled => SaveNpc_Clicked != null;
 
         public async void OnSaveButtonClick()
         {
-            await LoadingOverlay.SetLoadingState(true, "Saving...");
-            SaveNpc_Clicked?.Invoke(CurrentNpc);
-			await LoadingOverlay.SetLoadingState(false);
+            // Note that the null-forgiving operator is not being used here.
+            // Use of the null-forgiving operator doesn't work well with
+            // awaited async methods.  We need to do the null-check
+            // as a discrete evaluation.
+            if(LoadingOverlay != null)
+            {
+				await LoadingOverlay.SetLoadingState(true, "Saving...");
+			}
+            
+            if(SaveNpc_Clicked != null)
+            {
+                await SaveNpc_Clicked.Invoke(CurrentNpc);
+			}
+            
+            if(LoadingOverlay != null)
+            {
+				await LoadingOverlay.SetLoadingState(false);
+			}
+			
 		}
 
         public void UpdateClientModel(NpcClientModel model)

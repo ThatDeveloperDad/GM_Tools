@@ -3,17 +3,24 @@ using GameTools.BlazorClient.Components.Pages.PageModels;
 using GameTools.BlazorClient.Services;
 using GameTools.Framework.Contexts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
+using ThatDeveloperDad.Framework.Converters;
 
 namespace GameTools.BlazorClient.Components.Pages.Partials
 {
     public partial class NpcList
     {
+        [Inject]
+        public ILogger<NpcList>? Logger { get; set; }
+
         [Parameter]
         public Action? NewNpcHandler { get; set; }
 
         [Parameter]
-        public Func<int, Task> ViewNpcHandler { get; set; }
+        public Func<int, Task>? ViewNpcHandler { get; set; }
 
         private CreateNpcPageStates _currentPageState;
 
@@ -30,7 +37,7 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
         protected NpcServiceProxy? NpcServices { get; set; }
 
         [CascadingParameter]
-        protected AppStateProvider AppContext { get; set; }
+        protected AppStateProvider? AppContext { get; set; }
 
 		[CascadingParameter(Name ="LoadingOverlay")]
 		protected ContentLoadingComponent? LoadingOverlay { get; set; }
@@ -39,7 +46,7 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 		{
 			FilteredNpcs = Array.Empty<NpcFilterRowModel>();
 			EmptyTableText = "Loading ...";
-            
+            Visibility = false.AsVisibility();
 		}
 
 		protected override void OnInitialized()
@@ -114,17 +121,12 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
                 return;
             }
 
-            var user = AppContext.GetCurrentUser();
+            GuardNpcServicesExists();
+            GuardUserExists();
 
-            if(user == null)
-            {
-                return;
-            }
+			GameToolsUser user = AppContext?.GetCurrentUser(true)!;
 
-            GuardNpcServicesExist();
-
-
-            NpcClientFilter filter = new NpcClientFilter();
+			NpcClientFilter filter = new NpcClientFilter();
             filter.UserId = user.UserId;
 
             await ShowLoadingMessage("Loading NPCs...");
@@ -182,12 +184,70 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             }
         }
 
-        private void GuardNpcServicesExist()
-        {
-            if (NpcServices == null)
-            {
-                throw new InvalidOperationException("Cannot execute the requested operation because the ServiceProxy is null.");
-            }
-        }
-    }
+		private void GuardNpcServicesExists(
+			[CallerMemberName] string callerMethod = "",
+			[CallerFilePath] string callerFile = "",
+			[CallerLineNumber] int callerLineNum = 0)
+		{
+			if (NpcServices == null)
+			{
+				Guid errorId = Guid.NewGuid();
+				string message = $"Cannot perform the requested operation.  NpcServices is null.  ErrorId: {errorId}";
+
+				LogError(callerMethod, callerFile, callerLineNum, errorId, message);
+
+				throw new InvalidOperationException(message);
+			}
+		}
+
+		private void GuardAppContextExists(
+			[CallerMemberName] string callerMethod = "",
+			[CallerFilePath] string callerFile = "",
+			[CallerLineNumber] int callerLineNum = 0)
+		{
+			if (AppContext == null)
+			{
+				Guid errorId = Guid.NewGuid();
+				string message = $"Cannot perform the requested task while the Application Context is not initialized.  ErrorId: {errorId}";
+
+				LogError(callerMethod, callerFile, callerLineNum, errorId, message);
+
+				throw new InvalidOperationException(message);
+			}
+		}
+
+		private void GuardUserExists(
+			[CallerMemberName] string callerMethod = "",
+			[CallerFilePath] string callerFile = "",
+			[CallerLineNumber] int callerLineNum = 0)
+		{
+			GuardAppContextExists();
+			var user = AppContext!.GetCurrentUser(true);
+			if (user == null)
+			{
+				Guid errorId = Guid.NewGuid();
+				string message = $"Cannot perform the requested task while the CurrentUser is unknown.  ErrorId: {errorId}";
+
+				LogError(callerMethod, callerFile, callerLineNum, errorId, message);
+
+				throw new InvalidOperationException(message);
+			}
+		}
+
+		private void LogError(string callerMethod, string callerFile, int callerLineNum, Guid errorId, string message)
+		{
+			var logEntry = new
+			{
+				ErrorId = errorId.ToString(),
+				Message = message,
+				CallerMethod = callerMethod,
+				CallerFile = callerFile,
+				CallerLineNum = callerLineNum,
+				ErrorTime = DateTime.UtcNow.ToString()
+			};
+
+			string logEntryJson = JsonSerializer.Serialize(logEntry);
+			Logger?.LogError(logEntryJson);
+		}
+	}
 }
