@@ -186,12 +186,12 @@ namespace GameTools.TownsfolkManager
             return managerResult;
         }
 
-        public async Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId)
+        public async Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId, string userId)
         {
             Townsperson? managerPayload = null;
             OpResult<Townsperson?> managerResult = new OpResult<Townsperson?>(managerPayload);
 
-            var accessResult = await _npcAccess.LoadNpc(townspersonId);
+            var accessResult = await _npcAccess.LoadNpc(townspersonId, userId);
 
             if(accessResult == null)
             {
@@ -225,7 +225,7 @@ namespace GameTools.TownsfolkManager
             return managerResult;
         }
 
-        public async Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson)
+        public async Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson, string userId)
         {
             OpResult<Townsperson> managerResult = new OpResult<Townsperson>();
             managerResult.Payload = townsperson;
@@ -233,7 +233,7 @@ namespace GameTools.TownsfolkManager
             //TODO:  Fix the transformer method to also map the Name.
             NpcAccessModel storageModel = townsperson.ToNpcAccessModel();
 
-            OpResult<int> saveResult = await _npcAccess.SaveNpc(storageModel);
+            OpResult<int> saveResult = await _npcAccess.SaveNpc(storageModel, userId);
 
             if(saveResult.WasSuccessful)
             {

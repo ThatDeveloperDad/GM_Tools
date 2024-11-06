@@ -37,14 +37,14 @@ namespace GameTools.TownsfolkManager.Contracts
         /// </summary>
         /// <param name="townsperson">The NPC instance to save.</param>
         /// <returns>Returns a Task with an OpResult carrying the ID of the townsperson that was persisted.</returns>
-        Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson);
+        Task<OpResult<Townsperson>> SaveTownsperson(Townsperson townsperson, string userId);
 
         /// <summary>
         /// Retrieves the identified Townsperson instance from the configured storage location.
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        Task<OpResult<Townsperson?>> LoadTownsperson(int npcId);
+        Task<OpResult<Townsperson?>> LoadTownsperson(int npcId, string userId);
 
         /// <summary>
         /// Returns a list of all Townsperson instances currently stored in the configured storage location.

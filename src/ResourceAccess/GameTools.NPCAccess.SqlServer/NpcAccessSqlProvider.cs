@@ -14,11 +14,11 @@ namespace GameTools.NPCAccess.SqlServer
 {
     public class NpcAccessSqlProvider : INpcAccess, IDisposable
     {
-        private ILogger<NpcAccessSqlProvider> _logger;
+        private ILogger<NpcAccessSqlProvider>? _logger;
         private readonly string _userDataCn;
         private NpcAccessDbContext? _ctx;
         
-        public NpcAccessSqlProvider(ILogger<NpcAccessSqlProvider> logger,
+        public NpcAccessSqlProvider(ILogger<NpcAccessSqlProvider>? logger,
                                     string userDataCn)
         {
             _logger = logger;
@@ -108,7 +108,7 @@ namespace GameTools.NPCAccess.SqlServer
             return accessResult;
         }
 
-        public async Task<OpResult<int>> SaveNpc(NpcAccessModel npc)
+        public async Task<OpResult<int>> SaveNpc(NpcAccessModel npc, string? userId = null)
         {
             OpResult<int> result = new OpResult<int>();
 
@@ -152,7 +152,7 @@ namespace GameTools.NPCAccess.SqlServer
             return result;
         }
 
-        public async Task<OpResult<NpcAccessModel?>> LoadNpc(int npcId)
+        public async Task<OpResult<NpcAccessModel?>> LoadNpc(int npcId, string? userId = "")
         {
             NpcAccessModel? accessPayload = null;
             OpResult<NpcAccessModel?> accessResult = new OpResult<NpcAccessModel?>(accessPayload);

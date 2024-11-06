@@ -11,7 +11,7 @@ namespace GameTools.MeteredUsageAccess.ResourceModels
         public UserSubscription()
         {
             UserId = string.Empty;
-            Quota = new UserQuota();
+            Quotas = new UserQuota();
         }
 
         public int Id { get; set; }
@@ -24,6 +24,6 @@ namespace GameTools.MeteredUsageAccess.ResourceModels
 
         public bool WillRenew { get; set; }
 
-        public UserQuota Quota { get; set; }
+        public UserQuota Quotas { get; set; }
     }
 }

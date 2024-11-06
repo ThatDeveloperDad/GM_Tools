@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\..\Managers\GameTools.TownsfolkManager\GameTools.TownsfolkManager.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.MeteredUsageAccess.SqlServer\GameTools.MeteredUsageAccess.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.MeteredUsageAccess\GameTools.MeteredUsageAccess.csproj" />
+    <ProjectReference Include="..\..\..\ResourceAccess\GameTools.NPCAccess.AzureTables\GameTools.NPCAccess.AzureTables.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.NPCAccess.SqlServer\GameTools.NPCAccess.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.NPCAccess\GameTools.NPCAccess.csproj" />
     <ProjectReference Include="..\..\..\ResourceAccess\GameTools.RulesetAccess\GameTools.RulesetAccess.csproj" />

@@ -67,7 +67,7 @@ namespace GameTools.MeteredusageAccess.SqlServer
             }
         }
 
-        public async Task<OpResult<UserQuota>> ConsumeQuotaAsync(int quotaId, int amountConsumed)
+        public async Task<OpResult<UserQuota>> ConsumeQuotaAsync(int quotaId, int amountConsumed, string? userId = "")
         {
             var result = new OpResult<UserQuota>();
 
@@ -152,7 +152,7 @@ namespace GameTools.MeteredusageAccess.SqlServer
             return result;
         }
 
-        public async Task<OpResult<UserQuota>> ReleaseQuotaAsync(int quotaId, int amountReleased)
+        public async Task<OpResult<UserQuota>> ReleaseQuotaAsync(int quotaId, int amountReleased, string? userId = "")
         {
             var result = new OpResult<UserQuota>();
 

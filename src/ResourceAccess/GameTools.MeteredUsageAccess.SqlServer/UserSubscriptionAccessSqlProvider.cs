@@ -182,7 +182,7 @@ namespace GameTools.MeteredUsageAccess.SqlServer
                     AiGenerations = tokenQuota
                 };
 
-                resultPayload.Quota = userQuotas;
+                resultPayload.Quotas = userQuotas;
             }
             catch(Exception e)
             {
@@ -355,7 +355,7 @@ namespace GameTools.MeteredUsageAccess.SqlServer
                     AiGenerations = tokenQuota.ToDto(tokenTemplate)!,
                     Storage = storageQuota.ToDto(storageTemplate)!
                 };
-                resultPayload.Quota = userQuota;
+                resultPayload.Quotas = userQuota;
             }
             catch(Exception ex)
             {
