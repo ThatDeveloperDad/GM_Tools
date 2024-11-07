@@ -94,8 +94,10 @@ namespace TableStorageTest.LocalServices.Transformers
 			resource.WillRenew = dto.WillRenew;
 			resource.StartDateUtc = dto.StartDateUtc;
 			resource.EndDateUtc = dto.EndDateUtc;
+			resource.Quotas.Storage.QuotaId = dto.UserQuotas.Storage.QuotaId;
 			resource.Quotas.Storage.Budget = dto.UserQuotas.Storage.Budget;
 			resource.Quotas.Storage.Consumption = dto.UserQuotas.Storage.Consumption;
+			resource.Quotas.AiGenerations.QuotaId = dto.UserQuotas.NpcAiGeneration.QuotaId;
 			resource.Quotas.AiGenerations.Budget = dto.UserQuotas.NpcAiGeneration.Budget;
 			resource.Quotas.AiGenerations.Consumption = dto.UserQuotas.NpcAiGeneration.Consumption;
 			resource.CurrentStatus = dto.CurrentStatus;

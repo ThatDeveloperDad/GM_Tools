@@ -90,7 +90,8 @@ namespace GameTools.MeteredUsageAccess.AzureTablesProvider
 
 				var entity = meterEntry.ToEntity();
 
-				await table.UpsertEntityAsync(entity);
+				await table.AddEntityAsync(entity);
+				
 			}
 			catch(Exception ex)
 			{

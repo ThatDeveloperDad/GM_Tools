@@ -12,7 +12,7 @@ namespace GameTools.MeteredUsageAccess.AzureTablesProvider
 {
 	public static class DependencyBuilder
 	{
-		private const string RequiredCnString = "userdata";
+		private const string RequiredCnString = "AzureTableStorage";
 
 		public static IServiceCollection UseQuotaAccessTableProvider
 			(this IServiceCollection services,
