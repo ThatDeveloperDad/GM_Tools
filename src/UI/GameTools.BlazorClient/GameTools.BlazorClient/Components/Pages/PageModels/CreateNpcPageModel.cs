@@ -216,7 +216,11 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 		private async Task<NpcClientModel> LoadNpc(int npcId)
 		{
 			GuardNpcServicesExists();
-			var proxyResult = await NpcServices!.LoadNpc(npcId);
+			GuardUserExists();
+
+			string userId = AppContext!.GetCurrentUser()!.UserId;
+
+			var proxyResult = await NpcServices!.LoadNpc(npcId, userId);
 			if(proxyResult == null)
 			{
 				throw new Exception("The attempt to load the NPC failed.");
@@ -263,6 +267,7 @@ namespace GameTools.BlazorClient.Components.Pages.PageModels
 
 				throw new InvalidOperationException(message);
 			}
+
 		}
 
 		private void GuardAppContextExists(

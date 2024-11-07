@@ -63,7 +63,7 @@ namespace GameTools.API.WorkloadProvider
 
         Task<OpResult<IEnumerable<FilteredTownsperson>>> FilterTownsfolk(TownspersonFilter filter);
 
-        Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId);
+        Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId, string userId);
 
         Task<OpResult<QuotaContainer>> LoadUserQuotas(string userId);
     }

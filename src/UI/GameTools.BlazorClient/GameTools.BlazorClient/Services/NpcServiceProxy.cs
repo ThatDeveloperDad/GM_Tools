@@ -170,15 +170,13 @@ namespace GameTools.BlazorClient.Services
             return proxyResult;
         }
 
-        public async Task<OpResult<NpcClientModel?>> LoadNpc(int npcId)
+        public async Task<OpResult<NpcClientModel?>> LoadNpc(int npcId, string userId)
         {
             NpcClientModel? proxyPayload = null;
             OpResult<NpcClientModel?> proxyResult = new OpResult<NpcClientModel?>(proxyPayload);
 
-            var apiResult = await _npcApi.LoadTownsperson(npcId);
+            var apiResult = await _npcApi.LoadTownsperson(npcId, userId);
 
-            //TODO:  This is where we left off on Wednesday, 8/14.
-            // Pick up troubleshooting here.
             if(apiResult == null)
             {
                 proxyResult.AddError(Guid.NewGuid(), "The API did not return any result.");

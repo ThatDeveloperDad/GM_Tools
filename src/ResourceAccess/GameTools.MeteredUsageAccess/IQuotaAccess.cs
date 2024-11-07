@@ -15,7 +15,8 @@ namespace GameTools.MeteredUsageAccess
     public interface IQuotaAccess
     {
 
-        OpResult<UserQuota> LoadUserQuota(string userId) => LoadUserQuotaAsync(userId).Result;
+        OpResult<UserQuota> LoadUserQuota(string userId) 
+            => LoadUserQuotaAsync(userId).Result;
 
         /// <summary>
         /// Loads the usage quotas for a particular user.
@@ -23,7 +24,8 @@ namespace GameTools.MeteredUsageAccess
         /// <returns>The a Task containing User's Quota object w/ their current consumption data</returns>
         Task<OpResult<UserQuota>> LoadUserQuotaAsync(string userId);
 
-        OpResult<UserQuota> ConsumeQuota(int quotaId, int amountConsumed) => ConsumeQuotaAsync(quotaId, amountConsumed).Result;
+        OpResult<UserQuota> ConsumeQuota(int quotaId, int amountConsumed, string? userId = "") 
+            => ConsumeQuotaAsync(quotaId, amountConsumed, userId).Result;
 
         /// <summary>
         /// Updates the consumed quota for a specific user, resource, and time period.
@@ -31,9 +33,10 @@ namespace GameTools.MeteredUsageAccess
         /// Use this when a new character is generated or saved.
         /// </summary>
         /// <returns>The a Task containing The User's Quota object w/ the updated consumption data</returns>
-        Task<OpResult<UserQuota>> ConsumeQuotaAsync(int quotaId, int amountConsumed);
+        Task<OpResult<UserQuota>> ConsumeQuotaAsync(int quotaId, int amountConsumed, string? userId = "");
 
-        OpResult<UserQuota> ReleaseQuota(int quotaId, int amounReleased) => ReleaseQuotaAsync(quotaId, amounReleased).Result;
+        OpResult<UserQuota> ReleaseQuota(int quotaId, int amounReleased, string? userId = "") 
+            => ReleaseQuotaAsync(quotaId, amounReleased, userId).Result;
 
         /// <summary>
         /// Updates a specific quota for User + Resource when an 
@@ -43,7 +46,7 @@ namespace GameTools.MeteredUsageAccess
         /// BUT, If an NPC is deleted, that will release a StorageConsumption unit.
         /// </summary>
         /// <returns>The a Task containing Returns the User's Quota object with the updated consumption data.</returns>
-        Task<OpResult<UserQuota>> ReleaseQuotaAsync(int quotaId, int amounReleased);
+        Task<OpResult<UserQuota>> ReleaseQuotaAsync(int quotaId, int amountReleased, string? userId = "");
 
         Task<OpResult> LogTokenConsumption(TokenConsumptionEntry meterEntry);
     }

@@ -182,7 +182,7 @@ namespace GameTools.MeteredUsageAccess.SqlServer
                     AiGenerations = tokenQuota
                 };
 
-                resultPayload.Quota = userQuotas;
+                resultPayload.Quotas = userQuotas;
             }
             catch(Exception e)
             {
@@ -355,7 +355,7 @@ namespace GameTools.MeteredUsageAccess.SqlServer
                     AiGenerations = tokenQuota.ToDto(tokenTemplate)!,
                     Storage = storageQuota.ToDto(storageTemplate)!
                 };
-                resultPayload.Quota = userQuota;
+                resultPayload.Quotas = userQuota;
             }
             catch(Exception ex)
             {
@@ -372,16 +372,17 @@ namespace GameTools.MeteredUsageAccess.SqlServer
         {
             var query = Ctx
                 .UserSubscriptions
-                .Where(us => us.UserId == userId
-                          && us.PeriodEndUtc >= _today
-                          && (us.UnsubscribedDateUtc ?? Forever) >= _today);
+                .Where(us => us.UserId == userId);
+                
 
             if(forUpdate == false)
             {
                 query = query.AsNoTracking();
             }
 
-            var currentSubscription = await query.FirstOrDefaultAsync();
+            query = query.OrderByDescending(us => us.PeriodEndUtc);
+
+			var currentSubscription = await query.FirstOrDefaultAsync();
             return currentSubscription;
         }
 
@@ -404,5 +405,10 @@ namespace GameTools.MeteredUsageAccess.SqlServer
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-    }
+
+		public Task<UserResource> SaveUserAccount(UserResource user)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

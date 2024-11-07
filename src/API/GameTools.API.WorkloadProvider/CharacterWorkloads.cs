@@ -148,7 +148,7 @@ namespace GameTools.API.WorkloadProvider
 					};
 
 
-					var quotaUpdateResult = await _usageManager.ConsumeQuotaAsync(userAiQuotaId, 1);
+					var quotaUpdateResult = await _usageManager.ConsumeQuotaAsync(userAiQuotaId, 1, userId);
 					await _usageManager.LogTokenConsumption(usageEntry);
 
                     apiPayload.UpdatedQuotas = quotaUpdateResult.Payload;
@@ -272,13 +272,13 @@ namespace GameTools.API.WorkloadProvider
             {
 				bool isNewCharacter = (npc.Id == null);
 
-				var managerResult = await _npcManager.SaveTownsperson(npc);
+				var managerResult = await _npcManager.SaveTownsperson(npc, userId);
                 if(managerResult.WasSuccessful)
                 {
                     resourceResult.Result = managerResult.Payload;
 					if (isNewCharacter)
 					{
-						var quotaUpdate = await _usageManager.ConsumeQuotaAsync(userStorageQuotaId, 1);
+						var quotaUpdate = await _usageManager.ConsumeQuotaAsync(userStorageQuotaId, 1, userId);
                         resourceResult.UpdatedQuotas = quotaUpdate.Payload;
 					}
 				}
@@ -305,9 +305,9 @@ namespace GameTools.API.WorkloadProvider
             return apiResult;
         }
 
-        public async Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId)
+        public async Task<OpResult<Townsperson?>> LoadTownsperson(int townspersonId, string userId)
         {
-            var apiResult = await _npcManager.LoadTownsperson(townspersonId);
+            var apiResult = await _npcManager.LoadTownsperson(townspersonId, userId);
             return apiResult;
         }
 

@@ -18,14 +18,14 @@ namespace GameTools.UserManager
 			_logger = logger;
         }
 
-        public async Task<OpResult<QuotaContainer>> ConsumeQuotaAsync(int quotaId, int amountConsumed)
+        public async Task<OpResult<QuotaContainer>> ConsumeQuotaAsync(int quotaId, int amountConsumed, string userId)
 		{
 			OpResult<QuotaContainer> mgrResult = new OpResult<QuotaContainer>();
 			QuotaContainer? mgrPayload = null;
 
 			try
 			{
-				var accessResult = await  _quotaAccess.ConsumeQuotaAsync(quotaId, amountConsumed);
+				var accessResult = await  _quotaAccess.ConsumeQuotaAsync(quotaId, amountConsumed, userId);
 				if (accessResult.WasSuccessful && accessResult.Payload != null)
 				{
 					mgrPayload = accessResult.Payload.ToAppModel();
@@ -78,14 +78,14 @@ namespace GameTools.UserManager
 			return mgrResult;
 		}
 
-		public async Task<OpResult<QuotaContainer>> ReleaseQuotaAsync(int quotaId, int amountReleased)
+		public async Task<OpResult<QuotaContainer>> ReleaseQuotaAsync(int quotaId, int amountReleased, string userId)
 		{
 			OpResult<QuotaContainer> mgrResult = new OpResult<QuotaContainer>();
 			QuotaContainer? mgrPayload = null;
 
 			try
 			{
-				var accessResult = await _quotaAccess.ReleaseQuotaAsync(quotaId, amountReleased);
+				var accessResult = await _quotaAccess.ReleaseQuotaAsync(quotaId, amountReleased, userId);
 				if(accessResult.WasSuccessful && accessResult.Payload != null)
 				{
 					mgrPayload = accessResult.Payload.ToAppModel();

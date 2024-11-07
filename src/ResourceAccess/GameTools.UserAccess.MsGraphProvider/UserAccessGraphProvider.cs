@@ -9,11 +9,13 @@ namespace GameTools.UserAccess.MsGraphProvider
 {
 	public class UserAccessGraphProvider : IUserAccess
 	{
-		private readonly GraphConfiguration _config;
-        private readonly ILogger? _logger;
-        private readonly ClientSecretCredential? _secretCred;
+        //TODO: Turn these back to private after working the migration code.
+		protected readonly GraphConfiguration _config;
+        protected readonly ClientSecretCredential? _secretCred;
 
-        public UserAccessGraphProvider(GraphConfiguration config,
+		private readonly ILogger? _logger;
+
+		public UserAccessGraphProvider(GraphConfiguration config,
             ILogger<UserAccessGraphProvider>? logger = null)
         {
             _logger = logger;
@@ -28,6 +30,8 @@ namespace GameTools.UserAccess.MsGraphProvider
         }
 
 #region Implements IUserAccess
+        public string IdentityVendor => "MS-Entra";
+
 		/// <summary>
         /// Connects to Microsoft Graph to obtain the list of security groups
         /// the identified user object is a member of.
@@ -92,6 +96,117 @@ namespace GameTools.UserAccess.MsGraphProvider
 
 			return groups;
 		}
+
+        public async Task<List<AppUser>> LoadAppUsersAsync(string baseAppGroupId)
+        {
+            List<AppUser> users = new();
+
+            var token = await GetTokenAsync();
+            if(token == null)
+            {
+                throw new Exception("Could not get a token to the Graph Service.");
+            }
+
+            using(GraphServiceClient client 
+                = new(_secretCred, new[] {"https://graph.microsoft.com/.default" }))
+            {
+                var groupMembers = await client
+                    .Groups[baseAppGroupId]
+                    .Members
+					.GetAsync((requestConfiguration) =>
+					{
+						requestConfiguration.QueryParameters.Select = new string[] { "displayName", "id", "identities", "memberof" };
+					});
+
+                foreach(var item in groupMembers.Value)
+                {
+                    var user = item as User;
+
+                    if(user!=null)
+                    {
+                        AppUser appuser = new()
+                            {
+							UserId = user.Id,
+							
+							DisplayName = user.DisplayName ?? string.Empty
+						};
+                        users.Add(appuser);
+                    }
+                }
+
+
+                //var graphUsers = await client
+                //    .Users
+                //    .GetAsync();
+
+                //foreach(var item in graphUsers.Value)
+                //{
+                //    users.Add
+                //        (
+                //            new AppUser()
+                //            {
+                //                UserId = item.Id,
+                //                Email = item.Mail ?? string.Empty,
+                //                DisplayName = item.DisplayName ?? string.Empty
+                //            }
+                //        );
+                //}
+            }
+
+            return users;
+        }
+
+        public async Task<AppUser?> LoadAppUserAsync(string userId)
+        {
+            AppUser? user = null;
+
+            //         var token = await GetTokenAsync();
+            //         if(token == null)
+            //{
+            //	throw new Exception("Could not get a token to the Graph Service.");
+            //}
+
+            using (GraphServiceClient client = new GraphServiceClient
+                (_secretCred, new[] { "https://graph.microsoft.com/.default" }))
+            {
+                var graphUser = await client
+                    .Users[userId]
+                    .GetAsync();
+
+                if(graphUser != null)
+                {
+                    user = new()
+                    {
+                        UserId = graphUser.Id??userId,
+                        DisplayName = graphUser.DisplayName ?? string.Empty
+                    };
+                }
+            }
+
+			return user;
+        }
+
+  //      public async Task LoopEntraGroups()
+  //      {
+		//	List<AppUser> users = new();
+
+		//	var token = await GetTokenAsync();
+		//	if (token == null)
+		//	{
+		//		throw new Exception("Could not get a token to the Graph Service.");
+		//	}
+
+  //          using (GraphServiceClient client
+  //              = new(_secretCred, new[] { "https://graph.microsoft.com/.default" }))
+  //          {
+  //              var groups = await client.Groups.GetAsync();
+
+  //              foreach(var group in groups.Value)
+  //              {
+  //                  Console.WriteLine($"{group.DisplayName} {group.Id}");
+  //              }
+  //          }
+		//}
 
 		#endregion
 

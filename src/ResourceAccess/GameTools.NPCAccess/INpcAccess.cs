@@ -10,7 +10,7 @@ namespace GameTools.NPCAccess
         /// </summary>
         /// <param name="npc"></param>
         /// <returns>Task with an int result.</returns>
-        Task<OpResult<int>> SaveNpc(NpcAccessModel npc);
+        Task<OpResult<int>> SaveNpc(NpcAccessModel npc, string? userId = null);
 
         /// <summary>
         /// Returns an Enumerable collection of NPCFilterResult objects
@@ -27,6 +27,6 @@ namespace GameTools.NPCAccess
         /// </summary>
         /// <param name="npcId">The ID of the npc to be retrieved.</param>
         /// <returns>An instance of OpResult, which will have any error messages that were encountered during the retrieval operation, or an instance of the NpcAccessModel, if found.</returns>
-        Task<OpResult<NpcAccessModel?>> LoadNpc(int npcId);
+        Task<OpResult<NpcAccessModel?>> LoadNpc(int npcId, string? userId = "");
     }
 }
