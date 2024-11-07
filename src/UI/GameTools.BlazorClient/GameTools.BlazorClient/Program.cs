@@ -3,7 +3,6 @@ using GameTools.BlazorClient.Components;
 using GameTools.BlazorClient.Middleware;
 using GameTools.BlazorClient.Services;
 using GameTools.DiceEngine;
-using GameTools.MeteredUsageAccess.SqlServer;
 using GameTools.MeteredUsageAccess.AzureTablesProvider;
 using GameTools.NPCAccess.AzureTables;
 using GameTools.Ruleset.DnD5eSRD;
