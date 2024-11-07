@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameTools.MeteredUsageAccess.ResourceModels
+namespace TableStorageTest.LocalServices
 {
-	public class UserIdResource
+	/// <summary>
+	/// Holds a user's ID for the identified external vendor's systems.
+	/// </summary>
+	internal class UserVendorId
 	{
 		public string VendorName { get; set; }
 		public string UserIdAtVendor { get; set; }

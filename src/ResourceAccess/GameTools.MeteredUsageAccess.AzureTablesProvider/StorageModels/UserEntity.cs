@@ -17,6 +17,8 @@ namespace GameTools.MeteredUsageAccess.AzureTablesProvider.StorageModels
 
         public string DisplayName { get; set; }
 
+		public string SubscriptionStatus { get; set; }
+
 		public string IdsJson { get; set; } = string.Empty;
 
 		public string CurrentSubscriptionJson { get; set; } = string.Empty;
@@ -37,8 +39,8 @@ namespace GameTools.MeteredUsageAccess.AzureTablesProvider.StorageModels
 		/// </summary>
 		private string? _rowKeyDummy;
 		public string RowKey { get => UserId; set => _rowKeyDummy = value; }
-		public DateTimeOffset? Timestamp { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-		public ETag ETag { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+		public DateTimeOffset? Timestamp { get; set; }
+		public ETag ETag { get; set; }
 #endregion
 
 	}

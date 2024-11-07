@@ -14,6 +14,9 @@ namespace GameTools.MeteredUsageAccess
     /// </summary>
     public interface IUserSubscriptionAccess
     {
+        //TODO:  Pull this into a different access component (MAYBE???)
+        Task<UserResource?> SaveUserAccount(UserResource user);
+
         /// <summary>
         /// Invoked when a new Subscription is created for a User.
         /// 

@@ -8,6 +8,7 @@ namespace GameTools.UserAccess
 {
 	public interface IUserAccess
 	{
+		string IdentityVendor { get; }
 
 		/// <summary>
 		/// Obtains the list of Permission Groups the current user belongs to.
@@ -17,5 +18,9 @@ namespace GameTools.UserAccess
 		List<string> LoadUserPermissionGroups(string? userId);
 
 		Task<List<string>> LoadUserPermissionGroupsAsync(string? userId);
+
+		Task<List<AppUser>> LoadAppUsersAsync(string baseAppUserGroupId);
+
+		Task<AppUser?> LoadAppUserAsync(string userId);
 	}
 }

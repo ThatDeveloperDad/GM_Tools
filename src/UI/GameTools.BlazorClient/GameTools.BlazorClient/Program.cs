@@ -4,8 +4,8 @@ using GameTools.BlazorClient.Middleware;
 using GameTools.BlazorClient.Services;
 using GameTools.DiceEngine;
 using GameTools.MeteredUsageAccess.SqlServer;
+using GameTools.MeteredUsageAccess.AzureTablesProvider;
 using GameTools.NPCAccess.AzureTables;
-using GameTools.NPCAccess.SqlServer;
 using GameTools.Ruleset.DnD5eSRD;
 using GameTools.RulesetAccess;
 using GameTools.RulesetAccess.Contracts;
@@ -171,15 +171,15 @@ namespace GameTools.BlazorClient
                 //TODO: GitHubIssue #100 - rename this method to comply with the naming pattern that's emerged.
                 //builder.Services.UseNpcSqlServerAccess(builder.Configuration);
                 builder.Services.UseNpcTableStorageProvider(builder.Configuration);
-                builder.Services.UseQuotaAccessSqlProvider(builder.Configuration);
-                builder.Services.UseUserSubscriptionSqlProvider(builder.Configuration);
+                builder.Services.UseQuotaAccessTableProvider(builder.Configuration);
+                builder.Services.UseSubscriptionAccessTableProvider(builder.Configuration);
             }
             catch(Exception ex)
             {
-                startupLog.LogError(ex, "Could not attach the SqlProviders.");
+                startupLog.LogError(ex, "Could not attach the Resource Providers.");
                 throw;
             }
-            startupLog.LogInformation($"SqlAccess Providers added OK.");
+            startupLog.LogInformation($"Resource Providers added OK.");
 
             // Add the UsageMeter component (UsageManager)
             builder.Services.AddScoped<IUsageMeters, UsageManager>();

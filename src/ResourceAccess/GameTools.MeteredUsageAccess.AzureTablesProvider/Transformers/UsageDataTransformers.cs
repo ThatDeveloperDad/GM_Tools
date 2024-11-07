@@ -45,6 +45,7 @@ namespace GameTools.MeteredUsageAccess.AzureTablesProvider.Transformers
 
 			entity.UserId = dto.UserId;
 			entity.DisplayName = dto.DisplayName;
+			entity.SubscriptionStatus = dto.SubscriptionStatus;
 			entity.IdsJson = dto.Ids.SerializeForStorage()??string.Empty;
 			entity.CurrentSubscriptionJson = dto.CurrentSubscription?.SerializeForStorage()??string.Empty;
 			entity.SubscriptionActivityJson = dto.SubscriptionActivity?.SerializeForStorage()??string.Empty;
@@ -59,6 +60,7 @@ namespace GameTools.MeteredUsageAccess.AzureTablesProvider.Transformers
 			UserResource dto = new();
 			dto.UserId = entity.UserId;
 			dto.DisplayName = entity.DisplayName;
+			dto.SubscriptionStatus = entity.SubscriptionStatus;
 
 			if (string.IsNullOrWhiteSpace(entity.IdsJson) == false)
 			{
@@ -92,6 +94,7 @@ namespace GameTools.MeteredUsageAccess.AzureTablesProvider.Transformers
 		{
 			entity.UserId = dto.UserId;
 			entity.DisplayName = dto.DisplayName;
+			entity.SubscriptionStatus =	dto.SubscriptionStatus;
 			entity.IdsJson = dto.Ids.SerializeForStorage()??string.Empty;
 			entity.CurrentSubscriptionJson = dto.CurrentSubscription?.SerializeForStorage()??string.Empty;
 			entity.SubscriptionActivityJson = dto.SubscriptionActivity?.SerializeForStorage()??string.Empty;

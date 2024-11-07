@@ -14,9 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ResourceAccess\GameTools.NPCAccess.AzureTables\GameTools.NPCAccess.AzureTables.csproj" />
-    <ProjectReference Include="..\ResourceAccess\GameTools.NPCAccess.SqlServer\GameTools.NPCAccess.SqlServer.csproj" />
-    <ProjectReference Include="..\ResourceAccess\GameTools.NPCAccess\GameTools.NPCAccess.csproj" />
+    <ProjectReference Include="..\Framework\GameTools.Framework\GameTools.Framework.csproj" />
+    <ProjectReference Include="..\ResourceAccess\GameTools.MeteredUsageAccess.AzureTablesProvider\GameTools.MeteredUsageAccess.AzureTablesProvider.csproj" />
+    <ProjectReference Include="..\ResourceAccess\GameTools.MeteredUsageAccess.SqlServer\GameTools.MeteredUsageAccess.SqlServer.csproj" />
+    <ProjectReference Include="..\ResourceAccess\GameTools.MeteredUsageAccess\GameTools.MeteredUsageAccess.csproj" />
+    <ProjectReference Include="..\ResourceAccess\GameTools.UserAccess.MsGraphProvider\GameTools.UserAccess.MsGraphProvider.csproj" />
+    <ProjectReference Include="..\ResourceAccess\GameTools.UserAccess\GameTools.UserAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

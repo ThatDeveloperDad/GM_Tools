@@ -12,6 +12,7 @@ namespace GameTools.MeteredUsageAccess.ResourceModels
         {
 			UserId = string.Empty;
 			DisplayName = string.Empty;
+			SubscriptionStatus = "None";
 			Ids = new List<UserIdResource>();
 			SubscriptionActivity = new List<SubscriptionActivityResource>();
         }
@@ -19,6 +20,8 @@ namespace GameTools.MeteredUsageAccess.ResourceModels
         public string UserId { get; set; }
 
 		public string DisplayName { get; set; }
+
+		public string SubscriptionStatus { get; set; }
 
 		public List<UserIdResource> Ids { get; set; }
 

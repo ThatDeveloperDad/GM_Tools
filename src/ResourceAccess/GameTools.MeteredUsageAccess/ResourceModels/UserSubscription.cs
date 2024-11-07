@@ -24,6 +24,8 @@ namespace GameTools.MeteredUsageAccess.ResourceModels
 
         public bool WillRenew { get; set; }
 
+        public string CurrentStatus { get; set; }
+
         public UserQuota Quotas { get; set; }
     }
 }
