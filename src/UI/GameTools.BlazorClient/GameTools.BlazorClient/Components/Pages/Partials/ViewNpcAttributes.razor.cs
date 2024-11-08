@@ -56,12 +56,20 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
 		protected override void OnInitialized()
 		{
-			base.OnInitialized();
 			SetOptionPanelVisibility(false);
+		}
+
+		protected async override Task OnInitializedAsync()
+		{
+            SetOptionPanelVisibility(false);
+            await SetControlledButtonsAsync();
 		}
 
 		[CascadingParameter(Name = "LoadingOverlay")]
 		protected ContentLoadingComponent? LoadingOverlay { get; set; }
+
+		[CascadingParameter]
+		protected AppStateProvider? AppContext { get; set; }
 
 		public string? SelectedSpecies
         {
@@ -147,8 +155,48 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 			SetOptionPanelVisibility(false);
 		}
 
-		public bool AiButtonIsHandled => GenerateAi_Clicked != null;
+        private async Task SetControlledButtonsAsync()
+        {
+            // Set a local flag to show/hide AI Button.
+            _isAiButtonVisible = await GetAiButtonVisibility();
 
+            // Set a local flag to show/hide Save Button.
+            _isSaveButtonVisible = await GetSaveButtonVisibility();
+		}
+
+        private async Task<bool> GetAiButtonVisibility()
+        {
+			if (GenerateAi_Clicked == null)
+			{
+				return false;
+			}
+
+            if(AppContext == null)
+            {
+                return false;
+            }
+
+            var userQuotas = await AppContext.GetUserLimits();
+
+            if(userQuotas == null)
+            {
+                return false;
+            }
+
+			int generationsAvailable = userQuotas
+				.NpcAiDescriptions?
+				.AvailableQuota ?? 0;
+
+			if (generationsAvailable <= 0)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+        private bool _isAiButtonVisible;
+        
         public async Task OnAiButtonClick()
         {
             if (LoadingOverlay != null)
@@ -167,7 +215,39 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             }
 		}
 
-        public bool SaveButtonIsHandled => SaveNpc_Clicked != null;
+        private async Task<bool> GetSaveButtonVisibility()
+        {
+			if (SaveNpc_Clicked == null)
+			{
+				return false;
+			}
+
+            if(AppContext == null)
+            {
+                return false;
+            }
+
+            var userQuotas = await AppContext.GetUserLimits();
+
+            if(userQuotas == null)
+            {
+                return false;
+            }
+
+            int storageAvailable = userQuotas
+                .NpcsInStorage?
+                .AvailableQuota ?? 0;
+
+            if (storageAvailable <= 0)
+            {
+                return false;
+            }
+
+            return true;
+		}
+
+        public bool _isSaveButtonVisible;
+        
 
         public async void OnSaveButtonClick()
         {

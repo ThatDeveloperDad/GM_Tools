@@ -7,8 +7,13 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 {
 	public partial class ViewNpcDetails
 	{
+		public bool _isSaveButtonVisible;
+        private bool _hasChanges;
 
-        [Parameter]
+		[CascadingParameter]
+		protected AppStateProvider? AppContext { get; set; }
+
+		[Parameter]
         public Func<NpcClientModel, Task>? SaveNpc_Clicked { get; set; }
 
         [Parameter]
@@ -29,7 +34,28 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
             Visibility = false.AsVisibility();
         }
 
-        public string NpcName => CurrentNpc.NpcName;
+		protected override async Task OnParametersSetAsync()
+		{   
+			_hasChanges = false;
+			int npcId = CurrentNpc?.NpcModel?.Id ?? 0;
+			if (npcId == 0)
+			{
+				_hasChanges = true;
+			}
+			await SetActionButtonStates();   
+		}
+
+		protected override async Task OnInitializedAsync()
+		{
+			await SetActionButtonStates();
+		}
+
+		private async Task SetActionButtonStates()
+		{
+			_isSaveButtonVisible = await ShouldShowSaveButton();
+		}
+
+		public string NpcName => CurrentNpc.NpcName;
 
         public string Species => CurrentNpc.Species;
         public string Gender => CurrentNpc.Gender;
@@ -51,7 +77,39 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 
         public string DetailedProfession => CurrentNpc.GenProfession;
 
-        public bool IsSaveButtonVisible => SaveNpc_Clicked != null;
+        private async Task<bool> ShouldShowSaveButton()
+        {
+			if(SaveNpc_Clicked == null)
+            {
+                return false;
+            }
+
+            if(_hasChanges == false)
+			{
+				return false;
+			}
+
+            if(AppContext == null)
+            {
+                return false;
+            }
+
+            var userQuota = await AppContext.GetUserLimits();
+
+            if(userQuota == null)
+            {
+                return false;
+            }
+
+            int availableStorageSlots = userQuota.NpcsInStorage.AvailableQuota;
+
+            if(availableStorageSlots <= 0)
+            {
+                return false;
+            }
+
+            return true;
+		}
 
 		[CascadingParameter(Name = "LoadingOverlay")]
 		protected ContentLoadingComponent? LoadingOverlay { get; set; }
