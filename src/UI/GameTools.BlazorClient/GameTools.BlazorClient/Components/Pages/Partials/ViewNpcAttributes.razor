@@ -4,9 +4,8 @@
 <div class="task-host @this.Visibility">
     <header>
         <heading>
-            
-                <span>Create new NPC</span>
-                <button class="btn btn-secondary" @onclick="ToggleOptionPanel">@ToggleText</button>
+            <span>Create new NPC</span>
+            <button class="btn btn-secondary" @onclick="ToggleOptionPanel">@ToggleText</button>
         </heading>
         <div class=" @ShowOptionsPanel.AsString("options-panel", "hidden")">
 			<div class="form-group">
@@ -83,19 +82,20 @@
     </main>
     <footer>
 		<nav>
-			@if(SaveButtonIsHandled)
-			{
-				<button @onclick="OnSaveButtonClick">
-					<span class="icon icon-scroll-light"></span><span>Save NPC</span>
-				</button>
-			}
+			
 			<AuthorizeView Policy=@AuthZConstants.pol_PaidUsers>
-				@if (AiButtonIsHandled)
-			{
-				<button @onclick="OnAiButtonClick">
-						<span class="icon icon-think-light"></span><span>Generate AI Description</span>
-				</button>
-			}
+				@if (_isSaveButtonVisible)
+				{
+					<button @onclick="OnSaveButtonClick">
+						<span class="icon icon-scroll-light"></span><span>Save NPC</span>
+					</button>
+				}
+				@if (_isAiButtonVisible)
+				{
+					<button @onclick="OnAiButtonClick">
+							<span class="icon icon-think-light"></span><span>Generate AI Description</span>
+					</button>
+				}
 			</AuthorizeView>
 		</nav>
     </footer>

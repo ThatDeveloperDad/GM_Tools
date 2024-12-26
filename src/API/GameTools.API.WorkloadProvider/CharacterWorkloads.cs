@@ -141,7 +141,7 @@ namespace GameTools.API.WorkloadProvider
 					{
 						UserId = userId,
 						FunctionName = functionName,
-						modelId = "gpt-4o",
+						modelId = aiTokens?.ModelId??string.Empty,
 						InferenceTimeUtc = DateTime.UtcNow,
 						PromptTokens = aiTokens?.PromptTokens ?? 0,
 						CompletionTokens = aiTokens?.CompletionTokens ?? 0

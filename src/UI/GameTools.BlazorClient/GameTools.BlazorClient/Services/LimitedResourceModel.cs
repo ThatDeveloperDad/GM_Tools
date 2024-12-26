@@ -17,6 +17,8 @@ namespace GameTools.BlazorClient.Services
 
 		public int ConsumedUnits { get; private set; }
 
+		public int AvailableQuota => UnitBudget - ConsumedUnits;
+
 		public void SetValues(int quotaId, int unitBudget, int consumedUnits)
 		{
 			QuotaId = quotaId;
