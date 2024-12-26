@@ -6,16 +6,16 @@
         the base colors defined in the baseVars file.
     */
     
-    --layer-1: rgba(from var(--color-white) r g b / var(--transparent));
-    --layer-lighten: rgba(255, 255, 255, .25);
-    --layer-lighten-more: rgba(255, 255, 255, .5);
+    --layer-1: rgba(from var(--color-light-yellow) r g b / var(--transparent));
+    --layer-lighten: rgba(from var(--color-light-yellow) r g b /  .25);
+    --layer-lighten-more: rgba(from var(--color-light-yellow) r g b /  .5);
 
-    --layer-darken: rgba(from var(--color-black) r g b / .1);
-    --outline-color:  rgba(from var(--color-black) r g b / .25);
+    --layer-darken: rgba(from var(--color-accent-dark) r g b / .1);
+    --outline-color:  rgba(from var(--color-accent-dark) r g b / .25);
 }
 
 body{
-    color: var(--color-black);
+    color: var(--color-accent-dark);
 }
 
 
@@ -25,9 +25,9 @@ hr{
 
 .feature-host {
     background: 
-        linear-gradient(180deg, rgba(15, 90, 240, 1) 0%, 
-                                rgba(15, 90, 240, .25) 15%, 
-                                rgba(255, 255, 255, 0) 100%),
+        linear-gradient(180deg, rgba(147, 12, 16, 1) 0%, 
+                                rgba(147, 12, 16, .25) 15%, 
+                                rgba(255, 254, 189, 0) 100%),
         url(images/bg_grid.svg) repeat;
     color: var(--color-black);
 }
@@ -56,21 +56,21 @@ hr{
 }
 
 button {
-    background-color: var(--color-brand-main);
-    color: var(--color-white);
-    border: 1px solid var(--color-white);
+    background-color: var(--color-accent-dark);
+    color: var(--color-light-yellow);
+    border: 1px solid var(--color-light-yellow);
 }
 
 @media only screen and (min-width: 600px) {
     .feature-host {
         background: 
-        linear-gradient(90deg, rgba(15, 90, 240, 1) 0%, 
-                                rgba(15, 90, 240, .1) 15%, 
-                                rgba(255, 255, 255, 0) 100%),
+        linear-gradient(90deg, rgba(147, 12, 16, 1) 0%, 
+                                rgba(147, 12, 16, .1) 15%, 
+                                rgba(255, 254, 189, 0) 100%),
         url(images/bg_grid.svg) repeat;
     }
 
     body > footer {
-        background-color: var(--color-brand-main);
+        background-color: var(--color-accent-dark);
     }
 }
