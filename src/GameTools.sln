@@ -70,7 +70,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.NPCAccess.AzureTa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableStorageTest", "TableStorageTest\TableStorageTest.csproj", "{40A964C1-6420-4800-AD4C-88949A88F02B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTools.MeteredUsageAccess.AzureTablesProvider", "ResourceAccess\GameTools.MeteredUsageAccess.AzureTablesProvider\GameTools.MeteredUsageAccess.AzureTablesProvider.csproj", "{017D8956-2EA0-4C73-97FE-EED194AFF80A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTools.MeteredUsageAccess.AzureTablesProvider", "ResourceAccess\GameTools.MeteredUsageAccess.AzureTablesProvider\GameTools.MeteredUsageAccess.AzureTablesProvider.csproj", "{017D8956-2EA0-4C73-97FE-EED194AFF80A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

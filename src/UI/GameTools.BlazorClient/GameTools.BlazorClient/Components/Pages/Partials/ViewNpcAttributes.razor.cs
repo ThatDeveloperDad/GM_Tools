@@ -7,8 +7,8 @@ namespace GameTools.BlazorClient.Components.Pages.Partials
 {
 	public partial class ViewNpcAttributes
     {
-		private const string OptionsButtonText_Show = "Show";
-		private const string OptionsButtonText_Hide = "Hide";
+		private const string OptionsButtonText_Show = "Show Options";
+		private const string OptionsButtonText_Hide = "Hide Options";
 
 		[Parameter]
         public Func<NpcClientModel, Task>? GenerateAi_Clicked { get; set; }

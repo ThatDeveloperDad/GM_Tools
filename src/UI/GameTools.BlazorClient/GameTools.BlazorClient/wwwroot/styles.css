@@ -59,6 +59,7 @@ body > footer {
     display:flex;
     flex-direction:row;
     justify-content:space-between;
+    align-items:center;
     
     padding: 0 .5rem;
 }
@@ -180,6 +181,7 @@ button {
     flex-direction:row;
     justify-content: center;
     align-items:center;
+    color: var(--color-light-yellow);
 }
 
 @media only screen and (min-width: 600px) {
