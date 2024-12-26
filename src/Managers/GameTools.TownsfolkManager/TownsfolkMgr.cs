@@ -206,6 +206,19 @@ namespace GameTools.TownsfolkManager
                     if(accessPayload != null)
                     {
                         managerPayload = accessPayload.CharacterDetails.ToInstance<Townsperson>();
+                        // Some serializatons of Townsperson may not include the Id or OwnerId.
+                        // We should rectify this now.
+
+                        if(string.IsNullOrWhiteSpace(managerPayload?.UserId) == true)
+                        {
+                            managerPayload?.SetOwner(userId);
+                        }
+
+                        if(managerPayload?.Id == null)
+                        {
+                            managerPayload?.SetId(townspersonId);
+                        }
+
                         managerResult.Payload = managerPayload;
 					}
                     else
