@@ -3,9 +3,20 @@
 <PageTitle>Home</PageTitle>
 
 <header>
-	<heading>Coming soon!</heading>
+	<heading>Well hello there, Builder!</heading>
 </header>
 <main class="centered-content">
-	<div id="SleepyKitty"></div>
+	<AuthorizeView>
+		<Authorized>
+			<h3>What can I help you create today?</h3>
+			<div id="BlinkyKitty"></div>
+		</Authorized>
+		<NotAuthorized>
+			<h3>SleepyKitty is Sleepy, but she's ready to help you with your game, if you let her know you're here...</h3>
+			<div id="SleepyKitty"></div>
+			<button><a href="/MicrosoftIdentity/Account/SignIn" style="color:var(--color-light-yellow)">Sign Up / Sign In</a></button>
+		</NotAuthorized>
+	</AuthorizeView>
+	
 </main>
 <footer class="hidden"></footer>
