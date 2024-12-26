@@ -11,14 +11,14 @@ main {
 .sidebar {
     background-image: 
             linear-gradient(180deg, 
-                            rgba(0, 75, 150, 1) 0%, 
-                            rgba(15, 90, 240, 1) 50%,
-                            rgba(15, 90, 240, 1) 100%);
+                            rgba(41, 0, 0, 1) 0%, 
+                            rgba(147, 12, 16, 1) 50%,
+                            rgba(147, 12, 16, 1) 100%);
 
 }
 
 .top-row {
-    background-color: #f7f7f7;
+    background-color: #290000;
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
     height: 3.5rem;
@@ -63,9 +63,9 @@ main {
         top: 0;
         background-image: 
             linear-gradient(90deg, 
-                            rgba(0, 75, 150, 1) 0%, 
-                            rgba(15, 90, 240, 1) 50%,
-                            rgba(15, 90, 240, 1) 100%);
+                            rgba(41, 0, 0, 1) 0%, 
+                            rgba(147, 12, 16, 1) 50%,
+                            rgba(147, 12, 16, 1) 100%);
 
     }
 

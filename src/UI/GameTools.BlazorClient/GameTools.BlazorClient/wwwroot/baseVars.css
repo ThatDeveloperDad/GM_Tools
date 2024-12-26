@@ -57,5 +57,12 @@
     --color-success: rgb(0, 200, 0);
     --color-info: rgb(0,0,200);
     
+    --color-light-yellow: rgb(255, 254, 189);
+    --color-accent-red:rgb(147, 12, 16);
+    --color-accent-light:rgb(247, 206, 101);
+    --color-accent-dark:rgb(41, 0, 0);
+    
+
+
     --color-brand-main: rgb(15, 90, 240);
 }
