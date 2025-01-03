@@ -1,26 +1,61 @@
 ﻿@import "baseVars.css";
 
+
 html{
-    font-family: var(--font-set);
+    font-family: var(--font-set-text);
     font-size: var(--font-base-size);
     font-weight: var(--font-weight-base);
 }
 
+header{
+    font-family: var(--font-set-fancy);
+}
+
+h1,h2,h3{
+    font-family: var(--font-set-fancy);
+    font-weight: var(--font-weight-heavy);
+
+}
+
+.app-host > header{
+    font-family: var(--font-set-fancy);
+}
+
 .feature-host heading {
+    font-family: var(--font-set-fancy);
     font-size:1.5rem;
     font-weight: var(--font-weight-heavy);
 }
 
 .task-host heading {
+    font-family: var(--font-set-fancy);
     font-size:1.25rem;
     font-weight: var(--font-weight-bold);
 }
 
 .task-host main heading {
+    font-family: var(--font-set-fancy);
     font-size:1.1rem;
     font-weight: var(--font-weight-emphasized);
 }
 
 a{
     text-decoration:none;
+}
+
+.editorial{
+    font-family: var(--font-set-commentary);
+    font-size:1.1rem;
+    font-weight: var(--font-weight-light);
+}
+
+.editorial * {
+    font-family: var(--font-set-commentary);
+}
+
+.signature{
+    font-family: var(--font-set-commentary);
+    font-size:1.25rem;
+    font-weight: var(--font-weight-bold);
+    font-style:italic;
 }

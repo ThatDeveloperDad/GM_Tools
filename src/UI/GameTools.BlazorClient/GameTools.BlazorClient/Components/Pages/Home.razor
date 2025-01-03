@@ -3,13 +3,20 @@
 <PageTitle>Home</PageTitle>
 
 <header>
-	<heading>Well hello there, Builder!</heading>
+	<h2>Well hello there, Builder!</h2>
 </header>
 <main class="centered-content">
 	<AuthorizeView>
 		<Authorized>
 			<h3>What can I help you create today?</h3>
-			<div id="BlinkyKitty"></div>
+			<div id="homepageNav">
+				<a href="/create-npc">
+					<div id="TownsfolkButton" class="bigButton clickable">
+						<img src="images/TownsfolkMin.svg" alt="Townsfolk Silhouettes" />
+						<span>Townsfolk</span>
+					</div>
+				</a>
+			</div>
 		</Authorized>
 		<NotAuthorized>
 			<h3>SleepyKitty is Sleepy, but she's ready to help you with your game, if you let her know you're here...</h3>

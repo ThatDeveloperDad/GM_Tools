@@ -27,6 +27,16 @@
     z-index: 1; 
 }
 
+#BlinkyKitty {
+    width: 400px;
+    height: 255px;
+    background-image: url("images/kitty.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: blink-animation 5s steps(1, end) infinite;
+}
+
 .pulse{
     animation: pulse-opacity 3s ease-in-out infinite;
 }
@@ -65,15 +75,28 @@
     }
 }
 
-#BlinkyKitty {
-    width: 400px;
-    height: 255px;
-    background-image: url("images/kitty.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    animation: blink-animation 5s steps(1, end) infinite;
+@keyframes shimmer{
+    0%{
+        background-position: -450px;
+    }
+    15%{
+        background-position: -450px;
+    }
+    24%{
+        background-position: 100px;
+    }
+    25%{
+        background-position: 100px;
+    }
+    30%{
+        background-position: -450px;
+    }
+    100%{
+        background-position: -450px;
+    }
 }
+
+
 
 @keyframes blink-animation {
     0%, 10%, 12%, 86%, 90%, 94%, 98%, 100% {

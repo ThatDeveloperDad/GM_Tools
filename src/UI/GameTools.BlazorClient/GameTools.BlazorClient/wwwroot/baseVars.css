@@ -11,7 +11,9 @@
     CAN alter them into new variables to create variations
     of these basic values.
 */
-
+@import "https://fonts.googleapis.com/css?family=Almendra";
+@import "https://fonts.googleapis.com/css?family=Architects Daughter";
+@import "https://fonts.googleapis.com/css?family=Outfit";
 
 :root{
     /* 
@@ -25,6 +27,9 @@
     /* Define the font families, base size, and weight variables */
     --font-set: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --font-set-2: Georgia, 'Times New Roman', Times, serif;
+    --font-set-fancy: 'Almendra', serif;
+    --font-set-text: 'Outfit', sans-serif;
+    --font-set-commentary: 'Architects Daughter', cursive;
 
     /* 
         I really wanted to use 12, so that I'd have even 
@@ -62,7 +67,5 @@
     --color-accent-light:rgb(247, 206, 101);
     --color-accent-dark:rgb(41, 0, 0);
     
-
-
-    --color-brand-main: rgb(15, 90, 240);
+    --color-brand-main: rgb(147, 12, 16);
 }
