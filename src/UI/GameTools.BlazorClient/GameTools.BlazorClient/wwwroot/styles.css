@@ -4,6 +4,10 @@
 @import "icons.css";
 @import "animations.css";
 
+@import "https://fonts.googleapis.com/css?family=Almendra";
+@import "https://fonts.googleapis.com/css?family=Architects Daughter";
+@import "https://fonts.googleapis.com/css?family=Outfit";
+
 body{
     padding:0;
     margin:0;
@@ -11,6 +15,7 @@ body{
     width: var(--app-width);
     display:flex;
     flex-direction:column;
+    
 }
 
 body > footer {
@@ -61,6 +66,7 @@ body > footer {
     justify-content:space-between;
     align-items:center;
     
+    
     padding: 0 .5rem;
 }
 
@@ -106,6 +112,7 @@ main .centered-content{
     border-top-left-radius:.5rem;
     border-top-right-radius:.5rem;
     border:solid 1px var(--outline-color);
+    font-family: 'Almendra', serif
 }
 
 .task-host > main{
@@ -182,7 +189,67 @@ button {
     justify-content: center;
     align-items:center;
     color: var(--color-light-yellow);
+    font-family: 'Almendra', serif;
+    font-size:1.1rem;
 }
+
+.bigButton{
+    display:flex;
+    justify-content:flex-end;
+    flex-direction:column;
+    align-items:center;
+    width:200px;
+    height:250px;
+    padding:.25rem;
+    border:solid .125rem var(--color-light-yellow);
+    border-radius:1rem;
+    box-shadow: 
+        var(--color-accent-red) 0px 0px .25rem .5rem,
+        inset var(--color-light-yellow) 0px 0px .6rem .125rem;
+    background-image:
+        linear-gradient(
+            55deg,
+            var(--color-accent-red) 47%,
+            rgba(255, 254, 189, .75) 49%,
+            var(--color-light-yellow) 50%,
+            rgba(255, 254, 189, .75) 51%,
+            var(--color-accent-red) 53%
+        );
+    background-size:300%;
+    background-position:100px;
+    font-family: 'Almendra', serif;
+    font-weight:700;
+    font-size:2rem;
+    color:var(--color-light-yellow);
+}
+
+.clickable{
+    cursor:pointer;
+    animation: shimmer 10s infinite ease-in-out;
+}
+
+.clickable:hover{
+    box-shadow: 
+        var(--color-accent-red) 0px 0px .25rem .5rem,
+        inset var(--color-light-yellow) 0px 0px .25rem .25rem;
+}
+
+.clickable:hover img {
+    filter:drop-shadow(0px 0px 1rem var(--color-accent-light))
+        brightness(1.1);
+}
+
+.clickable:active{
+    box-shadow: 
+        var(--color-accent-red) 0px 0px .25rem .4rem,
+        inset var(--color-light-yellow) 0px 0px .3rem .3rem;
+    filter:brightness(.9);
+}
+
+.clickable:active * {
+    filter: brightness(.9);
+}
+
 
 @media only screen and (min-width: 600px) {
         body > footer {
